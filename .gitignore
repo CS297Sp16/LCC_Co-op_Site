@@ -248,3 +248,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+.~lock.Technical Design Document.docx#
