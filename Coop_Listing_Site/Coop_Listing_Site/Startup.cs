@@ -11,7 +11,7 @@ namespace Coop_Listing_Site
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = "ApplicationCookie",
-                LoginPath = new PathString("/Login") // Might be changed later
+                LoginPath = new PathString("/Login") // Tentative, depends on how authorization is set up
             });
         }
     }
