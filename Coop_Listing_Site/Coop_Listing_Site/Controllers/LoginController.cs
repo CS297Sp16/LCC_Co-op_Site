@@ -26,7 +26,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Student(Student student) // Might change to a View Model
+        public ActionResult Student(Student student)
         {
             return View();
         }

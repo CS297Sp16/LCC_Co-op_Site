@@ -1,4 +1,4 @@
-﻿using Coop_Listing_Site.Models;
+﻿using Coop_Listing_Site.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Student(Student student)
+        public ActionResult Student(StudentRegistrationModel student)
         {
             return View();
         }
@@ -39,7 +39,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Company(Company company)
+        public ActionResult Company(CompanyRegistrationModel company)
         {
             return View();
         }

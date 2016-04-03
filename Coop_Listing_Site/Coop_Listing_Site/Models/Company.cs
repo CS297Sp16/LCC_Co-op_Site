@@ -9,7 +9,8 @@ namespace Coop_Listing_Site.Models
 {
     public class Company : User
     {
-        public int CompanyID { get; set; }
+        // Inherits from User, doesn't need its own ID
+        // public int CompanyID { get; set; }
 
         [Required]
         [Display(Name = "Company Name")]
