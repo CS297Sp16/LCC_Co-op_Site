@@ -156,7 +156,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
     <Compile Include="Global.asax.cs">
@@ -167,6 +170,10 @@
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Opportunity.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\ViewModels\CompanyLoginModel.cs" />
+    <Compile Include="Models\ViewModels\CompanyRegistrationModel.cs" />
+    <Compile Include="Models\ViewModels\StudentLoginModel.cs" />
+    <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -206,7 +213,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\ViewModels\" />
+    <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Login\" />
+    <Folder Include="Views\Register\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
