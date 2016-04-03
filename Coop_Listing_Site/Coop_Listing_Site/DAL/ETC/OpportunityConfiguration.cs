@@ -7,10 +7,9 @@ using System.Web;
 
 namespace Coop_Listing_Site.DAL.ETC
 {
-    public class UserConfiguration : EntityTypeConfiguration<User>
+    public class OpportunityConfiguration : EntityTypeConfiguration<Opportunity>
     {
-        //Still researching if Inheritance is going to conflict with this strategy
-        public UserConfiguration()
+        public OpportunityConfiguration()
         {
 
         }
