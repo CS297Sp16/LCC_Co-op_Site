@@ -20,6 +20,8 @@ namespace Coop_Listing_Site.DAL
 
         public DbSet<Opportunity> Opportunities { get; set; }
         public DbSet<Major> Majors { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
