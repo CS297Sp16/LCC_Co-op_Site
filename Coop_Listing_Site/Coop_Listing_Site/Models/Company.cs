@@ -7,7 +7,7 @@ using System.Web.ModelBinding;
 
 namespace Coop_Listing_Site.Models
 {
-    public class Company
+    public class Company : User
     {
         public int CompanyID { get; set; }
 
