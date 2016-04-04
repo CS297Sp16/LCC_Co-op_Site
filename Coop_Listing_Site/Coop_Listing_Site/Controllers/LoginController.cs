@@ -48,7 +48,7 @@ namespace Coop_Listing_Site.Controllers
             // user authentication failed
             ModelState.AddModelError("", "Invalid email or password");
             return View();
-            return View();
+            
         }
 
         // GET: Login/Company
