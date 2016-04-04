@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Coop_Listing_Site.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
+        [AllowAnonymous]
         public ActionResult Index()
         {
             /*
@@ -17,7 +14,8 @@ namespace Coop_Listing_Site.Controllers
                 If the user is a student, take them to the Listing page.
                 If the user is a Co-op Coordinator or Company, take them to their control panel.
             */
-            return new HttpStatusCodeResult(System.Net.HttpStatusCode.NoContent, "The site is still under construction");
+            return View();
+            //return new HttpStatusCodeResult(System.Net.HttpStatusCode.NoContent, "The site is still under construction");
         }
     }
 }

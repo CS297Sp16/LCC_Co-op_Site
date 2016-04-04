@@ -1,6 +1,10 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #EEE;
+    line-height: 1.6;
+    font-size: 18px;
+    color: #444;
 }
 
 /* Set padding to keep content from hitting the edges */
