@@ -21,8 +21,8 @@ namespace Coop_Listing_Site.Models.ViewModels
         [RegularExpression(@"^(?=.*\d)(?=.*[a-zA-Z]).{8,16}$", ErrorMessage = "Your password must be at least 8 characters and include at least one letter and one number")]
         public string Password { get; set; }
 
-        [Required, DataType(DataType.Password), Display(Name = "Confirm Password")]
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-zA-Z]).{8,16}$", ErrorMessage = "Your password must be at least 8 characters and include at least one letter and one number")]
+        [Required, DataType(DataType.Password), Display(Name = "Confirm Password")]        
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required, Phone, Display(Name = "Phone Number")]
