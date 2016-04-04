@@ -12,7 +12,7 @@ namespace Coop_Listing_Site.DAL.ETC
         //Still researching if Inheritance is going to conflict with this strategy
         public UserConfiguration()
         {
-
+            ToTable("User");
         }
     }
 }
