@@ -25,6 +25,15 @@ namespace Coop_Listing_Site.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //Instructions for SQL Server
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();   //This is the Default Behavior unsure if we want or not
+            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();  //this is the Default Behavior
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            //Class Configurations            
+            modelBuilder.Configurations.Add(new ETC.MajorConfiguration());
+            modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
+            modelBuilder.Configurations.Add(new ETC.UserConfiguration());
 
 
             base.OnModelCreating(modelBuilder);
