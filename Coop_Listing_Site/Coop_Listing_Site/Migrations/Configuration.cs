@@ -31,7 +31,7 @@ namespace Coop_Listing_Site.Migrations
 
             var companies = new List<Company>()
             {
-               new Company { CompanyName = "FakeCompany",   }
+               new Company { CompanyName = "FakeCompany", City = "Eugene", State = "OR", ZipCode = "97405", Website = "https://"}
             };
         }
     }
