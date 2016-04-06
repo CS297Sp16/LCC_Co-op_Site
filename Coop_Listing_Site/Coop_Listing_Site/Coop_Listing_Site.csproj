@@ -162,6 +162,8 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
     <Compile Include="DAL\ETC\CompanyConfiguration.cs" />
+    <Compile Include="DAL\ETC\CourseConfiguration.cs" />
+    <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
@@ -171,6 +173,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\Department.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Major.cs" />

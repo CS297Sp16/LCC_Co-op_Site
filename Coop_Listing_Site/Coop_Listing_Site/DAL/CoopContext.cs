@@ -30,10 +30,15 @@ namespace Coop_Listing_Site.DAL
             //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();  //this is the Default Behavior unsure 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //Class Configurations            
+            //Class Configurations for the Database Entities
+            modelBuilder.Configurations.Add(new ETC.CompanyConfiguration());
+            modelBuilder.Configurations.Add(new ETC.CourseConfiguration());
+            modelBuilder.Configurations.Add(new ETC.DepartmentConfiguration());
             modelBuilder.Configurations.Add(new ETC.MajorConfiguration());
             modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
             modelBuilder.Configurations.Add(new ETC.UserConfiguration());
+            modelBuilder.Configurations.Add(new ETC.UserConfiguration());
+            
 
 
             base.OnModelCreating(modelBuilder);
