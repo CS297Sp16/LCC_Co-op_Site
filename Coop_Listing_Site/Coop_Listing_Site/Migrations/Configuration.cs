@@ -1,6 +1,8 @@
 namespace Coop_Listing_Site.Migrations
 {
+    using Models;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -26,6 +28,11 @@ namespace Coop_Listing_Site.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            var companies = new List<Company>()
+            {
+               new Company { CompanyName = "FakeCompany", City = "Eugene", State = "OR", ZipCode = "97405", Website = "https://"}
+            };
         }
     }
 }
