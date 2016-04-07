@@ -18,10 +18,15 @@ namespace Coop_Listing_Site.DAL
             //CoopContext Constructor Will eventually plug the Database Initializer here
         }
 
-        public DbSet<Opportunity> Opportunities { get; set; }
-        public DbSet<Major> Majors { get; set; }
+
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Coordinator> Coordinators { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Major> Majors { get; set; }
+        public DbSet<Opportunity> Opportunities { get; set; }
         public DbSet<Student> Students { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -30,10 +35,15 @@ namespace Coop_Listing_Site.DAL
             //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();  //this is the Default Behavior unsure 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //Class Configurations            
+            //Class Configurations for the Database Entities
+            modelBuilder.Configurations.Add(new ETC.CompanyConfiguration());
+            modelBuilder.Configurations.Add(new ETC.CourseConfiguration());
+            modelBuilder.Configurations.Add(new ETC.DepartmentConfiguration());
             modelBuilder.Configurations.Add(new ETC.MajorConfiguration());
             modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
             modelBuilder.Configurations.Add(new ETC.UserConfiguration());
+            modelBuilder.Configurations.Add(new ETC.UserConfiguration());
+            
 
 
             base.OnModelCreating(modelBuilder);
