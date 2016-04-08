@@ -72,7 +72,8 @@ namespace Coop_Listing_Site.Migrations
             }
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            /*                                                 User Manager Specific Stuff                                                    */
+            /*                                                 User Manager Specific Stuff &     
+                                                             Open Web Interface for .Net (OWIN)                                               */
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             var coordinators = new List<Coordinator>()
