@@ -182,7 +182,6 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\ViewModels\CompanyLoginModel.cs" />
     <Compile Include="Models\ViewModels\CompanyRegistrationModel.cs" />
-    <Compile Include="Models\ViewModels\CompanyVM.cs" />
     <Compile Include="Models\ViewModels\StudentLoginModel.cs" />
     <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
