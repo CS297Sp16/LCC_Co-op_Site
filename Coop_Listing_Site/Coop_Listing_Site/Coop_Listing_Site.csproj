@@ -175,8 +175,10 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Coordinator.cs" />
+    <Compile Include="Models\CoordinatorInfo.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\StudentInfo.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Major.cs" />
