@@ -26,7 +26,6 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Register/Student/
-        [AllowAnonymous]
         public ActionResult Student()
         {
             return View();
@@ -42,13 +41,12 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Register/Coordinator/
-        [AllowAnonymous]
         public ActionResult Coordinator()
         {
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator)
         {
             if (!ModelState.IsValid) return View();

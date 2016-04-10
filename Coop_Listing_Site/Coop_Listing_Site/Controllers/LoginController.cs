@@ -23,13 +23,8 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Login/Student
-        public ActionResult Student()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Student(LoginModel userModel)
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Index(LoginModel userModel)
         {
             if (!ModelState.IsValid) return View();
 
@@ -38,7 +33,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, userModel.Password);
 
-                if(passVerification == PasswordVerificationResult.Failed)
+                if (passVerification == PasswordVerificationResult.Failed)
                 {
                     // user authentication failed
                     ModelState.AddModelError("", "Incorrect password");
@@ -49,11 +44,11 @@ namespace Coop_Listing_Site.Controllers
 
                 // Temporary redirect to the home page 
                 return RedirectToAction("Index", "Home");
-            }            
+            }
 
             // user authentication failed
             ModelState.AddModelError("", "User with provided email not found");
-            return View();            
+            return View();
         }
 
         /*
