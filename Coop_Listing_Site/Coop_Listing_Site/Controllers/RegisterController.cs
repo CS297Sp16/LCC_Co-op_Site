@@ -12,7 +12,6 @@ namespace Coop_Listing_Site.Controllers
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        // TODO: Proper code to let the users register; after View Models and a dummy database are created
         // TODO: Implement Registration via invite only
         // TODO: Implement mass invite (likely goes under Co-op advisor's control panel)
 
@@ -31,11 +30,42 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken, AllowAnonymous]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Student([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] StudentRegistrationModel student)
         {
             if (!ModelState.IsValid) return View();
 
+            User user = new User
+            {
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Email = student.Email,
+                UserName = student.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
+            };
+
+            var result = userManager.Create(user, student.Password);
+
+            if (result.Succeeded)
+            {
+                var studentInfo = new StudentInfo
+                {
+                    UserId = user.Id
+                    // Add Major when we have some created or get a dummy DB up
+                };
+
+                db.Students.Add(studentInfo);
+                db.SaveChanges();
+
+                //TODO: Add them to the Coordinator Role after roles are set up
+
+                SignIn(user);
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
 
             return View();
         }
@@ -55,7 +85,8 @@ namespace Coop_Listing_Site.Controllers
             {
                 FirstName = coordinator.FirstName,
                 LastName = coordinator.LastName,
-                Email = coordinator.Email
+                Email = coordinator.Email,
+                UserName = coordinator.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
             };
 
             var result = userManager.Create(user, coordinator.Password);
@@ -70,6 +101,8 @@ namespace Coop_Listing_Site.Controllers
 
                 db.Coordinators.Add(coordinfo);
                 db.SaveChanges();
+
+                //TODO: Add them to the Coordinator Role after roles are set up
 
                 SignIn(user);
                 return RedirectToAction("Index", "Home");
