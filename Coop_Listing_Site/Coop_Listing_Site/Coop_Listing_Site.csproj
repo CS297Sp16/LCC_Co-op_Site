@@ -177,6 +177,7 @@
     <Compile Include="Models\Coordinator.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\UpLoadModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Major.cs" />
@@ -222,10 +223,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Auth\UpLoad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Auth\" />
     <Folder Include="Views\ControlPanel\" />
     <Folder Include="Views\Coop\" />
     <Folder Include="Views\Login\" />
