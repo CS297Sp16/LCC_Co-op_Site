@@ -18,7 +18,7 @@ namespace Coop_Listing_Site.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            // Will be buttons letting the user decide which login page to go to
+            
             return View();
         }
 
@@ -29,28 +29,36 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Student(StudentLoginModel student)
+        public ActionResult Student(LoginModel userModel)
         {
             if (!ModelState.IsValid) return View();
-            var user = userManager.Find(student.LNumber, student.Password);
+
+            var user = userManager.FindByEmail(userModel.Email);
             if (user != null)
             {
-                var identity = userManager.CreateIdentity(
-                    user, DefaultAuthenticationTypes.ApplicationCookie);
+                var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, userModel.Password);
 
-                GetAuthenticationManager().SignIn(identity);
-                
+                if(passVerification == PasswordVerificationResult.Failed)
+                {
+                    // user authentication failed
+                    ModelState.AddModelError("", "Incorrect password");
+                    return View();
+                }
 
-                //TODO: Need to add a redirect after login 
-            }
-            
+                SignIn(user);
+
+                // Temporary redirect to the home page 
+                return RedirectToAction("Index", "Home");
+            }            
 
             // user authentication failed
-            ModelState.AddModelError("", "Invalid email or password");
-            return View();
-            
+            ModelState.AddModelError("", "User with provided email not found");
+            return View();            
         }
 
+        /*
+         * Company's can wait, as they are not essential to getting the site running.
+         * 
         // GET: Login/Company
         public ActionResult Company()
         {
@@ -62,8 +70,9 @@ namespace Coop_Listing_Site.Controllers
         {
             return View();
         }
+        */
 
-        //Added Signin Method for the user
+
         private void SignIn(User user)
         {
             var identity = userManager.CreateIdentity(
@@ -72,7 +81,7 @@ namespace Coop_Listing_Site.Controllers
             GetAuthenticationManager().SignIn(identity);
         }
 
-        //Added authenticationMangager
+
         private IAuthenticationManager GetAuthenticationManager()
         {
             var ctx = Request.GetOwinContext();
