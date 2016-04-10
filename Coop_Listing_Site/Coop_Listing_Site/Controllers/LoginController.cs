@@ -18,7 +18,7 @@ namespace Coop_Listing_Site.Controllers
         // GET: Login
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -42,7 +42,7 @@ namespace Coop_Listing_Site.Controllers
 
                 SignIn(user);
 
-                // Temporary redirect to the home page 
+                // Temporary redirect to the home page
                 return RedirectToAction("Index", "Home");
             }
 
@@ -53,7 +53,7 @@ namespace Coop_Listing_Site.Controllers
 
         /*
          * Company's can wait, as they are not essential to getting the site running.
-         * 
+         *
         // GET: Login/Company
         public ActionResult Company()
         {
@@ -67,7 +67,6 @@ namespace Coop_Listing_Site.Controllers
         }
         */
 
-
         private void SignIn(User user)
         {
             var identity = userManager.CreateIdentity(
@@ -76,7 +75,6 @@ namespace Coop_Listing_Site.Controllers
             GetAuthenticationManager().SignIn(identity);
         }
 
-
         private IAuthenticationManager GetAuthenticationManager()
         {
             var ctx = Request.GetOwinContext();
@@ -84,4 +82,3 @@ namespace Coop_Listing_Site.Controllers
         }
     }
 }
- 
