@@ -13,12 +13,10 @@ namespace Coop_Listing_Site.Controllers
     public class LoginController : Controller
     {
         // TODO: Proper code to let the user log in; after View Models and a dummy database are created
-        UserManager<User>userManager = new UserManager<User>(
-            new UserStore<User>(new CoopContext()));
+        UserManager<User>userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
         // GET: Login
         public ActionResult Index()
         {
-
             return View();
         }
 

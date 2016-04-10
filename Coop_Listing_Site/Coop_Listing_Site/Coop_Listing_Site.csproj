@@ -228,12 +228,12 @@
     <Content Include="Views\Register\Coordinator.cshtml" />
     <Content Include="Views\Register\Student.cshtml" />
     <Content Include="Views\Auth\UpLoad.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ControlPanel\" />
     <Folder Include="Views\Coop\" />
-    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
