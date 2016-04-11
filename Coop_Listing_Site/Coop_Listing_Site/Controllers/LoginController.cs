@@ -12,21 +12,23 @@ namespace Coop_Listing_Site.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        // TODO: Proper code to let the user log in; after View Models and a dummy database are created
         UserManager<User>userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
-        // GET: Login
+
+        // GET: /Login/
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated) // User already logged in. They don't need to be here
+                return RedirectToAction("Index", "Home");
+
             return View();
         }
 
-        // GET: Login/Student
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Index(LoginModel userModel)
+        public ActionResult Index([Bind(Include = "Email,Password")] LoginModel userModel)
         {
             if (!ModelState.IsValid) return View();
 
-            var user = userManager.FindByEmail(userModel.Email);
+            var user = userManager.FindByEmail(userModel.Email); // Can probably be changed back to userManager.Find(username, password) at some point, since usernames are set to emails now
             if (user != null)
             {
                 var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, userModel.Password);
@@ -48,22 +50,6 @@ namespace Coop_Listing_Site.Controllers
             ModelState.AddModelError("", "User with provided email not found");
             return View();
         }
-
-        /*
-         * Company's can wait, as they are not essential to getting the site running.
-         *
-        // GET: Login/Company
-        public ActionResult Company()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Company(CompanyLoginModel company)
-        {
-            return View();
-        }
-        */
 
         private void SignIn(User user)
         {

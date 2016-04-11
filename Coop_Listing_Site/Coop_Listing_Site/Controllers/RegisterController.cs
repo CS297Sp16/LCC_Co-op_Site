@@ -21,11 +21,11 @@ namespace Coop_Listing_Site.Controllers
         // GET: Register
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home"); // No one should be accessing this page directly; Send them away
         }
 
         // GET: Register/Student/
-        public ActionResult Student()
+        public ActionResult Student(/*string registrationToken*/)
         {
             return View();
         }
@@ -56,7 +56,7 @@ namespace Coop_Listing_Site.Controllers
                 db.Students.Add(studentInfo);
                 db.SaveChanges();
 
-                //TODO: Add them to the Coordinator Role after roles are set up
+                //userManager.AddToRole(user.Id, "Student");
 
                 SignIn(user);
                 return RedirectToAction("Index", "Home");
@@ -79,7 +79,7 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(/*string registrationToken*/);
 
             User user = new User
             {
@@ -102,7 +102,7 @@ namespace Coop_Listing_Site.Controllers
                 db.Coordinators.Add(coordinfo);
                 db.SaveChanges();
 
-                //TODO: Add them to the Coordinator Role after roles are set up
+                //userManager.AddToRole(user.Id, "Coordinator");
 
                 SignIn(user);
                 return RedirectToAction("Index", "Home");
