@@ -16,7 +16,7 @@ namespace Coop_Listing_Site.DAL.ETC
         public MajorConfiguration()
         {
             ToTable("Major");       //Explicitly Tell SQL Server the Table Name
-            Property(x => x.Name)
+            Property(x => x.MajorName)//this was causing an error on my machine when it was x.Name--name isn't in the major class
                 .IsRequired();
         }
     }
