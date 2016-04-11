@@ -15,8 +15,14 @@ namespace Coop_Listing_Site.Controllers
         // TODO: Implement Registration via invite only
         // TODO: Implement mass invite (likely goes under Co-op advisor's control panel)
 
-        private CoopContext db = new CoopContext();
-        private UserManager<User> userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
+        private CoopContext db;
+        private UserManager<User> userManager;
+
+        public RegisterController()
+        {
+            db = new CoopContext();
+            userManager = new UserManager<User>(new UserStore<User>(db));
+        }
 
         // GET: Register
         public ActionResult Index()
@@ -134,6 +140,14 @@ namespace Coop_Listing_Site.Controllers
         {
             var ctx = Request.GetOwinContext();
             return ctx.Authentication;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose();
+
+            base.Dispose(disposing);
         }
 
         /*
