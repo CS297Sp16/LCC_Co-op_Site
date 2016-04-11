@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
+using Coop_Listing_Site.Models;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -19,6 +20,30 @@ namespace Coop_Listing_Site.Controllers
 
             authManager.SignOut("ApplicationCookie");
             return RedirectToAction("index", "home");
+        }
+
+        //GET: for uploading files
+        public ActionResult UpLoad()
+        {
+            var model = new UpLoadModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult UpLoad(UpLoadModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var uploadedFile = new byte[model.File.InputStream.Length];
+            model.File.InputStream.Read(uploadedFile, 0, uploadedFile.Length);
+
+            // now you could pass the byte array to your model and store wherever 
+            // you intended to store it
+
+            return Content("Thanks for uploading the file");
         }
     }
 }
