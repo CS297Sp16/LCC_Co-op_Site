@@ -10,6 +10,5 @@ namespace Coop_Listing_Site.Models
         public int DepartmentID { get; set; }
         public string DepartmentName { get; set; }
         public virtual ICollection<Major> Majors { get; set; }
-
     }
 }
