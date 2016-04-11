@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Coop_Listing_Site.Models.ViewModels
 {
-    public class CompanyLoginModel
+    public class LoginModel
     {
         [Required, EmailAddress]
         public string Email { get; set; }

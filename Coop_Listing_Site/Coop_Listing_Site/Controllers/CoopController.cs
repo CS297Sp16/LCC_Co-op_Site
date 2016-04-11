@@ -7,6 +7,8 @@ using Coop_Listing_Site.Models;//added this
 using Coop_Listing_Site.DAL;//added this
 using System.Net;//added this
 using System.Data.Entity;//added this, are we using something different?
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -14,11 +16,45 @@ namespace Coop_Listing_Site.Controllers
     {
         // This controller will have List, Details, and possibly Create, Delete, and Edit for all co-op opportunities
 
-        private CoopContext db = new CoopContext();
+        private CoopContext db;
+        private UserManager<User> userManager;
+
+        public CoopController()
+        {
+            db = new CoopContext();
+            userManager = new UserManager<User>(new UserStore<User>(db));
+        }
+
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Single(u => u.UserName == User.Identity.Name);
+            }
+        }
 
         // GET: Coop
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult Listings()
+        {
+            if (CurrentUser.GetType().Name == "Student")
+            {
+                Student s = (Student)CurrentUser;
+
+                Major studentMajor = db.Majors.Single(m => m.MajorID == s.MajorID);
+
+                var x = db.Opportunities.Where(
+                    o => o.DepartmentID == db.Departments.Single(
+                        d => d.Majors.Contains(studentMajor)
+                        ).DepartmentID
+                    );
+                return View(x.ToList());
+            }
+
             return View();
         }
 
@@ -98,57 +134,26 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("Index");
         }
 
-        //not sure if we need this, but here it is just in case
+        private Opportunity GetOpportunity(int opportunityID)
+        {
+            return db.Opportunities.Find(opportunityID);
+        }
+
+        private List<Opportunity> GetOpportunities()
+        {
+            return db.Opportunities.ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 db.Dispose();
+
+                if (userManager != null)
+                    userManager.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        //not sure if maybe these should be changed to use linq to get the information
-        //retrieve a single opportunity
-        private Opportunity GetOpportunity(int? opportunityID)
-        {
-            Opportunity opportunity = null;
-
-            foreach(Opportunity o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
-            {
-                if (o.OpportunityID == opportunityID)
-                {
-                    opportunity = new Opportunity()
-                    {
-                        OpportunityID = o.OpportunityID,
-                        UserID = o.UserID,
-                        CompanyID = o.CompanyID,
-                        PDF = o.PDF,
-                        OpeningsAvailable = o.OpeningsAvailable,
-                        TermAvailable = o.TermAvailable
-                    };
-                }
-            }
-            return opportunity;
-        }
-
-        //not sure if maybe these should be changed to use linq to get the information
-        //retrieve all opportunities
-        private List<Opportunity> GetOpportunities()
-        {
-            var opportunities = new List<Opportunity>();
-            foreach(Opportunity o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
-            {
-                var opportunity = new Opportunity();
-                opportunity.OpportunityID = o.OpportunityID;
-                opportunity.UserID = o.UserID;
-                opportunity.CompanyID = o.CompanyID;
-                opportunity.PDF = o.PDF;
-                opportunity.OpportunityID = o.OpportunityID;
-                opportunity.TermAvailable = o.TermAvailable;
-                opportunities.Add(opportunity);
-            }
-            return opportunities;
         }
     }
 }
