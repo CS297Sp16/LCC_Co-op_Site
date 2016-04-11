@@ -2,6 +2,10 @@
 {
     public class Company : User
     {
+        // Inherits from User, doesn't need its own ID
+        // public int CompanyID { get; set; }
+
+
         public string CompanyName { get; set; }
 
         public string Address { get; set; }

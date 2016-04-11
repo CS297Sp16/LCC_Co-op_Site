@@ -19,6 +19,6 @@ namespace Coop_Listing_Site.Models
         public int OpeningsAvailable { get; set; }
 
         //Datatype could also be DateTime and/or create an additional Term Class Entity
-        public string TermAvailable { get; set; } 
+        public string TermAvailable { get; set; }
     }
 }
