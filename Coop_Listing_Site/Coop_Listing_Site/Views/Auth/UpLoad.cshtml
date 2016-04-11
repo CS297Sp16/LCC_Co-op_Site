@@ -1,0 +1,11 @@
+﻿@model Coop_Listing_Site.Models.UpLoadModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.LabelFor(x => x.File)
+        @Html.TextBoxFor(x => x.File, new { type = "file" })
+        @Html.ValidationMessageFor(x => x.File)
+    </div>
+
+    <button type="submit">Upload</button>
+}

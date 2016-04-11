@@ -10,6 +10,5 @@ namespace Coop_Listing_Site.Models
         public string State { get; set; }
         public string ZipCode { get; set; }
         public string Website { get; set; }
-
     }
 }
