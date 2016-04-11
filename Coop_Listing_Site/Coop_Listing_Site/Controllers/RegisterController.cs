@@ -40,6 +40,7 @@ namespace Coop_Listing_Site.Controllers
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 Email = student.Email,
+                Enabled = true,
                 UserName = student.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
             };
 
@@ -49,7 +50,9 @@ namespace Coop_Listing_Site.Controllers
             {
                 var studentInfo = new StudentInfo
                 {
-                    UserId = user.Id
+                    UserId = user.Id,
+                    LNumber = student.LNumber,
+                    GPA = student.GPA
                     // Add Major when we have some created or get a dummy DB up
                 };
 
@@ -86,6 +89,7 @@ namespace Coop_Listing_Site.Controllers
                 FirstName = coordinator.FirstName,
                 LastName = coordinator.LastName,
                 Email = coordinator.Email,
+                Enabled = true,
                 UserName = coordinator.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
             };
 

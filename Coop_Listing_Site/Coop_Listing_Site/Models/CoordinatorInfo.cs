@@ -8,9 +8,8 @@ namespace Coop_Listing_Site.Models
 {
     public class CoordinatorInfo
     {
-        //public string LNumber { get; set; } // Ignoring for now
         [Key]
         public string UserId { get; set; }
-        public int DepartmentID { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }
