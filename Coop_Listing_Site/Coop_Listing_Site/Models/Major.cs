@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections.Generic;
 
 namespace Coop_Listing_Site.Models
@@ -12,6 +12,5 @@ namespace Coop_Listing_Site.Models
         //Will re-implement later on. Will be a feature to add towards the end after everything else is working the 
         //way we want it to.
         //public virtual ICollection<Course> Courses { get; set; }
-
     }
 }
