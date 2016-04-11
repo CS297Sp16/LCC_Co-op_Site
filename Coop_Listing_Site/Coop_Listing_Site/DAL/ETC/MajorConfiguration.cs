@@ -16,7 +16,7 @@ namespace Coop_Listing_Site.DAL.ETC
         public MajorConfiguration()
         {
             ToTable("Major");       //Explicitly Tell SQL Server the Table Name
-            Property(x => x.Name)
+            Property(x => x.MajorName)
                 .IsRequired();
         }
     }
