@@ -16,5 +16,13 @@ namespace Coop_Listing_Site.Models
         public int OpeningsAvailable { get; set; } //Represents the quantity of available opportunities offered by the company
         public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity
 
+        List<Opportunity> opportunities = new List<Opportunity>();
+        public List<Opportunity> Opportunities
+        {
+            get
+            {
+                return opportunities;
+            }
+        }
     }
 }
