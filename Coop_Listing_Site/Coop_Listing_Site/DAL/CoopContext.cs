@@ -20,12 +20,19 @@ namespace Coop_Listing_Site.DAL
 
 
         public DbSet<Company> Companies { get; set; }
-        public DbSet<Coordinator> Coordinators { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Major> Majors { get; set; }
         public DbSet<Opportunity> Opportunities { get; set; }
+        public DbSet<StudentInfo> Students { get; set; }
+        public DbSet<CoordinatorInfo> Coordinators { get; set; }
+
+        /*
+         * Potential issues with User inheritance
+         * Comment out for now
         public DbSet<Student> Students { get; set; }
+        public DbSet<Coordinator> Coordinators { get; set; }
+        */
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -42,7 +49,7 @@ namespace Coop_Listing_Site.DAL
             modelBuilder.Configurations.Add(new ETC.MajorConfiguration());
             modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
             modelBuilder.Configurations.Add(new ETC.UserConfiguration());
-            
+
             
 
 

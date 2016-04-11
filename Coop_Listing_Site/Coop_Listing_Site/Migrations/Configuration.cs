@@ -16,6 +16,10 @@ namespace Coop_Listing_Site.Migrations
 
         protected override void Seed(DAL.CoopContext context)
         {
+
+#if !DEBUG
+     //release or production code here
+#endif
             var courses = new List<Course>()
             {              
                 //Computer Programming              
