@@ -11,12 +11,12 @@ namespace Coop_Listing_Site.Controllers
     public class HomeController : Controller
     {
         private CoopContext db;
-        private UserManager<User> userManager;
+        //private UserManager<User> userManager;
 
         public HomeController()
         {
             db = new CoopContext();
-            userManager = new UserManager<User>(new UserStore<User>(db));
+            //userManager = new UserManager<User>(new UserStore<User>(db));
         }
 
         // GET: Home
@@ -40,41 +40,14 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
-        public ActionResult Listings()
-        {
-            if (CurrentUser.GetType().Name == "Student")
-            {
-                Student s = (Student)CurrentUser;
-
-                Major studentMajor = db.Majors.Single(m => m.MajorID == s.MajorID);
-
-                var x = db.Opportunities.Where(
-                    o => o.DepartmentID == db.Departments.Single(
-                        d => d.Majors.Contains(studentMajor)
-                        ).DepartmentID
-                    );
-                return View(x.ToList());
-            }
-
-            return View();
-        }
-
-        private User CurrentUser
-        {
-            get
-            {
-                return db.Users.Single(u => u.UserName == User.Identity.Name);
-            }
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 db.Dispose();
 
-                if (userManager != null)
-                    userManager.Dispose();
+                //if (userManager != null)
+                //    userManager.Dispose();
             }
             base.Dispose(disposing);
         }

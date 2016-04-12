@@ -41,17 +41,12 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Listings()
         {
-            if (CurrentUser.GetType().Name == "Student")
+            var sInfo = db.Students.SingleOrDefault(si => si.UserId == CurrentUser.Id);
+
+            if (sInfo != null)
             {
-                Student s = (Student)CurrentUser;
-
-                Major studentMajor = db.Majors.Single(m => m.MajorID == s.MajorID);
-
-                var x = db.Opportunities.Where(
-                    o => o.DepartmentID == db.Departments.Single(
-                        d => d.Majors.Contains(studentMajor)
-                        ).DepartmentID
-                    );
+                var sMajor = db.Majors.Find(sInfo.MajorID);
+                var x = db.Opportunities.Where(o => o.DepartmentID == sMajor.DepartmentID);
                 return View(x.ToList());
             }
 
@@ -81,7 +76,7 @@ namespace Coop_Listing_Site.Controllers
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
                     TermAvailable = opportunityVM.TermAvailable
                 };
-                opportunity.Opportunities.Add(opportunity);
+                db.Opportunities.Add(opportunity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
