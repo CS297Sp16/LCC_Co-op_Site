@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Coop_Listing_Site.Models;//added this
-using Coop_Listing_Site.DAL;//added this
-using System.Net;//added this
-using System.Data.Entity;//added this, are we using something different?
+using Coop_Listing_Site.Models;
+using Coop_Listing_Site.DAL;
+using System.Net;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -33,24 +33,37 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/AddOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, PDF, OpeningsAvailable, TermAvailable")] Opportunity opportunityVM)
+        public ActionResult AddOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM)
         {
             if (ModelState.IsValid)
             {
-                Opportunity opportunity = new Opportunity()
+                OpportunityModel opportunity = new OpportunityModel()
                 {
                     UserID = opportunityVM.UserID,
                     CompanyID = opportunityVM.CompanyID,
-                    PDF = opportunityVM.PDF,
+                    CompanyName = opportunityVM.CompanyName,
+                    ContactName = opportunityVM.ContactName,
+                    ContactNumber = opportunityVM.ContactNumber,
+                    ContactEmail = opportunityVM.ContactEmail,
+                    Location = opportunityVM.Location,
+                    CompanyWebsite = opportunityVM.CompanyWebsite,
+                    AboutCompany = opportunityVM.AboutCompany,
+                    AboutDepartment = opportunityVM.AboutDepartment,
+                    CoopPositionTitle = opportunityVM.CoopPositionTitle,
+                    CoopPositionDuties = opportunityVM.CoopPositionDuties,
+                    Qualifications = opportunityVM.Qualifications,
+                    GPA =opportunityVM.GPA,
+                    Paid = opportunityVM.Paid,
+                    Duration = opportunityVM.Duration,
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
                     TermAvailable = opportunityVM.TermAvailable
                 };
-                opportunity.Opportunities.Add(opportunity);
+                db.Opportunities.Add(opportunity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             //not sure if I should have a viewbag with users, and one for opportunities here 
-            return View();
+            return View(opportunityVM);
         }
 
         //GET: CoopController/EditOpportunity
@@ -72,7 +85,7 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/EditOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, PDF, OpeningsAvailable, TermAvailable")] Opportunity opportunity)
+        public ActionResult EditOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunity)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +105,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Opportunity opportunity = db.Opportunities.Find(id);
+            OpportunityModel opportunity = db.Opportunities.Find(id);
             db.Opportunities.Remove(opportunity);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -110,15 +123,15 @@ namespace Coop_Listing_Site.Controllers
 
         //not sure if maybe these should be changed to use linq to get the information
         //retrieve a single opportunity
-        private Opportunity GetOpportunity(int? opportunityID)
+        private OpportunityModel GetOpportunity(int? opportunityID)
         {
-            Opportunity opportunity = null;
+            OpportunityModel opportunity = null;
 
-            foreach(Opportunity o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
+            foreach(OpportunityModel o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
             {
                 if (o.OpportunityID == opportunityID)
                 {
-                    opportunity = new Opportunity()
+                    opportunity = new OpportunityModel()
                     {
                         OpportunityID = o.OpportunityID,
                         UserID = o.UserID,
@@ -134,12 +147,12 @@ namespace Coop_Listing_Site.Controllers
 
         //not sure if maybe these should be changed to use linq to get the information
         //retrieve all opportunities
-        private List<Opportunity> GetOpportunities()
+        private List<OpportunityModel> GetOpportunities()
         {
-            var opportunities = new List<Opportunity>();
-            foreach(Opportunity o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
+            var opportunities = new List<OpportunityModel>();
+            foreach(OpportunityModel o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
             {
-                var opportunity = new Opportunity();
+                var opportunity = new OpportunityModel();
                 opportunity.OpportunityID = o.OpportunityID;
                 opportunity.UserID = o.UserID;
                 opportunity.CompanyID = o.CompanyID;

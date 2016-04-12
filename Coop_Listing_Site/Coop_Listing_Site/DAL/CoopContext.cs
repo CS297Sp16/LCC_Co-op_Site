@@ -23,7 +23,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Major> Majors { get; set; }
-        public DbSet<Opportunity> Opportunities { get; set; }
+        public DbSet<OpportunityModel> Opportunities { get; set; }
         public DbSet<StudentInfo> Students { get; set; }
         public DbSet<CoordinatorInfo> Coordinators { get; set; }
 
