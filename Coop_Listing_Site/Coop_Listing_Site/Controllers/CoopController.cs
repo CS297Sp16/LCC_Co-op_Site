@@ -7,6 +7,7 @@ using Coop_Listing_Site.Models;
 using Coop_Listing_Site.DAL;
 using System.Net;
 using System.Data.Entity;
+using Coop_Listing_Site.Models.ViewModels;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -37,7 +38,7 @@ namespace Coop_Listing_Site.Controllers
         {
             if (ModelState.IsValid)
             {
-                OpportunityModel opportunity = new OpportunityModel()
+                Opportunity opportunity = new Opportunity()
                 {
                     UserID = opportunityVM.UserID,
                     CompanyID = opportunityVM.CompanyID,
@@ -105,7 +106,20 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OpportunityModel opportunity = db.Opportunities.Find(id);
+            Opportunity opportunity = db.Opportunities.Find(id);
+            if (opportunity == null)
+            {
+                return HttpNotFound();
+            }
+            return RedirectToAction("Index");
+        }
+
+        //POST: CoopController/DeleteOpportunity
+        [HttpPost, ActionName("DeleteOpportunity")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Opportunity opportunity = db.Opportunities.Find(id);
             db.Opportunities.Remove(opportunity);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -120,48 +134,17 @@ namespace Coop_Listing_Site.Controllers
             }
             base.Dispose(disposing);
         }
-
-        //not sure if maybe these should be changed to use linq to get the information
+        
         //retrieve a single opportunity
-        private OpportunityModel GetOpportunity(int? opportunityID)
+        private Opportunity GetOpportunity(int opportunityID)
         {
-            OpportunityModel opportunity = null;
-
-            foreach(OpportunityModel o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
-            {
-                if (o.OpportunityID == opportunityID)
-                {
-                    opportunity = new OpportunityModel()
-                    {
-                        OpportunityID = o.OpportunityID,
-                        UserID = o.UserID,
-                        CompanyID = o.CompanyID,
-                        PDF = o.PDF,
-                        OpeningsAvailable = o.OpeningsAvailable,
-                        TermAvailable = o.TermAvailable
-                    };
-                }
-            }
-            return opportunity;
+            return db.Opportunities.Find(opportunityID);
         }
-
-        //not sure if maybe these should be changed to use linq to get the information
+        
         //retrieve all opportunities
-        private List<OpportunityModel> GetOpportunities()
+        private List<Opportunity> GetOpportunities()
         {
-            var opportunities = new List<OpportunityModel>();
-            foreach(OpportunityModel o in db.Opportunities)//I'm curious if the db will just make it plural or change to opportunites
-            {
-                var opportunity = new OpportunityModel();
-                opportunity.OpportunityID = o.OpportunityID;
-                opportunity.UserID = o.UserID;
-                opportunity.CompanyID = o.CompanyID;
-                opportunity.PDF = o.PDF;
-                opportunity.OpportunityID = o.OpportunityID;
-                opportunity.TermAvailable = o.TermAvailable;
-                opportunities.Add(opportunity);
-            }
-            return opportunities;
+            return db.Opportunities.ToList();
         }
     }
 }

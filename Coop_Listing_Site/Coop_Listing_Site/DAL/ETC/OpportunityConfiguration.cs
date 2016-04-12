@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Coop_Listing_Site.DAL.ETC
 {
-    public class OpportunityConfiguration : EntityTypeConfiguration<OpportunityModel>
+    public class OpportunityConfiguration : EntityTypeConfiguration<Opportunity>
     {
         public OpportunityConfiguration()
         {
