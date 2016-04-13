@@ -77,7 +77,7 @@ namespace Coop_Listing_Site.Models
             // test opportunities
             Opportunity opp1 = new Opportunity
             {
-                //DepartmentID = dept.DepartmentID,
+                DepartmentID = dept.DepartmentID,
                 CompanyName = "gabe's Grotto",
                 ContactName = "Gabe Griffin",
                 ContactNumber = "(541)914-2988",
@@ -98,7 +98,7 @@ namespace Coop_Listing_Site.Models
             };
             Opportunity opp2 = new Opportunity
             {
-                //DepartmentID = dept.DepartmentID,
+                DepartmentID = dept.DepartmentID,
                 CompanyName = "Big Al's House of Computers",
                 ContactName = "Ron Jeremy",
                 ContactNumber = "(541)913-3434",
