@@ -10,6 +10,7 @@ namespace Coop_Listing_Site.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        // Why are we overriding this?
         public override string Email { get; set; }
         public bool Enabled { get; set; }
 

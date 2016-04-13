@@ -1,0 +1,46 @@
+﻿@model Coop_Listing_Site.Models.Opportunity
+@{
+    ViewBag.Title = "Delete a Opportunity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete Cooperative Opportunity</h2>
+
+<h3>Are you sure you want to permanently remove this cooperative opportunity?</h3>
+<div>
+    <h4>Cooperative Opportunity to be deleted</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.OpportunityID)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpportunityID)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.CompanyName)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.CoopPositionTitle)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoopPositionTitle)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.CoopPositionDuties)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoopPositionDuties)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.TermAvailable)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TermAvailable)
+        </dd>
+    </dl>
+</div>
+

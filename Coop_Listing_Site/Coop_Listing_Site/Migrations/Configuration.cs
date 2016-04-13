@@ -77,7 +77,7 @@ namespace Coop_Listing_Site.Migrations
                                                              Open Web Interface for .Net (OWIN)                                               */
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            var coordinators = new List<CoordinatorInfo>()
+
             {
                 new CoordinatorInfo { FirstName = "Gerry", LastName = "Meenaghan",  LNumber = "L00000000",
                     Email = "meenaghang@lanecc.edu", PhoneNumber = "(541) 463-5883"}
@@ -101,7 +101,7 @@ namespace Coop_Listing_Site.Migrations
                     Email = "example@email.com", PhoneNumber = "(541) 123-7777" },
                 new Student { MajorID = 4, LNumber = "L91234567",FirstName = "Adam", LastName = "Sandler",
                     Email = "sandlera@lane.edu", PhoneNumber = "(541) 123-8888" },
-            };
+            };*/
 
             var companies = new List<Company>()
             {
