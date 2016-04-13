@@ -30,10 +30,10 @@ namespace Coop_Listing_Site.Controllers
                 -- If the user is a Co-op Coordinator or Company, take them to their control panel.
             */
 
-            /*
+            
             if (User.IsInRole("Student"))
                 return RedirectToAction("Index", "Coop");
-            else if (User.IsInRole("Coordinator"))
+            /*else if (User.IsInRole("Coordinator"))
                 return RedirectToAction("Index", "ControlPanel");
             */
 

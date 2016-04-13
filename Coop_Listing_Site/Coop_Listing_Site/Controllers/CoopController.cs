@@ -37,7 +37,7 @@ namespace Coop_Listing_Site.Controllers
         // GET: Coop
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Listings");
         }
 
         public ActionResult Listings()

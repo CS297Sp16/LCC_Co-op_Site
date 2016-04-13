@@ -15,6 +15,10 @@ namespace Coop_Listing_Site.Models
         {
             UserManager<User> userManager = new UserManager<User>(new UserStore<User>(context));
 
+            //Create roles
+            context.Roles.Add(new IdentityRole() { Name = "Student" });
+            context.Roles.Add(new IdentityRole() { Name = "Coordinator" });
+
             // add Users
             User user1 = new User
             {
@@ -65,6 +69,11 @@ namespace Coop_Listing_Site.Models
                 MajorID = major.MajorID
             };
 
+            // Add the student role to them
+            userManager.AddToRole(user1.Id, "Student");
+            userManager.AddToRole(user2.Id, "Student");
+
+
             // test opportunities
             Opportunity opp1 = new Opportunity
             {
@@ -84,7 +93,8 @@ namespace Coop_Listing_Site.Models
                 Paid = true,
                 Duration = "one month",
                 OpeningsAvailable = 1,
-                TermAvailable = "Fall"
+                TermAvailable = "Fall",
+                DepartmentID = dept.DepartmentID
             };
             Opportunity opp2 = new Opportunity
             {
@@ -104,7 +114,8 @@ namespace Coop_Listing_Site.Models
                 Paid = true,
                 Duration = "three months",
                 OpeningsAvailable = 5,
-                TermAvailable = "Spring"
+                TermAvailable = "Spring",
+                DepartmentID = dept.DepartmentID
             };
 
             context.Students.Add(sInfo1);
