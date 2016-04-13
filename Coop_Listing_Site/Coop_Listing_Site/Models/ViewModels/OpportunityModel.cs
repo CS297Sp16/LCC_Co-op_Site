@@ -43,5 +43,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public int OpeningsAvailable { get; set; }
         [Required, Display(Name ="Terms offered")]
         public string TermAvailable { get; set; }
+        [Required]
+        public int DepartmentID { get; set; }
     }
 }
