@@ -20,7 +20,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Home
-        [AllowAnonymous] // Get rid of this to redirect to Login if the user is not authenticated
+        //[AllowAnonymous] // Get rid of this to redirect to Login if the user is not authenticated
         public ActionResult Index()
         {
             /*
