@@ -78,9 +78,15 @@ namespace Coop_Listing_Site.Migrations
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            {
-                new CoordinatorInfo { FirstName = "Gerry", LastName = "Meenaghan",  LNumber = "L00000000",
-                    Email = "meenaghang@lanecc.edu", PhoneNumber = "(541) 463-5883"}
+            /*{
+                new CoordinatorInfo
+                {
+                    FirstName = "Gerry",
+                    LastName = "Meenaghan",
+                    LNumber = "L00000000",
+                    Email = "meenaghang@lanecc.edu",
+                    PhoneNumber = "(541) 463-5883"
+                };
             };
 
             var students = new List<StudentInfo>()
@@ -102,16 +108,6 @@ namespace Coop_Listing_Site.Migrations
                 new Student { MajorID = 4, LNumber = "L91234567",FirstName = "Adam", LastName = "Sandler",
                     Email = "sandlera@lane.edu", PhoneNumber = "(541) 123-8888" },
             };*/
-
-            var companies = new List<Company>()
-            {
-               new Company { CompanyName = "FakeCompany",Address = "Green & Yellow Brick Rd.", City = "Eugene",
-                   State = "OR", ZipCode = "97405", Website = "https://FakeCompany.Example.com"},
-               new Company { CompanyName = "AnotherCompany", Address = "Never Never Land Ave.", City = "Springfield",
-                   State = "OR", ZipCode = "97477", Website = "https://AnotherCompany.com"},
-               new Company { CompanyName = "Symantec", Address = "555 International Way", City = "Springfield",
-                   State = "OR", ZipCode = "97477", Website = "https://www.symantec.com"}
-            };
 
             var opportunities = new List<Opportunity>()
             {

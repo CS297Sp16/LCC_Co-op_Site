@@ -18,8 +18,7 @@ namespace Coop_Listing_Site.DAL
             //CoopContext Constructor Will eventually plug the Database Initializer here
         }
 
-
-        public DbSet<Company> Companies { get; set; }
+        
         public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Major> Majors { get; set; }
@@ -43,7 +42,6 @@ namespace Coop_Listing_Site.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             //Class Configurations for the Database Entities
-            modelBuilder.Configurations.Add(new ETC.CompanyConfiguration());
             modelBuilder.Configurations.Add(new ETC.CourseConfiguration());
             modelBuilder.Configurations.Add(new ETC.DepartmentConfiguration());
             modelBuilder.Configurations.Add(new ETC.MajorConfiguration());

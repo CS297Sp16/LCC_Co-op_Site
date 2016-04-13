@@ -37,7 +37,7 @@ namespace Coop_Listing_Site.Controllers
         // GET: Coop
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Listings");
         }
 
         public ActionResult Listings()
@@ -65,7 +65,9 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/AddOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM)
+        public ActionResult AddOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+            ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunityVM)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +119,9 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/EditOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunity)
+        public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+            ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunity)
         {
             if (ModelState.IsValid)
             {
