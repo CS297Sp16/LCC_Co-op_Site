@@ -9,13 +9,12 @@ namespace Coop_Listing_Site.Models
     public class Opportunity
     {
         public int OpportunityID { get; set; }
-        //[ForeignKey("User")]
+        public int PDF { get; set; }
         public int UserID { get; set; }
-        //[ForeignKey("Company")]
         public int CompanyID { get; set; }
         public string CompanyName { get; set; }  //Company name
         public string ContactName { get; set; }  //Company contact name
-        public string ContactNumber { get; set; }  //Company contact phone number         
+        public string ContactNumber { get; set; }  //Company contact phone number
         public string ContactEmail { get; set; }  //Company contact email
         public string Location { get; set; }  //Location of coop
         public string CompanyWebsite { get; set; }  //Company website
@@ -28,7 +27,7 @@ namespace Coop_Listing_Site.Models
         public bool Paid { get; set; }  //Paid or unpaid coop
         public string Duration { get; set; }  //Duration of co-op
         public int OpeningsAvailable { get; set; } //Represents the quantity of available opportunities offered by the company
-        public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity
-
+        public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity        
+        public int DepartmentID { get; set; } // the department whose students this opportunity is intended for
     }
 }

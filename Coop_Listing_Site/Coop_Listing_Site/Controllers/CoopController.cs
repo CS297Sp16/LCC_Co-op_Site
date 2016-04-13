@@ -8,6 +8,8 @@ using Coop_Listing_Site.DAL;
 using System.Net;
 using System.Data.Entity;
 using Coop_Listing_Site.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -15,11 +17,40 @@ namespace Coop_Listing_Site.Controllers
     {
         // This controller will have List, Details, and possibly Create, Delete, and Edit for all co-op opportunities
 
-        private CoopContext db = new CoopContext();
+        private CoopContext db;
+        private UserManager<User> userManager;
+
+        public CoopController()
+        {
+            db = new CoopContext();
+            userManager = new UserManager<User>(new UserStore<User>(db));
+        }
+
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Single(u => u.UserName == User.Identity.Name);
+            }
+        }
 
         // GET: Coop
         public ActionResult Index()
         {
+            return View();
+        }
+
+        public ActionResult Listings()
+        {
+            var sInfo = db.Students.SingleOrDefault(si => si.UserId == CurrentUser.Id);
+
+            if (sInfo != null)
+            {
+                var sMajor = db.Majors.Find(sInfo.MajorID);
+                var x = db.Opportunities.Where(o => o.DepartmentID == sMajor.DepartmentID);
+                return View(x.ToList());
+            }
+
             return View();
         }
 
@@ -63,7 +94,7 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here 
+            //not sure if I should have a viewbag with users, and one for opportunities here
             return View(opportunityVM);
         }
 
@@ -94,7 +125,7 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here 
+            //not sure if I should have a viewbag with users, and one for opportunities here
             return View(opportunity);
         }
 
@@ -125,26 +156,33 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("Index");
         }
 
-        //not sure if we need this, but here it is just in case
-        protected override void Dispose(bool disposing)
+        private Opportunity GetOpportunity(int opportunityID)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return db.Opportunities.Find(opportunityID);
         }
-        
+
         //retrieve a single opportunity
         private Opportunity GetOpportunity(int opportunityID)
         {
             return db.Opportunities.Find(opportunityID);
         }
-        
+
         //retrieve all opportunities
         private List<Opportunity> GetOpportunities()
         {
             return db.Opportunities.ToList();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+
+                if (userManager != null)
+                    userManager.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
