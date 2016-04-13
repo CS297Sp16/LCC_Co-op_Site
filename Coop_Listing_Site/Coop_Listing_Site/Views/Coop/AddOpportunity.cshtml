@@ -1,0 +1,16 @@
+﻿@model Coop_Listing_Site.Models.ViewModels.OpportunityModel
+
+@{
+    ViewBag.Title = "AddOpportunity";
+}
+
+<h2>Add Opportunity</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h3>Cooperative  Opportunity</h3>
+
+    </div>
+}
+
