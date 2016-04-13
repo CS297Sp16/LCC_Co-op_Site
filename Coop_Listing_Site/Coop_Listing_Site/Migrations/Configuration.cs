@@ -11,15 +11,12 @@ namespace Coop_Listing_Site.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false; //this will be changed to true when we divert from the DBinitializer
         }
 
         protected override void Seed(DAL.CoopContext context)
         {
 
-#if !DEBUG
-     //release or production code here
-#endif
             var courses = new List<Course>()
             {              
                 //Computer Programming              
@@ -80,15 +77,15 @@ namespace Coop_Listing_Site.Migrations
                                                              Open Web Interface for .Net (OWIN)                                               */
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            var coordinators = new List<Coordinator>()
+            var coordinators = new List<CoordinatorInfo>()
             {
-                new Coordinator { FirstName = "Gerry", LastName = "Meenaghan",  LNumber = "L00000000",
+                new CoordinatorInfo { FirstName = "Gerry", LastName = "Meenaghan",  LNumber = "L00000000",
                     Email = "meenaghang@lanecc.edu", PhoneNumber = "(541) 463-5883"}
             };
 
-            var students = new List<Student>()
+            var students = new List<StudentInfo>()
             {
-                new Student { MajorID = 1, LNumber = "L91234560", FirstName = "Lonnie", LastName = "Teter-Davis",
+                new StudentInfo { MajorID = 1, LNumber = "L91234560", FirstName = "Lonnie", LastName = "Teter-Davis",
                     Email = "lonnie@email.com", PhoneNumber = "(541) 123-1111" },
                 new Student { MajorID = 1, LNumber = "L91234561", FirstName = "Gabe", LastName = "Griffin",
                     Email = "gabe@email.com", PhoneNumber = "(541) 123-2222" },
