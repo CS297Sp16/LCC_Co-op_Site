@@ -84,7 +84,8 @@ namespace Coop_Listing_Site.Models
                 Paid = true,
                 Duration = "one month",
                 OpeningsAvailable = 1,
-                TermAvailable = "Fall"
+                TermAvailable = "Fall",
+                DepartmentID = dept.DepartmentID
             };
             Opportunity opp2 = new Opportunity
             {
@@ -104,7 +105,8 @@ namespace Coop_Listing_Site.Models
                 Paid = true,
                 Duration = "three months",
                 OpeningsAvailable = 5,
-                TermAvailable = "Spring"
+                TermAvailable = "Spring",
+                DepartmentID = dept.DepartmentID
             };
 
             context.Students.Add(sInfo1);
