@@ -7,11 +7,11 @@ using System.Web;
 
 namespace Coop_Listing_Site.DAL.ETC
 {
-    public class StudentConfiguration : EntityTypeConfiguration<Student>
+    public class StudentConfiguration : EntityTypeConfiguration<StudentInfo>
     {
         public StudentConfiguration()
         {
-            ToTable("Student");
+            ToTable("StudentInfo");
         }
     }
 }
