@@ -156,11 +156,6 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("Index");
         }
 
-        private Opportunity GetOpportunity(int opportunityID)
-        {
-            return db.Opportunities.Find(opportunityID);
-        }
-
         //retrieve a single opportunity
         private Opportunity GetOpportunity(int opportunityID)
         {
