@@ -64,13 +64,41 @@ namespace Coop_Listing_Site.Models
             // test opportunities
             Opportunity opp1 = new Opportunity
             {
-                DepartmentID = dept.DepartmentID,
+                //DepartmentID = dept.DepartmentID,
+                CompanyName = "gabe's Grotto",
+                ContactName = "Gabe Griffin",
+                ContactNumber = "(541)914-2988",
+                ContactEmail = "griffin.gabe@gmail.com",
+                Location = "1800 W. 11th Ave. Eugene, OR 97404",
+                CompanyWebsite = "http://GabesGrotto.com",
+                AboutCompany = "This is for a test I don't know squat about Gabe's Grotto",
+                AboutDepartment = "The newbie room",
+                CoopPositionTitle = "Office lacky",
+                CoopPositionDuties = "Anything your superiors decide to let you do besides get their coffee.",
+                Qualifications = "Second year Programming major, Knowledge of C#, PHP, SQL are most helpful. Being able to type 40 WPS is also necessary.",
+                GPA = 3.0,
+                Paid = true,
+                Duration = "one month",
                 OpeningsAvailable = 1,
                 TermAvailable = "Fall"
             };
             Opportunity opp2 = new Opportunity
             {
-                DepartmentID = dept.DepartmentID,
+                //DepartmentID = dept.DepartmentID,
+                CompanyName = "Big Al's House of Computers",
+                ContactName = "Ron Jeremy",
+                ContactNumber = "(541)913-3434",
+                ContactEmail = "Ron@aol.com",
+                Location = "2340 8th Ave. Eugene, OR 97404",
+                CompanyWebsite = "http://BigAlsHouse.com",
+                AboutCompany = "This is for a test I don't know squat about Big Al's house of computers",
+                AboutDepartment = "Software Design",
+                CoopPositionTitle = "developer 1",
+                CoopPositionDuties = "Anything your superiors decide to let you do besides get their coffee.",
+                Qualifications = "Second year Programming major, Knowledge of C#, PHP, SQL are most helpful. Being able to type 40 WPS is also necessary.",
+                GPA = 3.5,
+                Paid = true,
+                Duration = "three months",
                 OpeningsAvailable = 5,
                 TermAvailable = "Spring"
             };
