@@ -78,9 +78,15 @@ namespace Coop_Listing_Site.Migrations
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-            {
-                new CoordinatorInfo { FirstName = "Gerry", LastName = "Meenaghan",  LNumber = "L00000000",
-                    Email = "meenaghang@lanecc.edu", PhoneNumber = "(541) 463-5883"}
+            /*{
+                new CoordinatorInfo
+                {
+                    FirstName = "Gerry",
+                    LastName = "Meenaghan",
+                    LNumber = "L00000000",
+                    Email = "meenaghang@lanecc.edu",
+                    PhoneNumber = "(541) 463-5883"
+                };
             };
 
             var students = new List<StudentInfo>()
