@@ -27,7 +27,7 @@ namespace Coop_Listing_Site.Models
         public bool Paid { get; set; }  //Paid or unpaid coop
         public string Duration { get; set; }  //Duration of co-op
         public int OpeningsAvailable { get; set; } //Represents the quantity of available opportunities offered by the company
-        public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity        
+        public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity
         public int DepartmentID { get; set; } // the department whose students this opportunity is intended for
     }
 }
