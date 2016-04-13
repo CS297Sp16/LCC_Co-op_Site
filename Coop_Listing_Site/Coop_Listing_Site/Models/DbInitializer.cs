@@ -118,5 +118,4 @@ namespace Coop_Listing_Site.Models
             base.Seed(context);
         }
     }
->>>>>>> refs/remotes/origin/master
 }
