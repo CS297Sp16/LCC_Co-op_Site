@@ -14,7 +14,7 @@ namespace Coop_Listing_Site.Models
         protected override void Seed(CoopContext context)
         {
             UserManager<User> userManager = new UserManager<User>(new UserStore<User>(context));
-            //for a test
+
             // add Users
             User user1 = new User {
                 UserName = "test@test.com",
