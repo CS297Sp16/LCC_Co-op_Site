@@ -48,7 +48,6 @@ namespace Coop_Listing_Site.DAL
             modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
             modelBuilder.Configurations.Add(new ETC.UserConfiguration());
 
-            // modelBuilder.Configurations.Add(new ETC.UserConfiguration()); // Duplicate??
             
 
 

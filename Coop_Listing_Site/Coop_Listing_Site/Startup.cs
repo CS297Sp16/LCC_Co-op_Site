@@ -1,4 +1,4 @@
-﻿using Owin;
+using Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin;
 using System;

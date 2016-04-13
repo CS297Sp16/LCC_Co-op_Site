@@ -1,4 +1,4 @@
-﻿using Coop_Listing_Site.DAL;
+using Coop_Listing_Site.DAL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
