@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Coop_Listing_Site.Models.Opportunity>
+@{
+    ViewBag.Title = "Listing";
+}
+
+<h2>Listing</h2>
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.DepartmentID)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.OpeningsAvailable)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.TermAvailable)
+		</th>
+	</tr>
+
+	@foreach (var opp in Model)
+	{
+	<tr>
+		<td>
+			@Html.DisplayFor(modelItem => opp.DepartmentID)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => opp.OpeningsAvailable)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => opp.TermAvailable)
+		</td>
+	</tr>
+	}
+</table>
