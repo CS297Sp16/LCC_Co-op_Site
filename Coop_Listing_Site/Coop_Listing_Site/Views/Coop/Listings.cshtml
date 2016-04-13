@@ -8,28 +8,40 @@
 <table class="table">
 	<tr>
 		<th>
-			@Html.DisplayNameFor(model => model.DepartmentID)
+			@Html.DisplayNameFor(model => model.CompanyName)
 		</th>
 		<th>
-			@Html.DisplayNameFor(model => model.OpeningsAvailable)
+			@Html.DisplayNameFor(model => model.CoopPositionTitle)
 		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.TermAvailable)
-		</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Paid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpeningsAvailable)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TermAvailable)
+        </th>
 	</tr>
 
 	@foreach (var opp in Model)
 	{
 	<tr>
 		<td>
-			@Html.DisplayFor(modelItem => opp.DepartmentID)
+			@Html.DisplayFor(modelItem => opp.CompanyName)
 		</td>
 		<td>
-			@Html.DisplayFor(modelItem => opp.OpeningsAvailable)
+			@Html.DisplayFor(modelItem => opp.CoopPositionTitle)
 		</td>
-		<td>
-			@Html.DisplayFor(modelItem => opp.TermAvailable)
-		</td>
+        <td>
+            @Html.DisplayFor(modelItem => opp.Paid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => opp.TermAvailable)
+        </td>
 	</tr>
 	}
 </table>

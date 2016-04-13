@@ -163,7 +163,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
-    <Compile Include="DAL\ETC\CompanyConfiguration.cs" />
     <Compile Include="DAL\ETC\CourseConfiguration.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
@@ -181,7 +180,6 @@
     <Compile Include="Models\StudentInfo.cs" />
     <Compile Include="Models\UpLoadModel.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Opportunity.cs" />
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
@@ -233,10 +231,10 @@
     <Content Include="Views\Coop\DeleteOpportunity.cshtml" />
     <Content Include="Views\Coop\EditOpportunity.cshtml" />
     <Content Include="Views\Coop\Listings.cshtml" />
+    <Content Include="Views\ControlPanel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\ControlPanel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
