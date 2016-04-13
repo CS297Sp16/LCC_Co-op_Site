@@ -20,7 +20,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Home
-        [AllowAnonymous] // Get rid of this to redirect to Login if the user is not authenticated
+        //[AllowAnonymous] // Get rid of this to redirect to Login if the user is not authenticated
         public ActionResult Index()
         {
             /*
@@ -30,10 +30,10 @@ namespace Coop_Listing_Site.Controllers
                 -- If the user is a Co-op Coordinator or Company, take them to their control panel.
             */
 
-            /*
+            
             if (User.IsInRole("Student"))
                 return RedirectToAction("Index", "Coop");
-            else if (User.IsInRole("Coordinator"))
+            /*else if (User.IsInRole("Coordinator"))
                 return RedirectToAction("Index", "ControlPanel");
             */
 

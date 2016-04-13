@@ -101,16 +101,6 @@ namespace Coop_Listing_Site.Migrations
                     Email = "sandlera@lane.edu", PhoneNumber = "(541) 123-8888" },
             };*/
 
-            var companies = new List<Company>()
-            {
-               new Company { CompanyName = "FakeCompany",Address = "Green & Yellow Brick Rd.", City = "Eugene",
-                   State = "OR", ZipCode = "97405", Website = "https://FakeCompany.Example.com"},
-               new Company { CompanyName = "AnotherCompany", Address = "Never Never Land Ave.", City = "Springfield",
-                   State = "OR", ZipCode = "97477", Website = "https://AnotherCompany.com"},
-               new Company { CompanyName = "Symantec", Address = "555 International Way", City = "Springfield",
-                   State = "OR", ZipCode = "97477", Website = "https://www.symantec.com"}
-            };
-
             var opportunities = new List<Opportunity>()
             {
                 new Opportunity { CompanyID = 1, OpeningsAvailable = 2, TermAvailable = "Summer" },
