@@ -54,6 +54,11 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        public ActionResult Details(int id)
+        {
+            return View(db.Opportunities.Find(id));
+        }
+
         //GET: CoopController/AddOpportunity
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()

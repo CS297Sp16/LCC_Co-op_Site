@@ -11,7 +11,8 @@ namespace Coop_Listing_Site.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false; //this will be changed to true when we divert from the DBinitializer
+            AutomaticMigrationsEnabled = true; //this will be changed to true when we divert from the DBinitializer
+            // shit broke with this set to false
         }
 
         protected override void Seed(DAL.CoopContext context)
