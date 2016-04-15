@@ -232,6 +232,7 @@
     <Content Include="Views\Coop\EditOpportunity.cshtml" />
     <Content Include="Views\Coop\Listings.cshtml" />
     <Content Include="Views\ControlPanel\Index.cshtml" />
+    <Content Include="Views\Coop\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
