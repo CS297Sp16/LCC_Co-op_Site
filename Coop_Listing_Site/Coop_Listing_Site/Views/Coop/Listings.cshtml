@@ -4,7 +4,8 @@
 }
 
 <h2>Listing</h2>
-
+@if (Model != null)
+{
 <table class="table">
     <tr>
         <th>
@@ -45,3 +46,8 @@
         </tr>
     }
 </table>
+}
+else
+{
+    <p>No Co-op Opportunities are available at this time.</p>
+}
