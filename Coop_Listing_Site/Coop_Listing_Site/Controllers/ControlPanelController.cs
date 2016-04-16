@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Coop_Listing_Site.Models;
+using Coop_Listing_Site.DAL;
+
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -11,17 +13,17 @@ namespace Coop_Listing_Site.Controllers
     {
         // Might need a rename. This will have a Student and Advisor action result to start, which will point to their views.
         // GET: ControlPanel
-        private DbInitializer db;
+        private CoopContext ctx;
 
         ControlPanelController()
         {
-            db = new DbInitializer();
+            ctx = new CoopContext();
         }
 
         //[Authorize]
         public ActionResult Index()
         {
-            db
+            var users = ctx.Users;
             return View();
         }
     }
