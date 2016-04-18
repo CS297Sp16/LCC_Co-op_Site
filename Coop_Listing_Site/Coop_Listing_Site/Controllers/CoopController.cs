@@ -18,19 +18,21 @@ namespace Coop_Listing_Site.Controllers
         // This controller will have List, Details, and possibly Create, Delete, and Edit for all co-op opportunities
 
         private CoopContext db;
-        private UserManager<User> userManager;
+        // not using this atm, consider removing it later
+        //private UserManager<User> userManager;
 
         public CoopController()
         {
             db = new CoopContext();
-            userManager = new UserManager<User>(new UserStore<User>(db));
+            //userManager = new UserManager<User>(new UserStore<User>(db));
         }
 
         private User CurrentUser
         {
             get
             {
-                return db.Users.Single(u => u.UserName == User.Identity.Name);
+                //returndb.Users.Single(u => u.UserName == User.Identity.Name);
+                return db.Users.Find(User.Identity.GetUserId());
             }
         }
 
@@ -42,7 +44,8 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Listings()
         {
-            var sInfo = db.Students.SingleOrDefault(si => si.UserId == CurrentUser.Id);
+            string userId = User.Identity.GetUserId();
+            var sInfo = db.Students.SingleOrDefault(si => si.UserId == userId);
 
             if (sInfo != null)
             {
@@ -52,6 +55,11 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult Details(int id)
+        {
+            return View(db.Opportunities.Find(id));
         }
 
         //GET: CoopController/AddOpportunity
@@ -122,7 +130,8 @@ namespace Coop_Listing_Site.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunity)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable,
+            TermAvailable, DepartmentID")] OpportunityModel opportunity)
         {
             if (ModelState.IsValid)
             {
@@ -179,8 +188,8 @@ namespace Coop_Listing_Site.Controllers
             {
                 db.Dispose();
 
-                if (userManager != null)
-                    userManager.Dispose();
+                //if (userManager != null)
+                //    userManager.Dispose();
             }
             base.Dispose(disposing);
         }
