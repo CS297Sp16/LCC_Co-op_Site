@@ -63,7 +63,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //GET: CoopController/AddOpportunity
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
             //not sure if I should have a viewbag with users, and one for opportunities here
@@ -98,7 +98,8 @@ namespace Coop_Listing_Site.Controllers
                     Paid = opportunityVM.Paid,
                     Duration = opportunityVM.Duration,
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
-                    TermAvailable = opportunityVM.TermAvailable
+                    TermAvailable = opportunityVM.TermAvailable,
+                    DepartmentID = opportunityVM.DepartmentID
                 };
                 db.Opportunities.Add(opportunity);
                 db.SaveChanges();
@@ -109,7 +110,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //GET: CoopController/EditOpportunity
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         public ActionResult EditOpportunity(int? id)
         {
             if (id == null)
