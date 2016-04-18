@@ -7,3 +7,15 @@
 <h2>Index</h2>
 
 <p>This page has not yet been implemented</p>
+
+<div>
+    @if (User.IsInRole("Coordinator"))
+    {
+        @Html.ActionLink("Invite a user", "Invite")
+        <br />
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Set SMTP Information", "SMTP")
+    }
+</div>

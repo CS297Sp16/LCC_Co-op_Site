@@ -18,6 +18,7 @@ namespace Coop_Listing_Site.Models
             //Create roles
             context.Roles.Add(new IdentityRole() { Name = "Student" });
             context.Roles.Add(new IdentityRole() { Name = "Coordinator" });
+            context.Roles.Add(new IdentityRole() { Name = "Admin" });
 
             // add Users
             User user1 = new User
@@ -27,6 +28,7 @@ namespace Coop_Listing_Site.Models
                 FirstName = "Test",
                 LastName = "Testman"
             };
+
             User user2 = new User
             {
                 UserName = "thinger@test.com",
@@ -35,11 +37,20 @@ namespace Coop_Listing_Site.Models
                 LastName = "Doe"
             };
 
+            User user3 = new User
+            {
+                UserName = "testcoord@test.com",
+                Email = "testcoord@test.com",
+                FirstName = "John",
+                LastName = "Smith"
+            };
+
             // create users
             var result1 = userManager.Create(user1, "password1");
             var result2 = userManager.Create(user2, "password1");
+            var result3 = userManager.Create(user3, "password1");
 
-            if (!result1.Succeeded || !result2.Succeeded)
+            if (!result1.Succeeded || !result2.Succeeded || !result3.Succeeded)
                 throw new Exception("Account creation in seed failed");
 
             user1 = userManager.FindByName("test@test.com");
@@ -62,6 +73,7 @@ namespace Coop_Listing_Site.Models
                 UserId = user1.Id,
                 MajorID = major.MajorID
             };
+
             StudentInfo sInfo2 = new StudentInfo
             {
                 LNumber = "L00000002",
@@ -69,9 +81,17 @@ namespace Coop_Listing_Site.Models
                 MajorID = major.MajorID
             };
 
+            CoordinatorInfo cInfo1 = new CoordinatorInfo
+            {
+                UserId = user3.Id
+            };
+
+            cInfo1.Departments.Add(dept);
+
             // Add the student role to them
             userManager.AddToRole(user1.Id, "Student");
             userManager.AddToRole(user2.Id, "Student");
+            userManager.AddToRoles(user3.Id, "Coordinator", "Admin");
 
 
             // test opportunities
@@ -95,6 +115,7 @@ namespace Coop_Listing_Site.Models
                 TermAvailable = "Fall",
                 DepartmentID = dept.DepartmentID
             };
+
             Opportunity opp2 = new Opportunity
             {
                 CompanyName = "Big Al's House of Computers",
@@ -118,6 +139,7 @@ namespace Coop_Listing_Site.Models
 
             context.Students.Add(sInfo1);
             context.Students.Add(sInfo2);
+            context.Coordinators.Add(cInfo1);
 
             context.Opportunities.Add(opp1);
             context.Opportunities.Add(opp2);
