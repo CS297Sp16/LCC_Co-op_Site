@@ -169,6 +169,7 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -177,6 +178,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\RegisterInvite.cs" />
     <Compile Include="Models\StudentInfo.cs" />
     <Compile Include="Models\UpLoadModel.cs" />
     <Compile Include="Models\User.cs" />
@@ -232,6 +234,9 @@
     <Content Include="Views\Coop\EditOpportunity.cshtml" />
     <Content Include="Views\Coop\Listings.cshtml" />
     <Content Include="Views\ControlPanel\Index.cshtml" />
+    <Content Include="Views\ControlPanel\Invite.cshtml" />
+    <Content Include="Views\Register\Invalid.cshtml" />
+    <Content Include="Views\ControlPanel\SMTP.cshtml" />
     <Content Include="Views\Coop\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
