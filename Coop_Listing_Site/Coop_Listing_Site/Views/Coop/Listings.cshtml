@@ -4,15 +4,16 @@
 }
 
 <h2>Listing</h2>
-
+@if (Model != null)
+{
 <table class="table">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.CompanyName)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.CoopPositionTitle)
-		</th>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CoopPositionTitle)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Paid)
         </th>
@@ -22,26 +23,31 @@
         <th>
             @Html.DisplayNameFor(model => model.TermAvailable)
         </th>
-	</tr>
+    </tr>
 
-	@foreach (var opp in Model)
-	{
-	<tr>
-		<td>
-			@Html.DisplayFor(modelItem => opp.CompanyName)
-		</td>
-		<td>
-			@Html.DisplayFor(modelItem => opp.CoopPositionTitle)
-		</td>
-        <td>
-            @Html.DisplayFor(modelItem => opp.Paid)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => opp.TermAvailable)
-        </td>
-	</tr>
-	}
+    @foreach (var opp in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => opp.CompanyName)
+            </td>
+            <td>
+                @Html.ActionLink(opp.CoopPositionTitle, "Details", new { id = opp.OpportunityID })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => opp.Paid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => opp.TermAvailable)
+            </td>
+        </tr>
+    }
 </table>
+}
+else
+{
+    <p>No Co-op Opportunities are available at this time.</p>
+}

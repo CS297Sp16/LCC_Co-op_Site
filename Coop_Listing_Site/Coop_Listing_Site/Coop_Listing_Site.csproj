@@ -237,6 +237,7 @@
     <Content Include="Views\ControlPanel\Invite.cshtml" />
     <Content Include="Views\Register\Invalid.cshtml" />
     <Content Include="Views\ControlPanel\SMTP.cshtml" />
+    <Content Include="Views\Coop\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

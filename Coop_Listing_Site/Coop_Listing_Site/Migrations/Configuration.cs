@@ -12,14 +12,15 @@ namespace Coop_Listing_Site.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true; //this will be changed to true when we divert from the DBinitializer
+            // shit broke with this set to false
         }
 
         protected override void Seed(DAL.CoopContext context)
         {
 
             var courses = new List<Course>()
-            {              
-                //Computer Programming              
+            {
+                //Computer Programming
                 new Course { CourseNumber = "CS133N" },  //0
                 new Course { CourseNumber = "MTH095" },  //1
                 new Course { CourseNumber = "CIS195" },  //2
@@ -73,7 +74,7 @@ namespace Coop_Listing_Site.Migrations
             }
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            /*                                                 User Manager Specific Stuff &     
+            /*                                                 User Manager Specific Stuff &
                                                              Open Web Interface for .Net (OWIN)                                               */
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

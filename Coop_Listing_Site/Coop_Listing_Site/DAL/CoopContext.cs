@@ -13,7 +13,7 @@ namespace Coop_Listing_Site.DAL
 {
     public class CoopContext : IdentityDbContext<User>
     {
-        public CoopContext() : base("CoopContext")
+        public CoopContext() : base("CoopContext", false)
         {
             //CoopContext Constructor Will eventually plug the Database Initializer here
         }
@@ -43,13 +43,19 @@ namespace Coop_Listing_Site.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             //Class Configurations for the Database Entities
-            modelBuilder.Configurations.Add(new ETC.CourseConfiguration());
+            /*modelBuilder.Configurations.Add(new ETC.CourseConfiguration());
             modelBuilder.Configurations.Add(new ETC.DepartmentConfiguration());
             modelBuilder.Configurations.Add(new ETC.MajorConfiguration());
             modelBuilder.Configurations.Add(new ETC.OpportunityConfiguration());
-            modelBuilder.Configurations.Add(new ETC.UserConfiguration());
+            modelBuilder.Configurations.Add(new ETC.UserConfiguration());*/
 
-            
+            // testing a fix for scaffolding problem from stackoverflow
+            modelBuilder.Entity<Course>();
+            modelBuilder.Entity<Department>();
+            modelBuilder.Entity<Major>();
+            modelBuilder.Entity<Opportunity>();
+            modelBuilder.Entity<StudentInfo>();
+            modelBuilder.Entity<CoordinatorInfo>();
 
 
             base.OnModelCreating(modelBuilder);
