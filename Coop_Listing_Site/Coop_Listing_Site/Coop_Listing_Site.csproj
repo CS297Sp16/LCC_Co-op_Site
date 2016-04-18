@@ -157,6 +157,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\CoopController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -232,14 +233,11 @@
     <Content Include="Views\Coop\DeleteOpportunity.cshtml" />
     <Content Include="Views\Coop\EditOpportunity.cshtml" />
     <Content Include="Views\Coop\Listings.cshtml" />
-<<<<<<< HEAD
-=======
     <Content Include="Views\ControlPanel\Index.cshtml" />
     <Content Include="Views\ControlPanel\Invite.cshtml" />
     <Content Include="Views\Register\Invalid.cshtml" />
     <Content Include="Views\ControlPanel\SMTP.cshtml" />
     <Content Include="Views\Coop\Details.cshtml" />
->>>>>>> refs/remotes/origin/master
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
