@@ -8,6 +8,9 @@ using Coop_Listing_Site.DAL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
+using Coop_Listing_Site.Models.ViewModels;
+using System.Diagnostics;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -27,7 +30,8 @@ namespace Coop_Listing_Site.Controllers
         //[Authorize]
         public ActionResult Index()
         {
-            return View();
+            var currentUser = CurrentUser;
+            return View(currentUser);
         }
 
         [Authorize(Roles = "Admin")]
@@ -84,6 +88,40 @@ namespace Coop_Listing_Site.Controllers
             ViewBag.ReturnMessage = invitation.SendInvite();
 
             return View();
+        }
+
+        //public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        //{
+        //    //db.Database.Log = Console.Write;
+        //    var studentInfo = db.Students
+        //        .Where(si => si.UserId.Equals(CurrentUser.Id));
+
+        //    var student = CurrentUser;
+
+        //    if (!ModelState.IsValid) return View();
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(member).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    User user = new User
+        //    {
+        //        FirstName = studentUpdateModel.FirstName,
+        //        LastName = studentUpdateModel.LastName,
+        //        Email = studentUpdateModel.Email,
+        //        Enabled = true,
+        //        UserName = student.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
+        //    };
+        //}
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Find(User.Identity.GetUserId());
+            }
         }
     }
 }
