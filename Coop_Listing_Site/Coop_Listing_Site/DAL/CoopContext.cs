@@ -26,6 +26,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<StudentInfo> Students { get; set; }
         public DbSet<CoordinatorInfo> Coordinators { get; set; }
         public DbSet<RegisterInvite> Invites { get; set; }
+        public DbSet<EmailInfo> Emails { get; set; }
 
         /*
          * Potential issues with User inheritance
