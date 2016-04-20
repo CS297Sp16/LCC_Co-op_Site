@@ -90,32 +90,51 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
-        //public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
-        //{
-        //    //db.Database.Log = Console.Write;
-        //    var studentInfo = db.Students
-        //        .Where(si => si.UserId.Equals(CurrentUser.Id));
+        [HttpGet, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent()
+        {
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
 
-        //    var student = CurrentUser;
+            return View();
+        }
 
-        //    if (!ModelState.IsValid) return View();
+       [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == CurrentUser.Id);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(member).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
+            var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
 
-        //    User user = new User
-        //    {
-        //        FirstName = studentUpdateModel.FirstName,
-        //        LastName = studentUpdateModel.LastName,
-        //        Email = studentUpdateModel.Email,
-        //        Enabled = true,
-        //        UserName = student.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
-        //    };
-        //}
+            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
+
+            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
+
+            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
+                     
+            if (!ModelState.IsValid) return View();
+
+            if (ModelState.IsValid)
+            {
+                studInfo.GPA = studentUpdateModel.GPA;
+                studInfo.MajorID = studentUpdateModel.MajorID;
+
+                if(major.MajorID != studentUpdateModel.MajorID)
+                {
+                    studInfo.MajorID = studentUpdateModel.MajorID;
+                }
+
+                if(passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                {
+                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);                   
+                }
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(studInfo).State = EntityState.Modified;
+                db.SaveChanges();
+               
+            }
+            return RedirectToAction("Index");
+        }
         private User CurrentUser
         {
             get
