@@ -28,25 +28,26 @@ namespace Coop_Listing_Site.Models
             Coordinator = 2
         };
 
-        public string SendInvite()
+        public Dictionary<bool, string> SendInvite(EmailInfo emailInfo)
         {
-            string retString = "";
+            var retVal = new Dictionary<bool, string>();
+
             if (string.IsNullOrWhiteSpace(RegisterInviteID) || string.IsNullOrWhiteSpace(Email) || !UserTypeSet())
             {
-                retString = "One or more fields for the invitation appear to be empty";
+                retVal[false] = "One or more fields for the invitation appear to be empty";
             }
             else
             {
-                string fromEmail = EmailInfo.InviteEmail;
+                string fromEmail = emailInfo.SendAsEmail;
 
                 try
                 {
-                    using (var client = new SmtpClient(EmailInfo.SMTPAddress, 587))
+                    using (var client = new SmtpClient(emailInfo.SMTPAddress, 587))
                     {
                         client.EnableSsl = true;
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
                         client.UseDefaultCredentials = false;
-                        client.Credentials = new NetworkCredential(EmailInfo.SMTPAccountName, EmailInfo.SMTPPassword);
+                        client.Credentials = new NetworkCredential(emailInfo.SMTPAccountName, emailInfo.SMTPPassword);
 
                         using (var mail = new MailMessage(fromEmail, Email))
                         {
@@ -56,21 +57,21 @@ namespace Coop_Listing_Site.Models
                                                 "This is an automatic message. Any replies sent to this e-mail will not be viewed.";
 
                             mail.Subject = "Lane Community College Co-op Listing Invitiation";
-                            mail.Body = string.Format(message, "\r\n", UserType.ToString(), RegisterInviteID, EmailInfo.Domain);
+                            mail.Body = string.Format(message, "\r\n", UserType.ToString(), RegisterInviteID, emailInfo.Domain);
 
                             client.Send(mail);
                         }
                     }
 
-                    retString = "Invite successfully sent to " + Email;
+                    retVal[true] = "Invite successfully sent to " + Email;
                 }
                 catch
                 {
-                    retString = "Failed to send invite.";
+                    retVal[false] = "Failed to send invite.";
                 }
             }
 
-            return retString;
+            return retVal;
         }
 
         private bool UserTypeSet()

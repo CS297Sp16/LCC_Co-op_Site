@@ -13,6 +13,7 @@ namespace Coop_Listing_Site.Models
         // Why are we overriding this?
         public override string Email { get; set; }
         public bool Enabled { get; set; }
+        public static object Identity { get; internal set; }
 
         /*
          * Ignoring for now

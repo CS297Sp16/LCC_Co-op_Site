@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +8,9 @@ using Coop_Listing_Site.DAL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
+using Coop_Listing_Site.Models.ViewModels;
+using System.Diagnostics;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -27,7 +30,8 @@ namespace Coop_Listing_Site.Controllers
         //[Authorize]
         public ActionResult Index()
         {
-            return View();
+            var currentUser = CurrentUser;
+            return View(currentUser);
         }
 
         [Authorize(Roles = "Admin")]
@@ -39,11 +43,35 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin"), HttpPost]
         public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            EmailInfo.SMTPAddress = SMTPAddress;
-            EmailInfo.SMTPAccountName = SMTPUser;
-            EmailInfo.SMTPPassword = SMTPPassword;
-            EmailInfo.InviteEmail = InviteEmail;
-            EmailInfo.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            if (email == null)
+            {
+                email = new EmailInfo();
+
+                email.SMTPAddress = SMTPAddress;
+                email.SMTPAccountName = SMTPUser;
+                email.SMTPPassword = SMTPPassword;
+                email.SendAsEmail = InviteEmail;
+                email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+
+                db.Emails.Add(email);
+                db.SaveChanges();
+                ViewBag.Message = "Email information successfully set.";
+            }
+            else
+            {
+                email.SMTPAddress = SMTPAddress;
+                email.SMTPAccountName = SMTPUser;
+                email.SMTPPassword = SMTPPassword;
+                email.SendAsEmail = InviteEmail;
+                email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+
+                db.Entry(email).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                ViewBag.Message = "Email information successfully updated";
+            }
 
             return View();
         }
@@ -51,7 +79,9 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite()
         {
-            ViewBag.SMTPReady = EmailInfo.ProperlySet;
+            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
             return View();
         }
@@ -60,7 +90,10 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
         {
-            ViewBag.SMTPReady = EmailInfo.ProperlySet;
+            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
+
             if (!ModelState.IsValid) return View();
 
             var email = db.Invites.FirstOrDefault(i => i.Email.ToLower() == invitation.Email.ToLower());
@@ -81,9 +114,71 @@ namespace Coop_Listing_Site.Controllers
             db.Invites.Add(invitation);
             db.SaveChanges();
 
-            ViewBag.ReturnMessage = invitation.SendInvite();
+            var response = invitation.SendInvite(emailInfo);
+            var success = response.Keys.First();
+
+            if (!success)
+            {
+                db.Invites.Remove(invitation);
+                db.SaveChanges();
+            }
+
+            ViewBag.ReturnMessage = response[success];
 
             return View();
+        }
+
+        [HttpGet, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent()
+        {
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+
+            return View();
+        }
+
+       [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == CurrentUser.Id);
+
+            var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
+
+            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
+
+            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
+
+            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
+                     
+            if (!ModelState.IsValid) return View();
+
+            if (ModelState.IsValid)
+            {
+                studInfo.GPA = studentUpdateModel.GPA;
+                studInfo.MajorID = studentUpdateModel.MajorID;
+
+                if(major.MajorID != studentUpdateModel.MajorID)
+                {
+                    studInfo.MajorID = studentUpdateModel.MajorID;
+                }
+
+                if(passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                {
+                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);                   
+                }
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(studInfo).State = EntityState.Modified;
+                db.SaveChanges();
+               
+            }
+            return RedirectToAction("Index");
+        }
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Find(User.Identity.GetUserId());
+            }
         }
     }
 }
