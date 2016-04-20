@@ -169,7 +169,7 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
-    <Compile Include="EmailInfo.cs" />
+    <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

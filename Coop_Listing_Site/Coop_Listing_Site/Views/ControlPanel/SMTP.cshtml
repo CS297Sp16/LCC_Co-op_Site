@@ -6,6 +6,11 @@
 
 <h2>SMTP Information</h2>
 
+@if(ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+
 @using (Html.BeginForm())
 {
 
