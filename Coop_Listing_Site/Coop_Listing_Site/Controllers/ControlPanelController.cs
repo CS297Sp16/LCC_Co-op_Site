@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +8,9 @@ using Coop_Listing_Site.DAL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
+using Coop_Listing_Site.Models.ViewModels;
+using System.Diagnostics;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -27,7 +30,8 @@ namespace Coop_Listing_Site.Controllers
         //[Authorize]
         public ActionResult Index()
         {
-            return View();
+            var currentUser = CurrentUser;
+            return View(currentUser);
         }
 
         [Authorize(Roles = "Admin")]
@@ -122,6 +126,59 @@ namespace Coop_Listing_Site.Controllers
             ViewBag.ReturnMessage = response[success];
 
             return View();
+        }
+
+        [HttpGet, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent()
+        {
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+
+            return View();
+        }
+
+       [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Id == CurrentUser.Id);
+
+            var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
+
+            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
+
+            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
+
+            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
+                     
+            if (!ModelState.IsValid) return View();
+
+            if (ModelState.IsValid)
+            {
+                studInfo.GPA = studentUpdateModel.GPA;
+                studInfo.MajorID = studentUpdateModel.MajorID;
+
+                if(major.MajorID != studentUpdateModel.MajorID)
+                {
+                    studInfo.MajorID = studentUpdateModel.MajorID;
+                }
+
+                if(passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                {
+                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);                   
+                }
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(studInfo).State = EntityState.Modified;
+                db.SaveChanges();
+               
+            }
+            return RedirectToAction("Index");
+        }
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Find(User.Identity.GetUserId());
+            }
         }
     }
 }
