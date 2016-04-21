@@ -30,6 +30,36 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        public ActionResult Majors()
+        {
+            var majors = db.Majors.OrderBy(m => m.DepartmentID);
+
+            return View(majors);
+        }
+
+        public ActionResult AddMajor()
+        {
+            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+
+            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddMajor([Bind(Include = "DepartmentID, MajorName")] Major major)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Majors.Add(major);
+                db.SaveChanges();
+
+                return View("Majors");
+            }
+
+            return View();
+        }
+
         [Authorize(Roles = "Admin")]
         public ActionResult SMTP()
         {
