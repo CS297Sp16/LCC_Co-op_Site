@@ -8,6 +8,7 @@ using Coop_Listing_Site.DAL;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -30,6 +31,7 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Majors()
         {
             var majors = db.Majors.OrderBy(m => m.DepartmentID);
@@ -37,6 +39,7 @@ namespace Coop_Listing_Site.Controllers
             return View(majors);
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult AddMajor()
         {
             var depts = db.Departments.OrderBy(d => d.DepartmentName);
@@ -46,7 +49,7 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
         public ActionResult AddMajor([Bind(Include = "DepartmentID, MajorName")] Major major)
         {
             if (ModelState.IsValid)
@@ -54,10 +57,70 @@ namespace Coop_Listing_Site.Controllers
                 db.Majors.Add(major);
                 db.SaveChanges();
 
-                return View("Majors");
+                return RedirectToAction("Majors");
             }
 
             return View();
+        }
+
+        [Authorize(Roles = "Admin, Coordinator")]
+        public ActionResult EditMajor(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
+
+            // for if/when we add courses
+            //var courses = db.Courses.OrderBy(c => c.CourseNumber);
+            //var selectedCourses = db.Majors.Find(id).Courses.Select(c => c.CourseNumber);
+            //ViewBag.Courses = new MultiSelectList(courses, "CourseID", "CourseNumber", selectedCourses);
+
+            return View(db.Majors.Find(id));
+        }
+
+        [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
+        public ActionResult EditMajor([Bind(Include = "MajorID, DepartmentID, MajorName")] Major major)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(major).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
+
+            return View(major);
+        }
+
+        [Authorize(Roles = "Admin, Coordinator")]
+        public ActionResult DeleteMajor(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            Major major = db.Majors.Find(id);
+            if (major == null)
+            {
+                return HttpNotFound();
+            }
+            return View(major);
+        }
+
+        [HttpPost, ActionName("DeleteMajor"), Authorize(Roles = "Admin, Coordinator"),
+            ValidateAntiForgeryToken]
+        public ActionResult ConfirmDeleteMajor(int id)
+        {
+            Major major = db.Majors.Find(id);
+            db.Majors.Remove(major);
+            db.SaveChanges();
+
+            return RedirectToAction("Majors");
         }
 
         [Authorize(Roles = "Admin")]
@@ -93,7 +156,7 @@ namespace Coop_Listing_Site.Controllers
                 email.SendAsEmail = InviteEmail;
                 email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
 
-                db.Entry(email).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(email).State = EntityState.Modified;
                 db.SaveChanges();
 
                 ViewBag.Message = "Email information successfully updated";

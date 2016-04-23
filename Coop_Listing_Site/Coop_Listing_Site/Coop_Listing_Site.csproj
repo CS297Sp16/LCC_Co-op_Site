@@ -240,6 +240,8 @@
     <Content Include="Views\Coop\Details.cshtml" />
     <Content Include="Views\ControlPanel\Majors.cshtml" />
     <Content Include="Views\ControlPanel\AddMajor.cshtml" />
+    <Content Include="Views\ControlPanel\EditMajor.cshtml" />
+    <Content Include="Views\ControlPanel\DeleteMajor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
