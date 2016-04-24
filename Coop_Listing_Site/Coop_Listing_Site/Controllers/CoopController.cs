@@ -156,7 +156,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return RedirectToAction("Index");
+            return View(opportunity);
         }
 
         //POST: CoopController/DeleteOpportunity
