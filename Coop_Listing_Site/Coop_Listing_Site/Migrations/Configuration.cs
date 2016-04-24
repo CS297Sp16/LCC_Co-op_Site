@@ -41,8 +41,8 @@ namespace Coop_Listing_Site.Migrations
 
             var majors = new List<Major>()
             {
-                new Major { MajorName = "Computer Programming", Courses = new List<Course>() }, //Initializes the List, can also be placed in the constructor
-                new Major { MajorName = "Computer Network Operations", Courses = new List<Course>() },
+                //new Major { MajorName = "Computer Programming", Courses = new List<Course>() }, //Initializes the List, can also be placed in the constructor
+                //new Major { MajorName = "Computer Network Operations", Courses = new List<Course>() },
                 new Major { MajorName = "Computer Simulation and Game Development" },
                 new Major { MajorName = "Computer Information Systems" }
             };
@@ -123,9 +123,9 @@ namespace Coop_Listing_Site.Migrations
         void AddOrUpdate_Major_Course(DAL.CoopContext context, string majorName, string courseNumber)
         {
             var major = context.Majors.SingleOrDefault(m => m.MajorName == majorName);
-            var course = major.Courses.SingleOrDefault(c => c.CourseNumber == courseNumber);
-            if (course == null)
-                major.Courses.Add(context.Courses.Single(c => c.CourseNumber == courseNumber));
+            //var course = major.Courses.SingleOrDefault(c => c.CourseNumber == courseNumber);
+            //if (course == null)
+               // major.Courses.Add(context.Courses.Single(c => c.CourseNumber == courseNumber));
         }
 
         void AddOrUpdate_Dept_Major(DAL.CoopContext context, string deptName, string majorName)

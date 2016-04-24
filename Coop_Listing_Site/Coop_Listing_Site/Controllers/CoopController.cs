@@ -168,6 +168,46 @@ namespace Coop_Listing_Site.Controllers
             return db.Opportunities.ToList();
         }
 
+        public ActionResult Upload()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(Application application, HttpPostedFileBase R, HttpPostedFileBase CL)
+        {
+            if (ModelState.IsValid)
+            {
+                if (R != null && R.ContentLength > 0)
+                {
+                    var resume = new Application
+                    {
+                        FileName_Resume = System.IO.Path.GetFileName(R.FileName)
+                    };
+                    using (var reader = new System.IO.BinaryReader(R.InputStream))
+                    {
+                        resume.Resume = reader.ReadBytes(R.ContentLength);
+                    }
+                }
+                if (CL != null && CL.ContentLength > 0)
+                {
+                    var coverLetter = new Application
+                    {
+                        FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName)
+                    };
+                    using (var reader = new System.IO.BinaryReader(CL.InputStream))
+                    {
+                        coverLetter.CoverLetter = reader.ReadBytes(CL.ContentLength);
+                    }
+                }
+                
+                
+            }
+            db.Applications.Add(application);
+            db.SaveChanges();
+
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

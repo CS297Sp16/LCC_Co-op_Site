@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 
 using System.Collections.Generic;
-=======
-﻿using System.Collections.Generic;
->>>>>>> master
 
 namespace Coop_Listing_Site.Models
 {

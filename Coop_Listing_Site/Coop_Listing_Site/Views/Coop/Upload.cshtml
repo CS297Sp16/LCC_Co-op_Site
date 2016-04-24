@@ -1,0 +1,17 @@
+﻿@using (Html.BeginForm("Upload", "Coop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <br />
+    <br />
+    <div class="form-group">
+        <label for="Resume" class="col-sm-2 control-label">Resume</label>
+        <input type="file" class="single" name="R" /><br />
+        <label for="CoverLetter" class="col-sm-2 control-label">Cover Letter</label>
+        <input type="file" class="single" name="CL" /><br />
+    </div>
+    <div class="form-group" id="appform">
+        <label for="Message" class="col-sm-2 control-label">Message</label>
+        <textarea name="Message"></textarea>                
+    </div>
+
+    <button class="btn btn-default">Upload</button>
+}
