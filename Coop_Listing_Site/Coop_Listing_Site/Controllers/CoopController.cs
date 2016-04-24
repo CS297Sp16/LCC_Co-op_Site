@@ -180,28 +180,23 @@ namespace Coop_Listing_Site.Controllers
             {
                 if (R != null && R.ContentLength > 0)
                 {
-                    var resume = new Application
-                    {
-                        FileName_Resume = System.IO.Path.GetFileName(R.FileName)
-                    };
+                    application.FileName_Resume = System.IO.Path.GetFileName(R.FileName);
+                    
                     using (var reader = new System.IO.BinaryReader(R.InputStream))
                     {
-                        resume.Resume = reader.ReadBytes(R.ContentLength);
+                        application.Resume = reader.ReadBytes(R.ContentLength);
                     }
                 }
+                
                 if (CL != null && CL.ContentLength > 0)
                 {
-                    var coverLetter = new Application
-                    {
-                        FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName)
-                    };
+                    application.FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName);
+                    
                     using (var reader = new System.IO.BinaryReader(CL.InputStream))
                     {
-                        coverLetter.CoverLetter = reader.ReadBytes(CL.ContentLength);
+                        application.CoverLetter = reader.ReadBytes(CL.ContentLength);
                     }
-                }
-                
-                
+                }                               
             }
             db.Applications.Add(application);
             db.SaveChanges();
