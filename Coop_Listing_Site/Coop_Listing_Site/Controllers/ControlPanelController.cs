@@ -175,6 +175,115 @@ namespace Coop_Listing_Site.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult DisableStudents()
+        {
+            var students = GetEnabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult DisableStudents(string[] Students)
+        {
+            foreach(var id in Students)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = false;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Student(s) Successfully Disabled";
+
+            var students = GetEnabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EnableStudents()
+        {
+            var students = GetDisabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EnableStudents(string[] Students)
+        {
+            foreach (var id in Students)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = true;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Student(s) Successfully Enabled";
+
+            var students = GetDisabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        private Dictionary<string, string> GetEnabledStudents()
+        {
+            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var students = new Dictionary<string, string>();
+
+            foreach (var dept in coordInfo.Departments)
+            {
+                foreach (var major in dept.Majors)
+                {
+                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    {
+                        var user = db.Users.Find(student.UserId);
+                        // We must go deeper
+                        if (user.Enabled)
+                        {
+                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
+                        }
+                    }
+                }
+            }
+
+            return students;
+        }
+
+        private Dictionary<string, string> GetDisabledStudents()
+        {
+            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var students = new Dictionary<string, string>();
+
+            foreach (var dept in coordInfo.Departments)
+            {
+                foreach (var major in dept.Majors)
+                {
+                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    {
+                        var user = db.Users.Find(student.UserId);
+                        // We must go deeper
+                        if (!user.Enabled)
+                        {
+                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
+                        }
+                    }
+                }
+            }
+
+            return students;
+        }
+
         private User CurrentUser
         {
             get

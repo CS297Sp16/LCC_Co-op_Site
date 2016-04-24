@@ -26,7 +26,8 @@ namespace Coop_Listing_Site.Models
                 UserName = "test@test.com",
                 Email = "test@test.com",
                 FirstName = "Test",
-                LastName = "Testman"
+                LastName = "Testman",
+                Enabled = true
             };
 
             User user2 = new User
@@ -34,7 +35,8 @@ namespace Coop_Listing_Site.Models
                 UserName = "thinger@test.com",
                 Email = "thinger@test.com",
                 FirstName = "Jon",
-                LastName = "Doe"
+                LastName = "Doe",
+                Enabled = true
             };
 
             User user3 = new User
@@ -42,7 +44,8 @@ namespace Coop_Listing_Site.Models
                 UserName = "testcoord@test.com",
                 Email = "testcoord@test.com",
                 FirstName = "John",
-                LastName = "Smith"
+                LastName = "Smith",
+                Enabled = true
             };
 
             // create users

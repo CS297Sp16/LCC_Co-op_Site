@@ -240,6 +240,8 @@
     <Content Include="Views\ControlPanel\SMTP.cshtml" />
     <Content Include="Views\Coop\Details.cshtml" />
     <Content Include="Views\ControlPanel\UpdateStudent.cshtml" />
+    <Content Include="Views\ControlPanel\DisableStudents.cshtml" />
+    <Content Include="Views\ControlPanel\EnableStudents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

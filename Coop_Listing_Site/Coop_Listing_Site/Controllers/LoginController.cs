@@ -12,7 +12,7 @@ namespace Coop_Listing_Site.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        UserManager<User>userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
+        UserManager<User> userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
 
         // GET: /Login/
         public ActionResult Index()
@@ -31,23 +31,34 @@ namespace Coop_Listing_Site.Controllers
             var user = userManager.FindByEmail(userModel.Email); // Can probably be changed back to userManager.Find(username, password) at some point, since usernames are set to emails now
             if (user != null)
             {
-                var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, userModel.Password);
-
-                if (passVerification == PasswordVerificationResult.Failed)
+                if (user.Enabled)
                 {
-                    // user authentication failed
-                    ModelState.AddModelError("", "Incorrect password");
-                    return View();
+                    var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, userModel.Password);
+
+                    if (passVerification == PasswordVerificationResult.Failed)
+                    {
+                        // user authentication failed
+                        ModelState.AddModelError("", "Incorrect password");
+                        return View();
+                    }
+
+                    SignIn(user);
+
+                    // Temporary redirect to the home page
+                    return RedirectToAction("Index", "Home");
                 }
-
-                SignIn(user);
-
-                // Temporary redirect to the home page
-                return RedirectToAction("Index", "Home");
+                else
+                {
+                    // This user's account is not enabled
+                    ModelState.AddModelError("", "This account has been disabled");
+                }
+            }
+            else
+            {
+                // user authentication failed
+                ModelState.AddModelError("", "User with provided email not found");
             }
 
-            // user authentication failed
-            ModelState.AddModelError("", "User with provided email not found");
             return View();
         }
 
