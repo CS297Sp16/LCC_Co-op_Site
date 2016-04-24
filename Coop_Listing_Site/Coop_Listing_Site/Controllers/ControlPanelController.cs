@@ -37,13 +37,17 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SMTP()
         {
+            var email = db.Emails.First();
+            if (email != null)
+                ViewBag.EmailInfo = email;
+
             return View();
         }
 
         [Authorize(Roles = "Admin"), HttpPost]
         public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var email = db.Emails.First();
 
             if (email == null)
             {
@@ -52,7 +56,6 @@ namespace Coop_Listing_Site.Controllers
                 email.SMTPAddress = SMTPAddress;
                 email.SMTPAccountName = SMTPUser;
                 email.SMTPPassword = SMTPPassword;
-                email.SendAsEmail = InviteEmail;
                 email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
 
                 db.Emails.Add(email);
@@ -64,10 +67,9 @@ namespace Coop_Listing_Site.Controllers
                 email.SMTPAddress = SMTPAddress;
                 email.SMTPAccountName = SMTPUser;
                 email.SMTPPassword = SMTPPassword;
-                email.SendAsEmail = InviteEmail;
                 email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
 
-                db.Entry(email).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(email).State = EntityState.Modified;
                 db.SaveChanges();
 
                 ViewBag.Message = "Email information successfully updated";
@@ -79,7 +81,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite()
         {
-            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var emailInfo = db.Emails.First();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
@@ -90,7 +92,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
         {
-            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var emailInfo = db.Emails.First();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
