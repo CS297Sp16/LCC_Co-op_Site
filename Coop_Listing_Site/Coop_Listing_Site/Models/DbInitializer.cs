@@ -140,6 +140,32 @@ namespace Coop_Listing_Site.Models
                 DepartmentID = dept.DepartmentID
             };
 
+            // invites
+            var inv1 = new RegisterInvite
+            {
+                RegisterInviteID = Guid.NewGuid().ToString("N"),
+                Email = "new1@test.com",
+                UserType = RegisterInvite.AccountType.Student
+            };
+
+            var inv2 = new RegisterInvite
+            {
+                RegisterInviteID = Guid.NewGuid().ToString("N"),
+                Email = "new2@test.com",
+                UserType = RegisterInvite.AccountType.Student
+            };
+
+            var inv3 = new RegisterInvite
+            {
+                RegisterInviteID = Guid.NewGuid().ToString("N"),
+                Email = "new3@test.com",
+                UserType = RegisterInvite.AccountType.Coordinator
+            };
+
+            context.Invites.Add(inv1);
+            context.Invites.Add(inv2);
+            context.Invites.Add(inv3);
+
             context.Students.Add(sInfo1);
             context.Students.Add(sInfo2);
             context.Coordinators.Add(cInfo1);

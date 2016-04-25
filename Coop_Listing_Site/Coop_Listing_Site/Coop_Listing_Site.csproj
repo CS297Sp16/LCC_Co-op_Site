@@ -241,6 +241,12 @@
     <Content Include="Views\Register\Invalid.cshtml" />
     <Content Include="Views\ControlPanel\SMTP.cshtml" />
     <Content Include="Views\Coop\Details.cshtml" />
+    <Content Include="Views\ControlPanel\Majors.cshtml" />
+    <Content Include="Views\ControlPanel\AddMajor.cshtml" />
+    <Content Include="Views\ControlPanel\EditMajor.cshtml" />
+    <Content Include="Views\ControlPanel\DeleteMajor.cshtml" />
+    <Content Include="Views\ControlPanel\InviteList.cshtml" />
+    <Content Include="Views\ControlPanel\Rescind.cshtml" />
     <Content Include="Views\ControlPanel\UpdateStudent.cshtml" />
     <Content Include="Views\ControlPanel\DisableStudents.cshtml" />
     <Content Include="Views\ControlPanel\EnableStudents.cshtml" />
