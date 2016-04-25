@@ -37,7 +37,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SMTP()
         {
-            var email = db.Emails.First();
+            var email = db.Emails.FirstOrDefault();
             if (email != null)
                 ViewBag.EmailInfo = email;
 
@@ -47,7 +47,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin"), HttpPost]
         public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            var email = db.Emails.First();
+            var email = db.Emails.FirstOrDefault();
 
             if (email == null)
             {
@@ -81,7 +81,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite()
         {
-            var emailInfo = db.Emails.First();
+            var emailInfo = db.Emails.FirstOrDefault();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
@@ -92,7 +92,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
         {
-            var emailInfo = db.Emails.First();
+            var emailInfo = db.Emails.FirstOrDefault();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 

@@ -27,6 +27,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<CoordinatorInfo> Coordinators { get; set; }
         public DbSet<RegisterInvite> Invites { get; set; }
         public DbSet<EmailInfo> Emails { get; set; }
+        public DbSet<PasswordReset> ResetTokens { get; set; }
 
         /*
          * Potential issues with User inheritance

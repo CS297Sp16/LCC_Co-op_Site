@@ -13,70 +13,43 @@
 
 @using (Html.BeginForm())
 {
+    if (ViewBag.EmailInfo != null)
+    {
+        <p>Current Domain: @ViewBag.EmailInfo.Domain</p>
+        <p>Current SMTP Address: @ViewBag.EmailInfo.SMTPAddress</p>
+        <p>Current SMTP Account: @ViewBag.EmailInfo.SMTPAccountName</p>
+    }
 
     <div class="form-horizontal">
         <hr />
 
-        @if (ViewBag.EmailInfo != null)
-        {
-            <div class="form-group">
-                @Html.Label("Domain", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("Domain", new { htmlAttributes = new { @class = "form-control", @placeholder = "lcc-coop-test.com", @value = ViewBag.EmailInfo.Domain } })
-                </div>
+        <div class="form-group">
+            @Html.Label("Domain", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("Domain", new { htmlAttributes = new { @class = "form-control", @placeholder = "lcc-coop-test.com" } })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.Label("SMTP Address", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPAddress", new { htmlAttributes = new { @class = "form-control", @placeholder = "smtp.sendgrid.net", @value = ViewBag.EmailInfo.SMTPAddress } })
-                </div>
+        <div class="form-group">
+            @Html.Label("SMTP Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPAddress", new { htmlAttributes = new { @class = "form-control", @placeholder = "smtp.sendgrid.net" } })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.Label("SMTP User Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPUser", new { htmlAttributes = new { @class = "form-control", @value = ViewBag.EmailInfo.SMTPAccountName } })
-                </div>
+        <div class="form-group">
+            @Html.Label("SMTP User Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPUser", new { htmlAttributes = new { @class = "form-control" } })
             </div>
+        </div>
 
-            <div class="form-group">
-                @Html.Label("SMTP Password", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                </div>
+        <div class="form-group">
+            @Html.Label("SMTP Password", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
             </div>
-        }
-        else
-        {
-            <div class="form-group">
-                @Html.Label("Domain", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("Domain", new { htmlAttributes = new { @class = "form-control", @placeholder = "lcc-coop-test.com" } })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("SMTP Address", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPAddress", new { htmlAttributes = new { @class = "form-control", @placeholder = "smtp.sendgrid.net" } })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("SMTP User Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPUser", new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.Label("SMTP Password", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.Editor("SMTPPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                </div>
-            </div>
-        }
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
