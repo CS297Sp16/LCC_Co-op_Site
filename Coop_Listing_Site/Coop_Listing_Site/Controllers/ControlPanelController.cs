@@ -14,7 +14,7 @@ using System.Data.Entity;
 using System.Net;
 
 namespace Coop_Listing_Site.Controllers
-{
+{  
     public class ControlPanelController : Controller
     {
         // Might need a rename. This will have a Student and Advisor action result to start, which will point to their views.
