@@ -398,5 +398,17 @@ namespace Coop_Listing_Site.Controllers
                 return db.Users.Find(User.Identity.GetUserId());
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+
+                //if (userManager != null)
+                //    userManager.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
