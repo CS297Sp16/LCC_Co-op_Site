@@ -7,5 +7,7 @@
     Your application has been successfully submitted.
 </p>
 <div>
-    @Html.ActionLink("Back to List", "Listings") 
+
+    <META HTTP-EQUIV="Refresh" CONTENT="5;URL=@(Url.Action("Listings", "Coop"))">
+    @*<META http-equiv="Refresh" content="5;@Html.ActionLink("Back to List", "Listings")" />*@
 </div>
