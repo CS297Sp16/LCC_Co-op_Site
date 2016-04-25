@@ -160,6 +160,7 @@
     <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\CoopController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="DAL\Repositories\IControlPanelRepository.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="DAL\Repositories\ControlPanelRepository.cs" />
     <Compile Include="EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

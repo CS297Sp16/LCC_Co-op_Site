@@ -14,7 +14,7 @@ using System.Data.Entity;
 
 namespace Coop_Listing_Site.Controllers
 {
-    public class ControlPanelController : Controller
+    public class ControlPanelController : Controller, IControlPanelRepository
     {
         // Might need a rename. This will have a Student and Advisor action result to start, which will point to their views.
         // GET: ControlPanel
@@ -108,8 +108,6 @@ namespace Coop_Listing_Site.Controllers
             var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
 
             var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
-
-            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
                      
             if (!ModelState.IsValid) return View();
 
