@@ -11,7 +11,7 @@
 <div>
     @if(User.IsInRole("Student"))
     {
-        @Html.ActionLink("Update your Info","UpdateStudent")
+        @Html.ActionLink("","StudentUpdate")
     }
     @if (User.IsInRole("Coordinator"))
     {

@@ -90,6 +90,7 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+<<<<<<< HEAD
         [HttpGet, ValidateAntiForgeryToken]
         public ActionResult UpdateStudent()
         {
@@ -133,6 +134,34 @@ namespace Coop_Listing_Site.Controllers
             }
             return RedirectToAction("Index");
         }
+=======
+        //public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        //{
+        //    //db.Database.Log = Console.Write;
+        //    var studentInfo = db.Students
+        //        .Where(si => si.UserId.Equals(CurrentUser.Id));
+
+        //    var student = CurrentUser;
+
+        //    if (!ModelState.IsValid) return View();
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(member).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    User user = new User
+        //    {
+        //        FirstName = studentUpdateModel.FirstName,
+        //        LastName = studentUpdateModel.LastName,
+        //        Email = studentUpdateModel.Email,
+        //        Enabled = true,
+        //        UserName = student.Email // Cannot create user without a user name. We don't actually use user names, so just set it to the Email field.
+        //    };
+        //}
+>>>>>>> parent of ba0b1d3... UpdateSudent ActionResult
         private User CurrentUser
         {
             get
