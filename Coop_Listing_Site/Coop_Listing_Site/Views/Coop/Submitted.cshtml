@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Submitted";
+}
+<br />
+<br />
+<p>
+    Your application has been successfully submitted.
+</p>
+<div>
+
+    <META HTTP-EQUIV="Refresh" CONTENT="5;URL=@(Url.Action("Listings", "Coop"))">
+    @*<META http-equiv="Refresh" content="5;@Html.ActionLink("Back to List", "Listings")" />*@
+</div>

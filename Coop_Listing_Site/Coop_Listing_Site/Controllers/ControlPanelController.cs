@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using Coop_Listing_Site.Models.ViewModels;
 using System.Diagnostics;
 using System.Data.Entity;
+using System.Net;
 
 namespace Coop_Listing_Site.Controllers
 {  
@@ -43,11 +44,35 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin"), HttpPost]
         public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            EmailInfo.SMTPAddress = SMTPAddress;
-            EmailInfo.SMTPAccountName = SMTPUser;
-            EmailInfo.SMTPPassword = SMTPPassword;
-            EmailInfo.InviteEmail = InviteEmail;
-            EmailInfo.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            if (email == null)
+            {
+                email = new EmailInfo();
+
+                email.SMTPAddress = SMTPAddress;
+                email.SMTPAccountName = SMTPUser;
+                email.SMTPPassword = SMTPPassword;
+                email.SendAsEmail = InviteEmail;
+                email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+
+                db.Emails.Add(email);
+                db.SaveChanges();
+                ViewBag.Message = "Email information successfully set.";
+            }
+            else
+            {
+                email.SMTPAddress = SMTPAddress;
+                email.SMTPAccountName = SMTPUser;
+                email.SMTPPassword = SMTPPassword;
+                email.SendAsEmail = InviteEmail;
+                email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
+
+                db.Entry(email).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                ViewBag.Message = "Email information successfully updated";
+            }
 
             return View();
         }
@@ -55,7 +80,9 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite()
         {
-            ViewBag.SMTPReady = EmailInfo.ProperlySet;
+            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
             return View();
         }
@@ -64,7 +91,10 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
         {
-            ViewBag.SMTPReady = EmailInfo.ProperlySet;
+            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
+
             if (!ModelState.IsValid) return View();
 
             var email = db.Invites.FirstOrDefault(i => i.Email.ToLower() == invitation.Email.ToLower());
@@ -85,7 +115,16 @@ namespace Coop_Listing_Site.Controllers
             db.Invites.Add(invitation);
             db.SaveChanges();
 
-            ViewBag.ReturnMessage = invitation.SendInvite();
+            var response = invitation.SendInvite(emailInfo);
+            var success = response.Keys.First();
+
+            if (!success)
+            {
+                db.Invites.Remove(invitation);
+                db.SaveChanges();
+            }
+
+            ViewBag.ReturnMessage = response[success];
 
             return View();
         }
@@ -134,6 +173,100 @@ namespace Coop_Listing_Site.Controllers
                
             }
             return RedirectToAction("Index");
+        }
+
+        //GET: ControlPanelController/AddDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AddDepartment()
+        {
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View();
+        }
+
+        //POST: ControlPanelController/AddDepartment
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult AddDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] DepartmentModel departmentVM)
+        {
+            if (ModelState.IsValid)
+            {
+                Department department = new Department()
+                {
+                    DepartmentName = departmentVM.DepartmentName,
+                    Majors = departmentVM.Majors
+                };
+                db.Departments.Add(department);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View(departmentVM);
+        }
+
+        //GET: ControlPAnelController/EditDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EditDepartment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        //POST: ControlPAnelController/EditDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EditDepartment ([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(dept).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View(dept);
+        }
+
+        //GET: ControlPAnelController/DeleteDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult DeleteDepartment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        //POST: ControlPanelController/DeleteDepartment
+        [HttpPost, ActionName("DeleteDepartment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Department department = db.Departments.Find(id);
+            db.Departments.Remove(department);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        //GET: ControlPanelController/Details
+        public ActionResult DepartmentDetails(int id)
+        {
+            return View(db.Departments.Find(id));
         }
 
         private User CurrentUser
