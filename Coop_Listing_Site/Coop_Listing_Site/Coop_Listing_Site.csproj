@@ -233,6 +233,7 @@
     <Content Include="Views\Coop\EditOpportunity.cshtml" />
     <Content Include="Views\Coop\Listings.cshtml" />
     <Content Include="Views\Coop\Upload.cshtml" />
+    <Content Include="Views\Coop\Submitted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

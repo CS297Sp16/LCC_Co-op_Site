@@ -201,7 +201,7 @@ namespace Coop_Listing_Site.Controllers
             db.Applications.Add(application);
             db.SaveChanges();
 
-            return View();
+            return View("Submitted");
         }
         protected override void Dispose(bool disposing)
         {

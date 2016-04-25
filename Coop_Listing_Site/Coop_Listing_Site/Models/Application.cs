@@ -9,6 +9,7 @@ namespace Coop_Listing_Site.Models
     {
         public int ApplicationId { get; set; }
         public int UserId { get; set; }
+        public int OpportunityId { get; set; }
         //This is where the resumes will be stored in the DB
         public byte[] Resume { get; set; }
         //This is where the cover letters will be stored in the DB
