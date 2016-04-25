@@ -242,6 +242,8 @@
     <Content Include="Views\ControlPanel\AddMajor.cshtml" />
     <Content Include="Views\ControlPanel\EditMajor.cshtml" />
     <Content Include="Views\ControlPanel\DeleteMajor.cshtml" />
+    <Content Include="Views\ControlPanel\InviteList.cshtml" />
+    <Content Include="Views\ControlPanel\Rescind.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -216,5 +216,35 @@ namespace Coop_Listing_Site.Controllers
 
             return View();
         }
+
+        public ActionResult InviteList()
+        {
+            return View(db.Invites);
+        }
+
+        public ActionResult Rescind(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            RegisterInvite inv = db.Invites.Find(id);
+            if (inv == null)
+            {
+                return HttpNotFound();
+            }
+            return View(inv);
+        }
+
+        [HttpPost, ActionName("Rescind"), Authorize(Roles = "Admin, Coordinator"),
+            ValidateAntiForgeryToken]
+        public ActionResult ConfirmRescind(string id)
+        {
+            RegisterInvite inv = db.Invites.Find(id);
+            db.Invites.Remove(inv);
+            db.SaveChanges();
+
+            return RedirectToAction("InviteList");
+        }
     }
 }
