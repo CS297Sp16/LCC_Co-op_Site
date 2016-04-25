@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using Coop_Listing_Site.Models.ViewModels;
 using System.Diagnostics;
 using System.Data.Entity;
+using System.Net;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -173,6 +174,101 @@ namespace Coop_Listing_Site.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //GET: ControlPanelController/AddDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AddDepartment()
+        {
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View();
+        }
+
+        //POST: ControlPanelController/AddDepartment
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult AddDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] DepartmentModel departmentVM)
+        {
+            if (ModelState.IsValid)
+            {
+                Department department = new Department()
+                {
+                    DepartmentName = departmentVM.DepartmentName,
+                    Majors = departmentVM.Majors
+                };
+                db.Departments.Add(department);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View(departmentVM);
+        }
+
+        //GET: ControlPAnelController/EditDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EditDepartment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        //POST: ControlPAnelController/EditDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EditDepartment ([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(dept).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            //not sure if we need the viewBag or not, delete if not needed
+            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            return View(dept);
+        }
+
+        //GET: ControlPAnelController/DeleteDepartment
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult DeleteDepartment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+            return View(department);
+        }
+
+        //POST: ControlPanelController/DeleteDepartment
+        [HttpPost, ActionName("DeleteDepartment")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Department department = db.Departments.Find(id);
+            db.Departments.Remove(department);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        //GET: ControlPanelController/Details
+        public ActionResult DepartmentDetails(int id)
+        {
+            return View(db.Departments.Find(id));
+        }
+
         private User CurrentUser
         {
             get
