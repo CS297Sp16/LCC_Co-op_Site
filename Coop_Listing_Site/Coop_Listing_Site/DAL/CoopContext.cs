@@ -18,7 +18,7 @@ namespace Coop_Listing_Site.DAL
             //CoopContext Constructor Will eventually plug the Database Initializer here
         }
 
-        
+
         public DbSet<Course> Courses { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Major> Majors { get; set; }
@@ -28,6 +28,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<RegisterInvite> Invites { get; set; }
         public DbSet<EmailInfo> Emails { get; set; }
         public DbSet<PasswordReset> ResetTokens { get; set; }
+        public DbSet<Application> Applications { get; set; }
 
         /*
          * Potential issues with User inheritance
@@ -41,7 +42,7 @@ namespace Coop_Listing_Site.DAL
         {
             //Instructions for SQL Server
             //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();   //This is the Default Behavior unsure if we want or not
-            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();  //this is the Default Behavior unsure 
+            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();  //this is the Default Behavior unsure
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             //Class Configurations for the Database Entities
