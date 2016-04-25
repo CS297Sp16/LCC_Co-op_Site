@@ -9,6 +9,10 @@
 <p>This page has not yet been implemented</p>
 
 <div>
+    @if(User.IsInRole("Student"))
+    {
+        @Html.ActionLink("Update your Info","UpdateStudent")
+    }
     @if (User.IsInRole("Coordinator"))
     {
         @Html.ActionLink("Invite a user", "Invite")

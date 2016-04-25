@@ -1,4 +1,4 @@
-﻿using Coop_Listing_Site.Models;
+using Coop_Listing_Site.Models;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
@@ -19,3 +19,4 @@ namespace Coop_Listing_Site
         }
     }
 }
+

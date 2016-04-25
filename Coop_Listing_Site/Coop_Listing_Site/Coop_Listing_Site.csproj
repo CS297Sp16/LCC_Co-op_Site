@@ -174,21 +174,23 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Application.cs" />
     <Compile Include="Models\CoordinatorInfo.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\RegisterInvite.cs" />
     <Compile Include="Models\StudentInfo.cs" />
-    <Compile Include="Models\UpLoadModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Opportunity.cs" />
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
+    <Compile Include="Models\ViewModels\DepartmentModel.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
     <Compile Include="Models\ViewModels\CompanyRegistrationModel.cs" />
     <Compile Include="Models\ViewModels\OpportunityModel.cs" />
     <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
+    <Compile Include="Models\ViewModels\StudentUpdateModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -227,7 +229,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Register\Coordinator.cshtml" />
     <Content Include="Views\Register\Student.cshtml" />
-    <Content Include="Views\Auth\UpLoad.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Coop\AddOpportunity.cshtml" />
     <Content Include="Views\Coop\DeleteOpportunity.cshtml" />
@@ -244,6 +245,13 @@
     <Content Include="Views\ControlPanel\DeleteMajor.cshtml" />
     <Content Include="Views\ControlPanel\InviteList.cshtml" />
     <Content Include="Views\ControlPanel\Rescind.cshtml" />
+    <Content Include="Views\ControlPanel\UpdateStudent.cshtml" />
+    <Content Include="Views\ControlPanel\AddDepartment.cshtml" />
+    <Content Include="Views\ControlPanel\EditDepartment.cshtml" />
+    <Content Include="Views\ControlPanel\DeleteDepartment.cshtml" />
+    <Content Include="Views\ControlPanel\DepartmentDetails.cshtml" />
+    <Content Include="Views\Coop\Upload.cshtml" />
+    <Content Include="Views\Coop\Submitted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
