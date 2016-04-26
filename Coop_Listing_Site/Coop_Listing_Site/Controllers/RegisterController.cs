@@ -13,7 +13,6 @@ namespace Coop_Listing_Site.Controllers
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        // TODO: Implement Registration via invite only
         // TODO: Implement mass invite (likely goes under Co-op advisor's control panel)
 
         private CoopContext db;
@@ -67,6 +66,7 @@ namespace Coop_Listing_Site.Controllers
             if (result.Succeeded)
             {
                 var major = db.Majors.Find(Majors);
+
                 var studentInfo = new StudentInfo
                 {
                     UserId = user.Id,
@@ -81,8 +81,15 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
 
                 userManager.AddToRole(user.Id, "Student");
-
                 SignIn(user);
+
+                var invite = db.Invites.FirstOrDefault(i => i.Email.ToLower() == student.Email.ToLower());
+                if (invite != null) // Should never be null, but check anyway
+                {
+                    db.Invites.Remove(invite);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 

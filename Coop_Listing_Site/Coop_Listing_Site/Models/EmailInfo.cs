@@ -15,8 +15,6 @@ namespace Coop_Listing_Site.Models
 
         public string SMTPAddress { get; set; }
 
-        public string SendAsEmail { get; set; }
-
         public string Domain { get; set; }
 
         public bool ProperlySet
@@ -29,7 +27,6 @@ namespace Coop_Listing_Site.Models
             return (!string.IsNullOrWhiteSpace(SMTPAccountName)
                     && !string.IsNullOrWhiteSpace(SMTPPassword)
                     && !string.IsNullOrWhiteSpace(SMTPAddress)
-                    && !string.IsNullOrWhiteSpace(SendAsEmail)
                     && !string.IsNullOrWhiteSpace(Domain));
         }
     }

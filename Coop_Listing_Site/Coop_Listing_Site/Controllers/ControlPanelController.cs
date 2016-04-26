@@ -12,6 +12,7 @@ using Coop_Listing_Site.Models.ViewModels;
 using System.Diagnostics;
 using System.Data.Entity;
 using System.Net;
+using Coop_Listing_Site.Repositories;
 
 namespace Coop_Listing_Site.Controllers
 {  
@@ -22,11 +23,20 @@ namespace Coop_Listing_Site.Controllers
         private CoopContext db;
         private UserManager<User> userManager;
 
+        //IControlPanelRepository icpr; //uncomment for testing
+
         public ControlPanelController()
         {
             db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
+
+           // icpr = new ControlPanelRepository(); //uncomment for testing
         }
+
+       /* public ControlPanelController(IControlPanelRepository contPanel)
+        {
+            icpr = contPanel;  //uncomment for testing
+        }*/
 
         //[Authorize]
         public ActionResult Index()
@@ -130,13 +140,17 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult SMTP()
         {
+            var email = db.Emails.FirstOrDefault();
+            if (email != null)
+                ViewBag.EmailInfo = email;
+
             return View();
         }
 
         [Authorize(Roles = "Admin"), HttpPost]
         public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var email = db.Emails.FirstOrDefault();
 
             if (email == null)
             {
@@ -145,7 +159,6 @@ namespace Coop_Listing_Site.Controllers
                 email.SMTPAddress = SMTPAddress;
                 email.SMTPAccountName = SMTPUser;
                 email.SMTPPassword = SMTPPassword;
-                email.SendAsEmail = InviteEmail;
                 email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
 
                 db.Emails.Add(email);
@@ -157,7 +170,6 @@ namespace Coop_Listing_Site.Controllers
                 email.SMTPAddress = SMTPAddress;
                 email.SMTPAccountName = SMTPUser;
                 email.SMTPPassword = SMTPPassword;
-                email.SendAsEmail = InviteEmail;
                 email.Domain = Regex.Replace(Domain, "^https?://", "", RegexOptions.IgnoreCase);
 
                 db.Entry(email).State = EntityState.Modified;
@@ -172,7 +184,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite()
         {
-            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var emailInfo = db.Emails.FirstOrDefault();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
@@ -183,7 +195,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
         {
-            var emailInfo = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var emailInfo = db.Emails.FirstOrDefault();
 
             ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
 
@@ -251,7 +263,7 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("InviteList");
         }
 
-        [HttpGet, ValidateAntiForgeryToken]
+        
         public ActionResult UpdateStudent()
         {
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
@@ -260,9 +272,9 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
         {
-            var user = db.Users.FirstOrDefault(u => u.Id == CurrentUser.Id);
+            var user = CurrentUser;
 
             var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
 
@@ -271,7 +283,7 @@ namespace Coop_Listing_Site.Controllers
             var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
 
             //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
-                     
+
             if (!ModelState.IsValid) return View();
 
             if (ModelState.IsValid)
@@ -286,15 +298,123 @@ namespace Coop_Listing_Site.Controllers
 
                 if(passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
                 {
-                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);                   
+                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);
                 }
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 db.Entry(studInfo).State = EntityState.Modified;
                 db.SaveChanges();
-               
+
             }
             return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult DisableStudents()
+        {
+            var students = GetEnabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult DisableStudents(string[] Students)
+        {
+            foreach(var id in Students)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = false;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Student(s) Successfully Disabled";
+
+            var students = GetEnabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult EnableStudents()
+        {
+            var students = GetDisabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EnableStudents(string[] Students)
+        {
+            foreach (var id in Students)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = true;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Student(s) Successfully Enabled";
+
+            var students = GetDisabledStudents();
+            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        private Dictionary<string, string> GetEnabledStudents()
+        {
+            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var students = new Dictionary<string, string>();
+
+            foreach (var dept in coordInfo.Departments)
+            {
+                foreach (var major in dept.Majors)
+                {
+                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    {
+                        var user = db.Users.Find(student.UserId);
+                        // We must go deeper
+                        if (user.Enabled)
+                        {
+                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
+                        }
+                    }
+                }
+            }
+
+            return students;
+        }
+
+        private Dictionary<string, string> GetDisabledStudents()
+        {
+            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var students = new Dictionary<string, string>();
+
+            foreach (var dept in coordInfo.Departments)
+            {
+                foreach (var major in dept.Majors)
+                {
+                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    {
+                        var user = db.Users.Find(student.UserId);
+                        // We must go deeper
+                        if (!user.Enabled)
+                        {
+                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
+                        }
+                    }
+                }
+            }
+
+            return students;
         }
 
         //GET: ControlPanelController/AddDepartment
