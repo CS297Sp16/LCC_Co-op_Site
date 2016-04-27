@@ -12,6 +12,7 @@ using Coop_Listing_Site.Models.ViewModels;
 using System.Diagnostics;
 using System.Data.Entity;
 using System.Net;
+using Coop_Listing_Site.Repositories;
 
 namespace Coop_Listing_Site.Controllers
 {  
@@ -22,11 +23,20 @@ namespace Coop_Listing_Site.Controllers
         private CoopContext db;
         private UserManager<User> userManager;
 
+        //IControlPanelRepository icpr; //uncomment for testing
+
         public ControlPanelController()
         {
             db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
+
+           // icpr = new ControlPanelRepository(); //uncomment for testing
         }
+
+       /* public ControlPanelController(IControlPanelRepository contPanel)
+        {
+            icpr = contPanel;  //uncomment for testing
+        }*/
 
         //[Authorize]
         public ActionResult Index()
