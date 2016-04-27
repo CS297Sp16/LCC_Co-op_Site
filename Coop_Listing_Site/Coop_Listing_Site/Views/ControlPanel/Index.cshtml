@@ -11,15 +11,21 @@
 <div>
     @if(User.IsInRole("Student"))
     {
-        @Html.ActionLink("","StudentUpdate")
+        @Html.ActionLink("Update your Info","UpdateStudent")
+        <br />
     }
     @if (User.IsInRole("Coordinator"))
     {
         @Html.ActionLink("Invite a user", "Invite")
         <br />
+        @Html.ActionLink("Disable Students", "DisableStudents")
+        <br />
+        @Html.ActionLink("Enable Students", "EnableStudents")
+        <br />
     }
     @if (User.IsInRole("Admin"))
     {
         @Html.ActionLink("Set SMTP Information", "SMTP")
+        <br />
     }
 </div>

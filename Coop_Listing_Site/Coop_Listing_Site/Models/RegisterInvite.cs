@@ -38,7 +38,7 @@ namespace Coop_Listing_Site.Models
             }
             else
             {
-                string fromEmail = emailInfo.SendAsEmail;
+                string fromEmail = string.Format("Invites@{0}", emailInfo.Domain);
 
                 try
                 {
