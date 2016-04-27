@@ -19,6 +19,8 @@ namespace Coop_Listing_Site.Models
         public string Message { get; set; }
         public string FileName_Resume { get; set; }
         public string FileName_CoverLetter { get; set; }
+        public string Resume_ContentType { get; set; }
+        public string CoverLetter_ContentType { get; set; }
         HttpPostedFileBase upload { get; set; }
     }
 }
