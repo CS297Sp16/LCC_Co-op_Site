@@ -263,7 +263,7 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("InviteList");
         }
 
-        [HttpGet, ValidateAntiForgeryToken]
+        
         public ActionResult UpdateStudent()
         {
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
@@ -272,9 +272,9 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,Password,ConfirmPassword")] StudentUpdateModel studentUpdateModel)
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
         {
-            var user = db.Users.FirstOrDefault(u => u.Id == CurrentUser.Id);
+            var user = CurrentUser;
 
             var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
 
