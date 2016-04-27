@@ -66,8 +66,9 @@ namespace Coop_Listing_Site.Controllers
         {
             var identity = userManager.CreateIdentity(
                 user, DefaultAuthenticationTypes.ApplicationCookie);
+            var authProps = new AuthenticationProperties { IsPersistent = false };
 
-            GetAuthenticationManager().SignIn(identity);
+            GetAuthenticationManager().SignIn(authProps, identity);
         }
 
         private IAuthenticationManager GetAuthenticationManager()
