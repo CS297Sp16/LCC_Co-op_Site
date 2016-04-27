@@ -75,21 +75,21 @@ namespace Coop_Listing_Site.Repositories
 
         public EmailInfo GetEmailInfo()
         {
-            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var email = db.Emails.FirstOrDefault();
             //TODO: finish this method
             return email;
         }
 
         public void PostEmailInfo(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
         {
-            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var email = db.Emails.FirstOrDefault();
             //TODO: finish this method
-            
+
         }
 
         public EmailInfo EmailSentConfirmation()
         {
-            var email = db.Emails.FirstOrDefault(e => e.SendAsEmail != "");
+            var email = db.Emails.FirstOrDefault();
             //TODO: finish this method
             return email;
         }
@@ -121,6 +121,7 @@ namespace Coop_Listing_Site.Repositories
             db.Entry(studInfo).State = EntityState.Modified;
             db.SaveChanges();
         }
+
 
 
 
