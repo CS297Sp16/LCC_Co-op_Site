@@ -181,7 +181,7 @@ namespace Coop_Listing_Site.Controllers
                 if (R != null && R.ContentLength > 0)
                 {
                     application.FileName_Resume = System.IO.Path.GetFileName(R.FileName);
-                    
+                    application.Resume_ContentType = R.ContentType;
                     using (var reader = new System.IO.BinaryReader(R.InputStream))
                     {
                         application.Resume = reader.ReadBytes(R.ContentLength);
@@ -191,6 +191,7 @@ namespace Coop_Listing_Site.Controllers
                 if (CL != null && CL.ContentLength > 0)
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName);
+                    application.CoverLetter_ContentType = R.ContentType;
                     
                     using (var reader = new System.IO.BinaryReader(CL.InputStream))
                     {
