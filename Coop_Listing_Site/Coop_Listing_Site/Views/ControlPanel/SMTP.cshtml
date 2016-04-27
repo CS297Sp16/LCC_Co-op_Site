@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Edit SMTP Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SMTP Information</h2>
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
+
+@using (Html.BeginForm())
+{
+    if (ViewBag.EmailInfo != null)
+    {
+        <p>Current Domain: @ViewBag.EmailInfo.Domain</p>
+        <p>Current SMTP Address: @ViewBag.EmailInfo.SMTPAddress</p>
+        <p>Current SMTP Account: @ViewBag.EmailInfo.SMTPAccountName</p>
+    }
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("Domain", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("Domain", new { htmlAttributes = new { @class = "form-control", @placeholder = "lcc-coop-test.com" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("SMTP Address", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPAddress", new { htmlAttributes = new { @class = "form-control", @placeholder = "smtp.sendgrid.net" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("SMTP User Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPUser", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("SMTP Password", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Editor("SMTPPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

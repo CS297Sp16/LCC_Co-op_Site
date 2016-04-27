@@ -18,31 +18,34 @@ namespace Coop_Listing_Site.Controllers
         // This controller will have List, Details, and possibly Create, Delete, and Edit for all co-op opportunities
 
         private CoopContext db;
-        private UserManager<User> userManager;
+        // not using this atm, consider removing it later
+        //private UserManager<User> userManager;
 
         public CoopController()
         {
             db = new CoopContext();
-            userManager = new UserManager<User>(new UserStore<User>(db));
+            //userManager = new UserManager<User>(new UserStore<User>(db));
         }
 
         private User CurrentUser
         {
             get
             {
-                return db.Users.Single(u => u.UserName == User.Identity.Name);
+                //returndb.Users.Single(u => u.UserName == User.Identity.Name);
+                return db.Users.Find(User.Identity.GetUserId());
             }
         }
 
         // GET: Coop
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Listings");
         }
 
         public ActionResult Listings()
         {
-            var sInfo = db.Students.SingleOrDefault(si => si.UserId == CurrentUser.Id);
+            string userId = User.Identity.GetUserId();
+            var sInfo = db.Students.SingleOrDefault(si => si.UserId == userId);
 
             if (sInfo != null)
             {
@@ -54,8 +57,13 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        public ActionResult Details(int id)
+        {
+            return View(db.Opportunities.Find(id));
+        }
+
         //GET: CoopController/AddOpportunity
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
             //not sure if I should have a viewbag with users, and one for opportunities here
@@ -65,7 +73,9 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/AddOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM)
+        public ActionResult AddOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+            ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunityVM)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +98,8 @@ namespace Coop_Listing_Site.Controllers
                     Paid = opportunityVM.Paid,
                     Duration = opportunityVM.Duration,
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
-                    TermAvailable = opportunityVM.TermAvailable
+                    TermAvailable = opportunityVM.TermAvailable,
+                    DepartmentID = opportunityVM.DepartmentID
                 };
                 db.Opportunities.Add(opportunity);
                 db.SaveChanges();
@@ -99,7 +110,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //GET: CoopController/EditOpportunity
-        [Authorize(Roles = "Coordinator")]
+        //[Authorize(Roles = "Coordinator")]
         public ActionResult EditOpportunity(int? id)
         {
             if (id == null)
@@ -117,7 +128,10 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/EditOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditOpportunity([Bind(Include = "OpportunityId, UserID, CompanyID, CompanyName, ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment, CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunity)
+        public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+            ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable,
+            TermAvailable, DepartmentID")] OpportunityModel opportunity)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +156,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return RedirectToAction("Index");
+            return View(opportunity);
         }
 
         //POST: CoopController/DeleteOpportunity
@@ -210,8 +224,8 @@ namespace Coop_Listing_Site.Controllers
             {
                 db.Dispose();
 
-                if (userManager != null)
-                    userManager.Dispose();
+                //if (userManager != null)
+                //    userManager.Dispose();
             }
             base.Dispose(disposing);
         }

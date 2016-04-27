@@ -6,13 +6,13 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Coop_Listing_Site.Controllers
 {
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        // TODO: Implement Registration via invite only
         // TODO: Implement mass invite (likely goes under Co-op advisor's control panel)
 
         private CoopContext db;
@@ -31,14 +31,25 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Register/Student/
-        public ActionResult Student(/*string registrationToken*/)
+        public ActionResult Student(string id)
         {
-            return View();
+            var invite = db.Invites.Find(id);
+            if (invite == null || invite.UserType != RegisterInvite.AccountType.Student)
+            {
+                return View("Invalid");
+            }
+
+            StudentRegistrationModel model = new StudentRegistrationModel { Email = invite.Email };
+
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Student([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] StudentRegistrationModel student)
+        public ActionResult Student([Bind(Include = "FirstName,LastName,Email,LNumber,GPA,Password,ConfirmPassword")] StudentRegistrationModel student, int Majors)
         {
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
             if (!ModelState.IsValid) return View();
 
             User user = new User
@@ -54,20 +65,31 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
+                var major = db.Majors.Find(Majors);
+
                 var studentInfo = new StudentInfo
                 {
                     UserId = user.Id,
                     LNumber = student.LNumber,
                     GPA = student.GPA
-                    // Add Major when we have some created or get a dummy DB up
                 };
+
+                if (major != null)
+                    studentInfo.MajorID = major.MajorID;
 
                 db.Students.Add(studentInfo);
                 db.SaveChanges();
 
-                //userManager.AddToRole(user.Id, "Student");
-
+                userManager.AddToRole(user.Id, "Student");
                 SignIn(user);
+
+                var invite = db.Invites.FirstOrDefault(i => i.Email.ToLower() == student.Email.ToLower());
+                if (invite != null) // Should never be null, but check anyway
+                {
+                    db.Invites.Remove(invite);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -80,15 +102,25 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // GET: Register/Coordinator/
-        public ActionResult Coordinator()
+        public ActionResult Coordinator(string id)
         {
-            return View();
+            var invite = db.Invites.Find(id);
+            if (invite == null || invite.UserType != RegisterInvite.AccountType.Coordinator)
+            {
+                return View("Invalid");
+            }
+
+            CoordRegModel model = new CoordRegModel { Email = invite.Email };
+            ViewBag.Department = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator)
+        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int Department)
         {
-            if (!ModelState.IsValid) return View(/*string registrationToken*/);
+            ViewBag.Department = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+            if (!ModelState.IsValid) return View();
 
             User user = new User
             {
@@ -103,16 +135,20 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
+                var dept = db.Departments.Find(Department);
+
                 var coordinfo = new CoordinatorInfo
                 {
                     UserId = user.Id
-                    // Add department when we have some
                 };
+
+                if(dept != null)
+                    coordinfo.Departments.Add(dept);
 
                 db.Coordinators.Add(coordinfo);
                 db.SaveChanges();
 
-                //userManager.AddToRole(user.Id, "Coordinator");
+                userManager.AddToRole(user.Id, "Coordinator");
 
                 SignIn(user);
                 return RedirectToAction("Index", "Home");

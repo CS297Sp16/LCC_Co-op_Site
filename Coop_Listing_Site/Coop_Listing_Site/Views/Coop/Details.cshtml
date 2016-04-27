@@ -1,0 +1,144 @@
+﻿@model Coop_Listing_Site.Models.Opportunity
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Opportunity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyWebsite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyWebsite)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AboutCompany)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AboutCompany)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AboutDepartment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AboutDepartment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CoopPositionTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoopPositionTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CoopPositionDuties)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoopPositionDuties)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Qualifications)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Qualifications)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GPA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GPA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Paid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Paid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OpeningsAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OpeningsAvailable)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TermAvailable)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TermAvailable)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
