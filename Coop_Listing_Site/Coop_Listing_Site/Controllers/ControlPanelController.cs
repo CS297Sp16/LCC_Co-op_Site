@@ -15,9 +15,10 @@ using System.Net;
 using Coop_Listing_Site.Repositories;
 
 namespace Coop_Listing_Site.Controllers
-{  
+{
     public class ControlPanelController : Controller
     {
+        // Look into separating this controller into multiple. One for Student, Coordinator, and Admin. Maybe rename to cpanel to shorten the URL length, too
         private CoopContext db;
         private UserManager<User> userManager;
 
@@ -28,13 +29,13 @@ namespace Coop_Listing_Site.Controllers
             db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
 
-           // icpr = new ControlPanelRepository(); //uncomment for testing
+            // icpr = new ControlPanelRepository(); //uncomment for testing
         }
 
-       /* public ControlPanelController(IControlPanelRepository contPanel)
-        {
-            icpr = contPanel;  //uncomment for testing
-        }*/
+        /* public ControlPanelController(IControlPanelRepository contPanel)
+         {
+             icpr = contPanel;  //uncomment for testing
+         }*/
 
         public ActionResult Index()
         {
@@ -113,7 +114,7 @@ namespace Coop_Listing_Site.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Major major = db.Majors.Find(id);
             if (major == null)
@@ -289,6 +290,7 @@ namespace Coop_Listing_Site.Controllers
             return View(db.Invites);
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Rescind(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -314,7 +316,7 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("InviteList");
         }
 
-        
+
         public ActionResult UpdateStudent()
         {
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
@@ -342,14 +344,14 @@ namespace Coop_Listing_Site.Controllers
                 studInfo.GPA = studentUpdateModel.GPA;
                 studInfo.MajorID = studentUpdateModel.MajorID;
 
-                if(major.MajorID != studentUpdateModel.MajorID)
+                if (major.MajorID != studentUpdateModel.MajorID)
                 {
                     studInfo.MajorID = studentUpdateModel.MajorID;
                 }
 
-                if(passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
                 {
-                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword,studentUpdateModel.NewPassword);
+                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
                 }
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
@@ -373,7 +375,7 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult DisableStudents(string[] Students)
         {
-            foreach(var id in Students)
+            foreach (var id in Students)
             {
                 var user = db.Users.Find(id);
 
@@ -416,6 +418,66 @@ namespace Coop_Listing_Site.Controllers
 
             var students = GetDisabledStudents();
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult DisableCoordinators()
+        {
+            var coordinators = GetEnabledCoordinators();
+            ViewBag.Coordinators = new MultiSelectList(coordinators, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult DisableCoordinators(string[] Coordinators)
+        {
+            foreach (var id in Coordinators)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = false;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Coordinator(s) Successfully Disabled";
+
+            var coordinators = GetEnabledCoordinators();
+            ViewBag.Coordinators = new MultiSelectList(coordinators, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult EnableCoordinators()
+        {
+            var coordinators = GetDisabledCoordinators();
+            ViewBag.Coordinators = new MultiSelectList(coordinators, "Key", "Value");
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EnableCoordinators(string[] Coordinators)
+        {
+            foreach (var id in Coordinators)
+            {
+                var user = db.Users.Find(id);
+
+                user.Enabled = true;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            ViewBag.Message = "Coordinator(s) Successfully Enabled";
+
+            var coordinators = GetDisabledCoordinators();
+            ViewBag.Coordinators = new MultiSelectList(coordinators, "Key", "Value");
 
             return View();
         }
@@ -468,6 +530,38 @@ namespace Coop_Listing_Site.Controllers
             return students;
         }
 
+        private Dictionary<string, string> GetEnabledCoordinators()
+        {
+            var coordinators = new Dictionary<string, string>();
+            
+                foreach (var coord in db.Coordinators)
+                {
+                    var user = db.Users.Find(coord.UserId);
+                    if (user.Enabled)
+                    {
+                        coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
+                    }
+                }
+
+            return coordinators;
+        }
+
+        private Dictionary<string, string> GetDisabledCoordinators()
+        {
+            var coordinators = new Dictionary<string, string>();
+
+            foreach (var coord in db.Coordinators)
+            {
+                var user = db.Users.Find(coord.UserId);
+                if (!user.Enabled)
+                {
+                    coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
+                }
+            }
+
+            return coordinators;
+        }
+
         //GET: ControlPanelController/AddDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddDepartment()
@@ -516,7 +610,7 @@ namespace Coop_Listing_Site.Controllers
 
         //POST: ControlPAnelController/EditDepartment
         [Authorize(Roles = "Coordinator")]
-        public ActionResult EditDepartment ([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
+        public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
         {
             if (ModelState.IsValid)
             {

@@ -262,6 +262,9 @@
     <Content Include="Views\ControlPanel\DepartmentDetails.cshtml" />
     <Content Include="Views\Coop\Upload.cshtml" />
     <Content Include="Views\Coop\Submitted.cshtml" />
+    <Content Include="Views\ControlPanel\InviteCoordinator.cshtml" />
+    <Content Include="Views\ControlPanel\DisableCoordinators.cshtml" />
+    <Content Include="Views\ControlPanel\EnableCoordinators.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
