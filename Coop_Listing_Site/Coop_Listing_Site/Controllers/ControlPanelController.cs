@@ -18,8 +18,6 @@ namespace Coop_Listing_Site.Controllers
 {  
     public class ControlPanelController : Controller
     {
-        // Might need a rename. This will have a Student and Advisor action result to start, which will point to their views.
-        // GET: ControlPanel
         private CoopContext db;
         private UserManager<User> userManager;
 
@@ -38,7 +36,6 @@ namespace Coop_Listing_Site.Controllers
             icpr = contPanel;  //uncomment for testing
         }*/
 
-        //[Authorize]
         public ActionResult Index()
         {
             var currentUser = CurrentUser;
@@ -182,7 +179,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [Authorize(Roles = "Coordinator")]
-        public ActionResult Invite()
+        public ActionResult InviteStudent()
         {
             var emailInfo = db.Emails.FirstOrDefault();
 
@@ -193,7 +190,7 @@ namespace Coop_Listing_Site.Controllers
 
         [HttpPost, ValidateAntiForgeryToken]
         [Authorize(Roles = "Coordinator")]
-        public ActionResult Invite([Bind(Include = "Email,UserType")] RegisterInvite invitation)
+        public ActionResult InviteStudent([Bind(Include = "Email")] RegisterInvite invitation)
         {
             var emailInfo = db.Emails.FirstOrDefault();
 
@@ -215,6 +212,60 @@ namespace Coop_Listing_Site.Controllers
                 return View();
             }
 
+            invitation.UserType = RegisterInvite.AccountType.Student;
+            invitation.RegisterInviteID = Guid.NewGuid().ToString("N");
+            db.Invites.Add(invitation);
+            db.SaveChanges();
+
+            var response = invitation.SendInvite(emailInfo);
+            var success = response.Keys.First();
+
+            if (!success)
+            {
+                db.Invites.Remove(invitation);
+                db.SaveChanges();
+            }
+
+            ViewBag.ReturnMessage = response[success];
+
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult InviteCoordinator()
+        {
+            var emailInfo = db.Emails.FirstOrDefault();
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
+
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public ActionResult InviteCoordinator([Bind(Include = "Email")] RegisterInvite invitation)
+        {
+            var emailInfo = db.Emails.FirstOrDefault();
+
+            ViewBag.SMTPReady = (emailInfo != null) ? emailInfo.ProperlySet : false;
+
+            if (!ModelState.IsValid) return View();
+
+            var email = db.Invites.FirstOrDefault(i => i.Email.ToLower() == invitation.Email.ToLower());
+            if (email != null)
+            {
+                ModelState.AddModelError("Email", "An invitation has already been sent to that e-mail!");
+                return View();
+            }
+
+            var user = userManager.FindByEmail(invitation.Email);
+            if (user != null)
+            {
+                ModelState.AddModelError("Email", "User with that e-mail already exists!");
+                return View();
+            }
+
+            invitation.UserType = RegisterInvite.AccountType.Coordinator;
             invitation.RegisterInviteID = Guid.NewGuid().ToString("N");
             db.Invites.Add(invitation);
             db.SaveChanges();
@@ -242,7 +293,7 @@ namespace Coop_Listing_Site.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             RegisterInvite inv = db.Invites.Find(id);
             if (inv == null)
