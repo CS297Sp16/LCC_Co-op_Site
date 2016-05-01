@@ -188,7 +188,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase R, HttpPostedFileBase CL)
+        public ActionResult Upload(Application application, HttpPostedFileBase R, HttpPostedFileBase CL, HttpPostedFileBase DL, HttpPostedFileBase O)
         {
             if (ModelState.IsValid)
             {
@@ -201,17 +201,49 @@ namespace Coop_Listing_Site.Controllers
                         application.Resume = reader.ReadBytes(R.ContentLength);
                     }
                 }
-                
+                else
+                {
+                    ModelState.AddModelError("R", "A Resume is required");
+                    return View();
+                }
+
                 if (CL != null && CL.ContentLength > 0)
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName);
-                    application.CoverLetter_ContentType = R.ContentType;
+                    application.CoverLetter_ContentType = CL.ContentType;
                     
                     using (var reader = new System.IO.BinaryReader(CL.InputStream))
                     {
                         application.CoverLetter = reader.ReadBytes(CL.ContentLength);
                     }
-                }                               
+                }
+                else
+                {
+                    ModelState.AddModelError("CL", "A Cover Letter is Required");
+                    return View();
+                }
+
+                //Saves the Drivers License
+                if (DL != null && DL.ContentLength > 0)
+                {
+                    application.FileName_DriverLicense = System.IO.Path.GetFileName(DL.FileName);
+                    application.DriverLicense_ContentType = DL.ContentType;
+                    using (var reader = new System.IO.BinaryReader(DL.InputStream))
+                    {
+                        application.DriverLicense = reader.ReadBytes(DL.ContentLength);
+                    }
+                }
+
+                //Saves anything else that might be needed into the other 
+                if (O != null && O.ContentLength > 0)
+                {
+                    application.FileName_Other = System.IO.Path.GetFileName(O.FileName);
+                    application.Other_ContentType = O.ContentType;
+                    using (var reader = new System.IO.BinaryReader(O.InputStream))
+                    {
+                        application.Other = reader.ReadBytes(O.ContentLength);
+                    }
+                }
             }
             db.Applications.Add(application);
             db.SaveChanges();

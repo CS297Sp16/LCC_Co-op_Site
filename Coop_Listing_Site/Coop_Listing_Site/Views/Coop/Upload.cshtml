@@ -2,11 +2,27 @@
 {
     <br />
     <br />
+    <p>
+        <b>
+            One this page please upload any document that the Internship posting has required you to upload.
+            At a minimum you must upload a Resume and Cover Letter.
+        </b>
+    </p>
+    <br />
+    <br />
     <div class="form-group">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationMessage("R")
         <label for="Resume" class="col-sm-2 control-label">Resume</label>
         <input type="file" class="single" name="R" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        @Html.ValidationMessage("CL")
         <label for="CoverLetter" class="col-sm-2 control-label">Cover Letter</label>
-        <input type="file" class="single" name="CL" /><br />
+        <input type="file" class="single" name="CL" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        <label for="DriversLicense" class="col-sm-2 control-label">Drivers License</label>
+        <input type="file" class="single" name="DL" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        <label for="Other" class="col-sm-2 control-label">Other</label>
+        <input type="file" class="single" name="O" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+
     </div>
     <div class="form-group" id="appform">
         <label for="Message" class="col-sm-2 control-label">Message</label>
