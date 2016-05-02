@@ -275,6 +275,7 @@
     <Content Include="Views\Coop\Submitted.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Shared\_CP_Layout.cshtml" />
+    <Content Include="Views\ControlPanel\DepartmentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

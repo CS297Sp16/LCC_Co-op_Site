@@ -1,5 +1,4 @@
 ﻿@{
-    ViewBag.Title = "_CP_Layout";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
@@ -26,6 +25,8 @@
 		<h4>Administrator</h4>
 		<ul class="nav nav-pills">
 			<li>@Html.ActionLink("Set SMTP Information", "SMTP")</li>
+            <li>@Html.ActionLink("View Majors", "Majors")</li>
+            <li>@Html.ActionLink("View Departments", "DepartmentList")</li>
 		</ul>
 		}
 	</div>
