@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "_CP_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+	<div class="col-md-2 sidebar">
+		@if (User.IsInRole("Student"))
+		{
+		<h4>Student</h4>
+		<ul class="nav nav-pills">
+			<li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
+		</ul>
+		}
+		@if (User.IsInRole("Coordinator"))
+		{
+		<h4>Coordinator</h4>
+		<ul class="nav nav-pills">
+			<li>@Html.ActionLink("Invite a User", "Invite")</li>
+			<li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
+			<li>@Html.ActionLink("Enable Students", "EnableStudents")</li>
+			<li>@Html.ActionLink("Active Invitations", "InviteList")</li>
+		</ul>
+		}
+		@if (User.IsInRole("Admin"))
+		{
+		<h4>Administrator</h4>
+		<ul class="nav nav-pills">
+			<li>@Html.ActionLink("Set SMTP Information", "SMTP")</li>
+		</ul>
+		}
+	</div>
+	<div class="col-md-10">
+		@RenderBody()
+	</div>
+</div>

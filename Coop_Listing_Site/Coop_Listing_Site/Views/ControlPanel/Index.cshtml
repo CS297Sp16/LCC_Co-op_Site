@@ -1,29 +1,11 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
 }
 
 <h2>Index</h2>
 
 <div>
-    @if(User.IsInRole("Student"))
-    {
-        @Html.ActionLink("Update your Info","UpdateStudent")
-        <br />
-    }
-    @if (User.IsInRole("Coordinator"))
-    {
-        @Html.ActionLink("Invite a user", "Invite")
-        <br />
-        @Html.ActionLink("Disable Students", "DisableStudents")
-        <br />
-        @Html.ActionLink("Enable Students", "EnableStudents")
-        <br />
-    }
-    @if (User.IsInRole("Admin"))
-    {
-        @Html.ActionLink("Set SMTP Information", "SMTP")
-        <br />
-    }
+    <p>Pretend content.</p>
 </div>
