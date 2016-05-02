@@ -329,9 +329,9 @@ namespace Coop_Listing_Site.Controllers
         {
             var user = CurrentUser;
 
-            var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
+            var studInfo = db.Students.FirstOrDefault(si => si.User == user);
 
-            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
+            var major = db.Majors.FirstOrDefault(m => m.MajorID == studentUpdateModel.MajorID);
 
             var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
 
@@ -342,22 +342,20 @@ namespace Coop_Listing_Site.Controllers
             if (ModelState.IsValid)
             {
                 studInfo.GPA = studentUpdateModel.GPA;
-                studInfo.MajorID = studentUpdateModel.MajorID;
 
-                if (major.MajorID != studentUpdateModel.MajorID)
+                if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
                 {
-                    studInfo.MajorID = studentUpdateModel.MajorID;
+                    studInfo.Major = major;
                 }
 
                 if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
                 {
                     userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
                 }
+
                 db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
                 db.Entry(studInfo).State = EntityState.Modified;
                 db.SaveChanges();
-
             }
             return RedirectToAction("Index");
         }
@@ -489,16 +487,11 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var major in dept.Majors)
+                foreach (var student in db.Students.Where(s => s.User.Enabled))
                 {
-                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    if (dept.Majors.Contains(student.Major))
                     {
-                        var user = db.Users.Find(student.UserId);
-                        // We must go deeper
-                        if (user.Enabled)
-                        {
-                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
-                        }
+                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                     }
                 }
             }
@@ -513,16 +506,11 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var major in dept.Majors)
+                foreach (var student in db.Students.Where(s => !s.User.Enabled))
                 {
-                    foreach (var student in db.Students.Where(s => s.MajorID == major.MajorID))
+                    if (dept.Majors.Contains(student.Major))
                     {
-                        var user = db.Users.Find(student.UserId);
-                        // We must go deeper
-                        if (!user.Enabled)
-                        {
-                            students[student.UserId] = string.Format("{0} - {1} {2}", student.LNumber, user.FirstName, user.LastName);
-                        }
+                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                     }
                 }
             }
@@ -533,15 +521,15 @@ namespace Coop_Listing_Site.Controllers
         private Dictionary<string, string> GetEnabledCoordinators()
         {
             var coordinators = new Dictionary<string, string>();
-            
-                foreach (var coord in db.Coordinators)
+
+            foreach (var coord in db.Coordinators)
+            {
+                var user = db.Users.Find(coord.UserId);
+                if (user.Enabled)
                 {
-                    var user = db.Users.Find(coord.UserId);
-                    if (user.Enabled)
-                    {
-                        coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
-                    }
+                    coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
                 }
+            }
 
             return coordinators;
         }
