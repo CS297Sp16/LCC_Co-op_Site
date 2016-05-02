@@ -18,7 +18,6 @@ namespace Coop_Listing_Site.Models
         public string Email { get; set; }
 
         // The account type, so someone with a Student invite can't register as a Coordinator, and vice versa
-        [Required, Display(Name = "User Type")]
         public AccountType UserType { get; set; }
 
         // An enum of account types

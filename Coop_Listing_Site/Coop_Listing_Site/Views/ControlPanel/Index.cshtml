@@ -16,7 +16,7 @@
     }
     @if (User.IsInRole("Coordinator"))
     {
-        @Html.ActionLink("Invite a user", "Invite")
+        @Html.ActionLink("Invite a student", "InviteStudent")
         <br />
         @Html.ActionLink("Disable Students", "DisableStudents")
         <br />
@@ -25,7 +25,13 @@
     }
     @if (User.IsInRole("Admin"))
     {
+        @Html.ActionLink("Invite a coordinator", "InviteCoordinator")
+        <br />
         @Html.ActionLink("Set SMTP Information", "SMTP")
+        <br />
+        @Html.ActionLink("Disable Coordinators", "DisableCoordinators")
+        <br />
+        @Html.ActionLink("Enable Coordinators", "EnableCoordinatorss")
         <br />
     }
 </div>
