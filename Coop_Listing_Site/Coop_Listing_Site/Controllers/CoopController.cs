@@ -50,7 +50,8 @@ namespace Coop_Listing_Site.Controllers
             if (sInfo != null)
             {
                 db.Majors.Load();
-                var x = db.Opportunities.Where(o => o.DepartmentID == sInfo.Major.DepartmentID);
+                db.Departments.Load();
+                var x = db.Opportunities.Where(o => o.DepartmentID == sInfo.Major.Department.DepartmentID);
                 return View(x.ToList());
             }
 

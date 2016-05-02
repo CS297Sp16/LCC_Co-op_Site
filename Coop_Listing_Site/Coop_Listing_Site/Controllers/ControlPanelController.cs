@@ -46,7 +46,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Majors()
         {
-            var majors = db.Majors.OrderBy(m => m.DepartmentID);
+            var majors = db.Majors.Include(m => m.Department).OrderBy(m => m.Department.DepartmentName);
 
             return View(majors);
         }
