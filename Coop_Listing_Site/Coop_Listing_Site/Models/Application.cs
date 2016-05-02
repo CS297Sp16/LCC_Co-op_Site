@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 //using System.ComponentModel.DataAnnotations;
@@ -19,6 +20,7 @@ namespace Coop_Listing_Site.Models
         public byte[] DriverLicense { get; set; }
         //This is where any other information that you deem nessicary will be held in the DB
         public byte[] Other { get; set; }
+        [Required]
         public string Message { get; set; }
         public string FileName_Resume { get; set; }
         public string FileName_CoverLetter { get; set; }

@@ -239,11 +239,15 @@ namespace Coop_Listing_Site.Controllers
                         application.Other = reader.ReadBytes(OtherUpload.ContentLength);
                     }
                 }
-            }
-            db.Applications.Add(application);
-            db.SaveChanges();
 
-            return View("Submitted");
+                db.Applications.Add(application);
+                db.SaveChanges();
+
+                return View("Submitted");
+            }
+
+            return View();
+            
         }
         protected override void Dispose(bool disposing)
         {
