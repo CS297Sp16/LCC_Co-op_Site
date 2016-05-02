@@ -27,87 +27,110 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ContactNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.ContactNumber)
+                @Html.Label("ContactNumber", Model.ContactNumber)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.ContactEmail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.ContactEmail)
+                @Html.Label("ContactEmail", Model.ContactEmail)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.Location)
+                @Html.Label("Location", Model.Location)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.CompanyWebsite, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.CompanyWebsite)
+                @Html.Label("CompanyWebsite", Model.CompanyWebsite)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.AboutCompany, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.AboutCompany)
+                @Html.Label("AboutCompany", Model.AboutCompany)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.AboutDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.AboutDepartment)
+                @Html.Label("AboutDepartment", Model.AboutDepartment)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.CoopPositionTitle, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.CoopPositionTitle)
+                @Html.Label("CoopPositionTitle", Model.CoopPositionTitle)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.CoopPositionDuties, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.CoopPositionDuties)
+                @Html.Label("CoopPositionDuties", Model.CoopPositionDuties)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.Qualifications)
+                @Html.Label("Qualifications", Model.Qualifications)
             </div>
         </div>
         @*//TODO: this should be changed to a dropdownlist in the future*@
         <div class="form-group">
             @Html.LabelFor(model => model.GPA, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.GPA)
+                @Html.Label("GPA", Model.GPA)
             </div>
         </div>
-        @*//TODO: this should be changed to a dropdownlist in the future*@
         <div class="form-group">
             @Html.LabelFor(model => model.Paid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.Paid)
+                @Html.CheckBox("Paid", Model.Paid)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Wage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Wage, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Stippened, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBox("Stippened", Model.Stippened)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnPaid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBox("UnPaid", Model.UnPaid)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.Duration)
+                @Html.Label("Duration", Model.Duration)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.OpeningsAvailable, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.OpeningsAvailable)
+                @Html.Label("OpeningsAvailable", Model.OpeningsAvailable)
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.TermAvailable, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.Label("ContactName", Model.TermAvailable)
+                @Html.Label("TermAvailable", Model.TermAvailable)
             </div>
         </div>
         <div class="form-group">
