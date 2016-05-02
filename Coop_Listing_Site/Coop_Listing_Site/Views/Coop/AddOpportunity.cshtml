@@ -12,12 +12,12 @@
     <div class="form-horizontal">
         <h3>Cooperative  Opportunity</h3>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class ="text-danger"})
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2"})
+            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CompanyName, new {  htmlAttributes = new { @class = "form-control"} })
-                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger"})
+                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
@@ -90,7 +90,6 @@
                 @Html.ValidationMessageFor(model => model.Qualifications, "", new { @class = "text-danger" })
             </div>
         </div>
-        @*//TODO: this should be changed to a dropdownlist in the future*@
         <div class="form-group">
             @Html.LabelFor(model => model.GPA, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -98,12 +97,34 @@
                 @Html.ValidationMessageFor(model => model.GPA, "", new { @class = "text-danger" })
             </div>
         </div>
-        @*//TODO: this should be changed to a dropdownlist in the future*@
         <div class="form-group">
             @Html.LabelFor(model => model.Paid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Paid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Paid, "", new { @class = "text-danger" })
+                @Html.CheckBoxFor(model => model.Paid)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Wage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Wage, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Stippened, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.Stippened)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnPaid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.UnPaid)
             </div>
         </div>
         <div class="form-group">

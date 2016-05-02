@@ -74,9 +74,9 @@ namespace Coop_Listing_Site.Models
             dept.Majors.Add(major1);
             dept.Majors.Add(major2);
             dept.Majors.Add(major3);
-            dept.Majors.Add(major4);
-            dept.Majors.Add(major5);
-            dept.Majors.Add(major6);
+            dept1.Majors.Add(major4);
+            dept1.Majors.Add(major5);
+            dept1.Majors.Add(major6);
 
             context.Majors.Add(major);
             context.Majors.Add(major1);
