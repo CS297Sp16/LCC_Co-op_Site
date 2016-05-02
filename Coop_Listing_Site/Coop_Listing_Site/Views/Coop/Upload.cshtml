@@ -29,10 +29,10 @@
     </div>
     <div class="form-group" id="appform">
         @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
-        @*<label for="Message" class="col-sm-2 control-label">Message</label>*@
+       
         @Html.TextAreaFor(model => model.Message, 4, 80, null)
         @Html.ValidationMessageFor(model => model.Message)
-        <textarea name="Message"></textarea>                
+                    
     </div>
 
     <button class="btn btn-default">Upload</button>
