@@ -25,7 +25,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string CompanyWebsite { get; set; }
         [Required(ErrorMessage = "Please enter a brief company mission statement"), Display(Name ="Business Mission Statement")]
         public string AboutCompany { get; set; }
-        [Required(ErrorMessage = "Please enter a description of the cooperative opportunity's working department"), Display(Name ="Department Description")]
+        [Display(Name ="Department Description")]
         public string AboutDepartment { get; set; }
         [Required(ErrorMessage = "Please enter a title for the cooperative opportunity"), Display(Name ="Position Title")]
         public string CoopPositionTitle { get; set; }
@@ -33,10 +33,18 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string CoopPositionDuties { get; set; }
         [Required(ErrorMessage = "Please enter any required qualificatins, classes, and/or experience"), Display(Name ="Necessary Requirements and Qualifications")]
         public string Qualifications { get; set; }
-        [Display(Name ="Minimum Required G.P.A.")]
+        [Display(Name = "Minimum Required G.P.A.")]
         public double GPA { get; set; }
-        [Required(ErrorMessage = "Please check box if the cooperative opportunity is going to be a paid position")]
+        [Display(Name = "Paid")]
         public bool Paid { get; set; }
+        [Display(Name = "Pay rate")]
+        public string Wage { get; set; }
+        [Display(Name = "Stippened")]
+        public bool Stippened { get; set; }
+        [Display(Name = "Total stippend amount")]
+        public string Amount { get; set; }
+        [Display(Name = "Experience Only")]
+        public bool UnPaid { get; set; } 
         [Required(ErrorMessage = "Please enter the duration of the cooperative opportunity"), Display(Name ="Position Duration")]
         public string Duration { get; set; }
         [Required(ErrorMessage = "Please enter the number of openings available for this cooperative opportunity"), Display(Name ="Number of Fillable Positions")]
