@@ -35,6 +35,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string Qualifications { get; set; }
         [Display(Name = "Minimum Required G.P.A.")]
         public double GPA { get; set; }
+        [Display(Name = "Paid")]
         public bool Paid { get; set; }
         [Display(Name = "Pay rate")]
         public string Wage { get; set; }
