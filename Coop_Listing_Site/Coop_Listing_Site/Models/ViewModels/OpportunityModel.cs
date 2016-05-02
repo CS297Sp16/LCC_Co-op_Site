@@ -25,7 +25,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string CompanyWebsite { get; set; }
         [Required(ErrorMessage = "Please enter a brief company mission statement"), Display(Name ="Business Mission Statement")]
         public string AboutCompany { get; set; }
-        [Required(ErrorMessage = "Please enter a description of the cooperative opportunity's working department"), Display(Name ="Department Description")]
+        [Display(Name ="Department Description")]
         public string AboutDepartment { get; set; }
         [Required(ErrorMessage = "Please enter a title for the cooperative opportunity"), Display(Name ="Position Title")]
         public string CoopPositionTitle { get; set; }

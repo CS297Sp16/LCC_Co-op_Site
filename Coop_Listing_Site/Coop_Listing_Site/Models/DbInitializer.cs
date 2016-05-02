@@ -59,12 +59,35 @@ namespace Coop_Listing_Site.Models
             user1 = userManager.FindByName("test@test.com");
             user2 = userManager.FindByName("thinger@test.com");
 
-            Major major = new Major { MajorName = "Testing" };
-            Department dept = new Department { DepartmentName = "Test Dept" };
+            Major major = new Major { MajorName = "Computer Simulation and Game Development" };
+            Major major1 = new Major { MajorName = "Computer Network Operations" };
+            Major major2 = new Major { MajorName = " Computer Programming" };
+            Major major3 = new Major { MajorName = "Health Informatics" };
+            Major major4 = new Major { MajorName = "Retail Management" };
+            Major major5 = new Major { MajorName = "Business Management" };
+            Major major6 = new Major { MajorName = "Accounting" };
+
+            Department dept = new Department { DepartmentName = "Computer Information Technologies" };
+            Department dept1 = new Department { DepartmentName = "Business" };
+
             dept.Majors.Add(major);
+            dept.Majors.Add(major1);
+            dept.Majors.Add(major2);
+            dept.Majors.Add(major3);
+            dept.Majors.Add(major4);
+            dept.Majors.Add(major5);
+            dept.Majors.Add(major6);
 
             context.Majors.Add(major);
+            context.Majors.Add(major1);
+            context.Majors.Add(major2);
+            context.Majors.Add(major3);
+            context.Majors.Add(major4);
+            context.Majors.Add(major5);
+            context.Majors.Add(major6);
+
             context.Departments.Add(dept);
+            context.Departments.Add(dept1);
 
             // save so our new objects have IDs
             context.SaveChanges();
@@ -100,20 +123,22 @@ namespace Coop_Listing_Site.Models
             // test opportunities
             Opportunity opp1 = new Opportunity
             {
-                CompanyName = "gabe's Grotto",
-                ContactName = "Gabe Griffin",
-                ContactNumber = "(541)914-2988",
-                ContactEmail = "griffin.gabe@gmail.com",
-                Location = "1800 W. 11th Ave. Eugene, OR 97404",
-                CompanyWebsite = "http://GabesGrotto.com",
-                AboutCompany = "This is for a test I don't know squat about Gabe's Grotto",
-                AboutDepartment = "The newbie room",
-                CoopPositionTitle = "Office lacky",
-                CoopPositionDuties = "Anything your superiors decide to let you do besides get their coffee.",
-                Qualifications = "Second year Programming major, Knowledge of C#, PHP, SQL are most helpful. Being able to type 40 WPS is also necessary.",
-                GPA = 3.0,
-                Paid = true,
-                Duration = "one month",
+                CompanyName = "Oregon Research Institute",
+                ContactName = "Nathen N.",
+                ContactNumber = "(541)484-2123, (541)484-1108",
+                ContactEmail = "nathann@ori.org",
+                Location = "1776 Millrace, Eugene, OR 97403-1983",
+                CompanyWebsite = "http://ori.org",
+                AboutCompany = "Please follow link: http://ori.org/about_ori",
+                AboutDepartment = "This is more about the type of projects we create: http://ori.org/infantnet",
+                CoopPositionTitle = "Web Developer Internist",
+                CoopPositionDuties = @"Oregon Research Institute is seeking students interested in working on web technologies and gaining practical programming experience.Those who have already been introduced to core web technologies will also have
+                                        the opportunity to learn the full stack from front end responsive design to backend database schematics.The intern will also have opportunity to collaborate with a software development firm.This is an internship with a
+                                        three or four term commitment and a weekly time commitment will ideally be around 10 hours with compensation at $10 / hr.",
+                Qualifications = @"Suggested skills:  Web Design (HTML, CSS, JavaScript), Database Querying, Problem Solving Skills, Curiosity and willingness to learn, Ability to work within a team and take feedback,
+                                   Attention to detail: Nice skills to have: Android Application Programming experience, Objective C and iOS programming experience, AngularJS, Node JS",
+                Paid = true,//$10 per hour after we implement a check box system for paid, stippened, or unpaid
+                Duration = "three to four terms",
                 OpeningsAvailable = 1,
                 TermAvailable = "Fall",
                 DepartmentID = dept.DepartmentID
@@ -121,21 +146,43 @@ namespace Coop_Listing_Site.Models
 
             Opportunity opp2 = new Opportunity
             {
-                CompanyName = "Big Al's House of Computers",
-                ContactName = "Ron Jeremy",
-                ContactNumber = "(541)913-3434",
-                ContactEmail = "Ron@aol.com",
-                Location = "2340 8th Ave. Eugene, OR 97404",
-                CompanyWebsite = "http://BigAlsHouse.com",
-                AboutCompany = "This is for a test I don't know squat about Big Al's house of computers",
-                AboutDepartment = "Software Design",
-                CoopPositionTitle = "developer 1",
-                CoopPositionDuties = "Anything your superiors decide to let you do besides get their coffee.",
-                Qualifications = "Second year Programming major, Knowledge of C#, PHP, SQL are most helpful. Being able to type 40 WPS is also necessary.",
-                GPA = 3.5,
-                Paid = true,
-                Duration = "three months",
-                OpeningsAvailable = 5,
+                CompanyName = "Get Found",
+                ContactName = "Gerry Meenaghan",
+                ContactNumber = "(541)463-5883",
+                ContactEmail = "meenaghan@lanecc.edu",
+                Location = "319 Goodpasture island rd. Eugene, OR 97401",
+                CompanyWebsite = "http://getfoundeugene.com",
+                AboutCompany = @"Get Found, Eugene, LLC is a small, local web development company based in Eugene.Find out more about what makes it a unique company here: http://getfoundeugene.com",
+                CoopPositionTitle = " Web Development Intern",
+                CoopPositionDuties = @"Website development using HTML5/CSS3, Javascript, JQuery, & PHP; Wordpress, Researching existing templates / layouts and markets for clients’ websites,
+                                        Creating web pages aligned with customer order specifications and industry best, practices such as responsive design for mobile devices; search - engine optimization,
+                                        Occasional and limited office support ranging from answering phones to assisting, technical support staff with hardware / software troubleshooting tasks.",
+                Qualifications = @"2nd-year AAS in Computer Programming student (1st-year / certificate-seeking students considered individually), Specific interest in front - end web coding and design work,
+                                    Requires high degree of attention to detail; detail - oriented; excellent knowledge of spelling, grammar, punctuation, Successful completion of Web Authoring, JavaScript courses,
+                                    completion of Academic Writing (WR 121) and Technical Writing(WR 227) highly recommended, Students with skills in advanced web coding / programming technologies such as PHP,preferred",
+                Paid = false,
+                Duration = "11 weeks maximum",
+                OpeningsAvailable = 1,
+                TermAvailable = "Spring",
+                DepartmentID = dept.DepartmentID
+            };
+
+            Opportunity opp3 = new Opportunity
+            {
+                CompanyName = "A Family For Every Child",
+                ContactName = "Scott Corcoran",
+                ContactNumber = "(541)343-2856",
+                ContactEmail = "scott@afamilyforeverychild.org",
+                Location = "1675 W 11th ave. Eugene, OR 97402",
+                CompanyWebsite = "http://afamilyforeverychild.org",
+                AboutCompany = "AFFEC is agreat company doing wonderful things for children and families.",
+                CoopPositionTitle = "Internist",
+                CoopPositionDuties = "not provided yet",
+                Qualifications = @"Having enough self-confidence to be psychologically stressed during the first few weeks until they understand what is here,
+                                     Not so headstrong as to think that they have time to change everything, Willing to use their skills to build better interfaces to what we already have.",
+                Paid = false,
+                Duration = "One term",
+                OpeningsAvailable = 1,
                 TermAvailable = "Spring",
                 DepartmentID = dept.DepartmentID
             };
@@ -172,6 +219,7 @@ namespace Coop_Listing_Site.Models
 
             context.Opportunities.Add(opp1);
             context.Opportunities.Add(opp2);
+            context.Opportunities.Add(opp3);
 
             context.SaveChanges();
 
