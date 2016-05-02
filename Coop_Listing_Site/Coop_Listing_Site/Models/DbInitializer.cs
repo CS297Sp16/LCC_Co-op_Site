@@ -96,15 +96,15 @@ namespace Coop_Listing_Site.Models
             StudentInfo sInfo1 = new StudentInfo
             {
                 LNumber = "L00000001",
-                UserId = user1.Id,
-                MajorID = major.MajorID
+                User = user1,
+                Major = major
             };
 
             StudentInfo sInfo2 = new StudentInfo
             {
                 LNumber = "L00000002",
-                UserId = user2.Id,
-                MajorID = major.MajorID
+                User = user2,
+                Major = major
             };
 
             CoordinatorInfo cInfo1 = new CoordinatorInfo

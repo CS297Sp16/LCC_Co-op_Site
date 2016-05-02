@@ -15,18 +15,23 @@ namespace Coop_Listing_Site.Controllers
         UserManager<User> userManager = new UserManager<User>(new UserStore<User>(new CoopContext()));
 
         // GET: /Login/
-        public ActionResult Index()
+        public ActionResult Index(string returnURL)
         {
             if (User.Identity.IsAuthenticated) // User already logged in. They don't need to be here
                 return RedirectToAction("Index", "Home");
+            
+            if (string.IsNullOrWhiteSpace(returnURL))
+                returnURL = Request.UrlReferrer.LocalPath;
 
-            return View();
+            var model = new LoginModel() { ReturnURL = returnURL };
+
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Index([Bind(Include = "Email,Password")] LoginModel userModel)
+        public ActionResult Index([Bind(Include = "Email,Password,ReturnURL")] LoginModel userModel)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) return View(userModel);
 
             var user = userManager.FindByEmail(userModel.Email); // Can probably be changed back to userManager.Find(username, password) at some point, since usernames are set to emails now
             if (user != null)
@@ -39,13 +44,12 @@ namespace Coop_Listing_Site.Controllers
                     {
                         // user authentication failed
                         ModelState.AddModelError("", "Incorrect password");
-                        return View();
+                        return View(userModel);
                     }
 
                     SignIn(user);
-
-                    // Temporary redirect to the home page
-                    return RedirectToAction("Index", "Home");
+                    
+                    return Redirect(GetRedirectUrl(userModel.ReturnURL));
                 }
                 else
                 {
@@ -59,7 +63,7 @@ namespace Coop_Listing_Site.Controllers
                 ModelState.AddModelError("", "User with provided email not found");
             }
 
-            return View();
+            return View(userModel);
         }
 
         private void SignIn(User user)
@@ -75,6 +79,16 @@ namespace Coop_Listing_Site.Controllers
         {
             var ctx = Request.GetOwinContext();
             return ctx.Authentication;
+        }
+
+        private string GetRedirectUrl(string returnUrl)
+        {
+            if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
+            {
+                return Url.Action("Index", "Home");
+            }
+
+            return returnUrl;
         }
     }
 }
