@@ -4,24 +4,25 @@
     <br />
     <p>
         <b>
-            One this page please upload any document that the Internship posting has required you to upload.
-            At a minimum you must upload a Resume and Cover Letter.
+            On this page please upload any document that the Internship posting has required you to upload.
+            At a minimum you must upload a Resume. There is a area for you to leave a message with your Co-op Coordinator 
+            on why you wish to be considered for this postion. For any documentation that doesn't have an area for you to 
+            upload it please use the other upload area.
         </b>
     </p>
     <br />
     <br />
     <div class="form-group">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.ValidationMessage("R")
+        @Html.ValidationMessage("ResumeUpload")
         <label for="Resume" class="col-sm-2 control-label">Resume</label>
-        <input type="file" class="single" name="R" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
-        @Html.ValidationMessage("CL")
+        <input type="file" class="single" name="ResumeUpload" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
         <label for="CoverLetter" class="col-sm-2 control-label">Cover Letter</label>
-        <input type="file" class="single" name="CL" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        <input type="file" class="single" name="CoverLetterUpload" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
         <label for="DriversLicense" class="col-sm-2 control-label">Drivers License</label>
-        <input type="file" class="single" name="DL" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        <input type="file" class="single" name="DriverLicenseUpload" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
         <label for="Other" class="col-sm-2 control-label">Other</label>
-        <input type="file" class="single" name="O" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
+        <input type="file" class="single" name="OtherUpload" accept=".doc, .docx, .pdf, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword" /><br />
 
     </div>
     <div class="form-group" id="appform">

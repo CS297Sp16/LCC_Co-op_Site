@@ -188,60 +188,55 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase R, HttpPostedFileBase CL, HttpPostedFileBase DL, HttpPostedFileBase O)
+        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload)
         {
             if (ModelState.IsValid)
             {
-                if (R != null && R.ContentLength > 0)
+                if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
                 {
-                    application.FileName_Resume = System.IO.Path.GetFileName(R.FileName);
-                    application.Resume_ContentType = R.ContentType;
-                    using (var reader = new System.IO.BinaryReader(R.InputStream))
+                    application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
+                    application.Resume_ContentType = ResumeUpload.ContentType;
+                    using (var reader = new System.IO.BinaryReader(ResumeUpload.InputStream))
                     {
-                        application.Resume = reader.ReadBytes(R.ContentLength);
+                        application.Resume = reader.ReadBytes(ResumeUpload.ContentLength);
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("R", "A Resume is required");
+                    ModelState.AddModelError("ResumeUpload", "A Resume is required");
                     return View();
                 }
 
-                if (CL != null && CL.ContentLength > 0)
+                if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
                 {
-                    application.FileName_CoverLetter = System.IO.Path.GetFileName(CL.FileName);
-                    application.CoverLetter_ContentType = CL.ContentType;
+                    application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
+                    application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
                     
-                    using (var reader = new System.IO.BinaryReader(CL.InputStream))
+                    using (var reader = new System.IO.BinaryReader(CoverLetterUpload.InputStream))
                     {
-                        application.CoverLetter = reader.ReadBytes(CL.ContentLength);
+                        application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("CL", "A Cover Letter is Required");
-                    return View();
                 }
 
                 //Saves the Drivers License
-                if (DL != null && DL.ContentLength > 0)
+                if (DriverLicenseUpload != null && DriverLicenseUpload.ContentLength > 0)
                 {
-                    application.FileName_DriverLicense = System.IO.Path.GetFileName(DL.FileName);
-                    application.DriverLicense_ContentType = DL.ContentType;
-                    using (var reader = new System.IO.BinaryReader(DL.InputStream))
+                    application.FileName_DriverLicense = System.IO.Path.GetFileName(DriverLicenseUpload.FileName);
+                    application.DriverLicense_ContentType = DriverLicenseUpload.ContentType;
+                    using (var reader = new System.IO.BinaryReader(DriverLicenseUpload.InputStream))
                     {
-                        application.DriverLicense = reader.ReadBytes(DL.ContentLength);
+                        application.DriverLicense = reader.ReadBytes(DriverLicenseUpload.ContentLength);
                     }
                 }
 
                 //Saves anything else that might be needed into the other 
-                if (O != null && O.ContentLength > 0)
+                if (OtherUpload != null && OtherUpload.ContentLength > 0)
                 {
-                    application.FileName_Other = System.IO.Path.GetFileName(O.FileName);
-                    application.Other_ContentType = O.ContentType;
-                    using (var reader = new System.IO.BinaryReader(O.InputStream))
+                    application.FileName_Other = System.IO.Path.GetFileName(OtherUpload.FileName);
+                    application.Other_ContentType = OtherUpload.ContentType;
+                    using (var reader = new System.IO.BinaryReader(OtherUpload.InputStream))
                     {
-                        application.Other = reader.ReadBytes(O.ContentLength);
+                        application.Other = reader.ReadBytes(OtherUpload.ContentLength);
                     }
                 }
             }
