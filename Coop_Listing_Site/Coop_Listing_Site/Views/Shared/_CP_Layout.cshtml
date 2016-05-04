@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-2 sidebar">
+        @if (User.IsInRole("Student"))
+        {
+        <h4>Student</h4>
+        <ul class="nav nav-pills">
+            <li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
+        </ul>
+        }
+        @if (User.IsInRole("Coordinator"))
+        {
+        <h4>Coordinator</h4>
+        <ul class="nav nav-pills">
+            <li>@Html.ActionLink("Invite a student", "InviteStudent")</li>
+            <li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
+            <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>
+            <li>@Html.ActionLink("Active Invitations", "InviteList")</li>
+        </ul>
+        }
+        @if (User.IsInRole("Admin"))
+        {
+        <h4>Administrator</h4>
+        <ul class="nav nav-pills">
+            <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator")</li>
+            <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators")</li>
+            <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators")</li>
+            <li>@Html.ActionLink("Set SMTP Information", "SMTP")</li>
+            <li>@Html.ActionLink("View Majors", "Majors")</li>
+            <li>@Html.ActionLink("View Departments", "DepartmentList")</li>
+            <li>@Html.ActionLink("View Student", "StudentList")</li>
+        </ul>
+        }
+    </div>
+    <div class="col-md-10">
+        @RenderBody()
+    </div>
+</div>

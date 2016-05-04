@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Coop_Listing_Site.Models.Department>
+
+@{
+    ViewBag.Title = "Department List";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+}
+
+<h2>Departments</h2>
+
+<p>
+    @Html.ActionLink("Add Department", "AddDepartment")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartmentName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartmentName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditDepartment", new { id=item.DepartmentID }) |
+            @Html.ActionLink("Details", "DepartmentDetails", new { id=item.DepartmentID }) |
+            @Html.ActionLink("Delete", "DeleteDepartment", new { id=item.DepartmentID })
+        </td>
+    </tr>
+}
+
+</table>
