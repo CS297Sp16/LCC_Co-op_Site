@@ -21,9 +21,9 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string ContactEmail { get; set; }
         [Required(ErrorMessage = "Please enter the cooperative opportunity's place of employment"), Display(Name ="Worksite")]
         public string Location { get; set; }
-        [Required(ErrorMessage = "Please enter the web address of the company"), Display(Name ="Business Website Address")]
+        [Display(Name ="Business Website Address")]
         public string CompanyWebsite { get; set; }
-        [Required(ErrorMessage = "Please enter a brief company mission statement"), Display(Name ="Business Mission Statement")]
+        [Display(Name ="Business Mission Statement")]
         public string AboutCompany { get; set; }
         [Display(Name ="Department Description")]
         public string AboutDepartment { get; set; }
@@ -47,11 +47,11 @@ namespace Coop_Listing_Site.Models.ViewModels
         public bool UnPaid { get; set; } 
         [Required(ErrorMessage = "Please enter the duration of the cooperative opportunity"), Display(Name ="Position Duration")]
         public string Duration { get; set; }
-        [Required(ErrorMessage = "Please enter the number of openings available for this cooperative opportunity"), Display(Name ="Number of Fillable Positions")]
+        [Display(Name ="Number of Fillable Positions")]
         public int OpeningsAvailable { get; set; }
-        [Required(ErrorMessage = "Please enter the terms this cooperative opportunity will be available"), Display(Name ="Terms offered")]
+        [Display(Name ="Terms offered")]
         public string TermAvailable { get; set; }
         [Required(ErrorMessage = "Please enter the id of the major/department you would like this cooperative opportunity to be attached too")]
-        public int DepartmentID { get; set; }
+        public int DepartmentID { get; set; } 
     }
 }

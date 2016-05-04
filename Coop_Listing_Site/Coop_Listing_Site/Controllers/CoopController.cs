@@ -80,7 +80,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
-            //not sure if I should have a viewbag with users, and one for opportunities here
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View();
         }
 
@@ -120,7 +120,8 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here
+
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View(opportunityVM);
         }
 
@@ -155,7 +156,8 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here
+
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View(opportunity);
         }
 
