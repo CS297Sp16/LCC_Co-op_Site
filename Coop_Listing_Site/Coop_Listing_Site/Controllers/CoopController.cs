@@ -80,7 +80,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
             return View();
         }
 
