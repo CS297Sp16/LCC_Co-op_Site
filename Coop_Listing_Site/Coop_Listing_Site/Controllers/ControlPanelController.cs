@@ -62,10 +62,14 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult AddMajor([Bind(Include = "DepartmentID, MajorName")] Major major)
+        public ActionResult AddMajor([Bind(Include = "MajorName")] Major major, int DepartmentID)
         {
+            var dept = db.Departments.Find(DepartmentID);
+            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
+
             if (ModelState.IsValid)
             {
+                major.Department = dept;
                 db.Majors.Add(major);
                 db.SaveChanges();
 
@@ -95,10 +99,14 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult EditMajor([Bind(Include = "MajorID, DepartmentID, MajorName")] Major major)
+        public ActionResult EditMajor([Bind(Include = "MajorID, MajorName")] Major major, int DepartmentID)
         {
+            var dept = db.Departments.Find(DepartmentID);
+            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
+
             if (ModelState.IsValid)
             {
+                major.Department = dept;
                 db.Entry(major).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -121,6 +129,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
+            db.Departments.Load();
             return View(major);
         }
 
@@ -487,7 +496,7 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var student in db.Students.Where(s => s.User.Enabled))
+                foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
                 {
                     if (dept.Majors.Contains(student.Major))
                     {
@@ -506,7 +515,7 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var student in db.Students.Where(s => !s.User.Enabled))
+                foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
                 {
                     if (dept.Majors.Contains(student.Major))
                     {
