@@ -6,37 +6,27 @@
 }
 
 <script>
-    $(document).ready(function () {
-        $("#Paid").change(function () {
-            if ($(this).val() != "#Paid") {
+    function compensationChange() {
+        switch (this.value) {
+            case "Paid":
                 $("#Wage").show();
                 $("#Amount").hide();
-            }
-            else {
-                $("#Wage").hide();
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $("#Stippened").change(function () {
-            if ($(this).val() != "#Stippened") {
+                break;
+            case "Stippened":
                 $("#Amount").show();
                 $("#Wage").hide();
-            }
-            else {
-                $("#Amount").hide();
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $("#UnPaid").change(function () {
-            if ($(this).val() != "#UnPaid"){
+                break;
+            case "UnPaid":
                 $("#Wage").hide();
                 $("#Amount").hide();
-            }
-        });
+                break;
+        }
+    }
+
+    $(document).ready(function () {
+        $("#Paid").change(compensationChange);
+        $("#Stippened").change(compensationChange);
+        $("#UnPaid").change(compensationChange);
     });
 </script>
 
