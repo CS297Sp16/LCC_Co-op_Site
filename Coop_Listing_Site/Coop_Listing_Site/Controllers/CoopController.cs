@@ -42,13 +42,12 @@ namespace Coop_Listing_Site.Controllers
 
             if (User.IsInRole("Student"))
             {
-                var sInfo = db.Students.SingleOrDefault(si => si.UserId == userId);
+                var sInfo = db.Students.Include("Major").SingleOrDefault(si => si.User.Id == userId);
 
                 if (sInfo != null)
                 {
-                    var sMajor = db.Majors.Find(sInfo.MajorID);
                     oppList = db.Opportunities.Where(
-                        o => o.DepartmentID == sMajor.DepartmentID
+                        o => o.DepartmentID == sInfo.Major.DepartmentID
                         ).ToList();
                 }
             }
