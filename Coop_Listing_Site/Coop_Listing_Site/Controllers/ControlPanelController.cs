@@ -487,7 +487,7 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var student in db.Students.Where(s => s.User.Enabled))
+                foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
                 {
                     if (dept.Majors.Contains(student.Major))
                     {
@@ -506,7 +506,7 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var dept in coordInfo.Departments)
             {
-                foreach (var student in db.Students.Where(s => !s.User.Enabled))
+                foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
                 {
                     if (dept.Majors.Contains(student.Major))
                     {

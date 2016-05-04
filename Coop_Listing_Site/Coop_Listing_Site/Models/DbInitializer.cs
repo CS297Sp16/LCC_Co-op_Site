@@ -9,7 +9,7 @@ using System.Web;
 
 namespace Coop_Listing_Site.Models
 {
-    public class DbInitializer : DropCreateDatabaseAlways<CoopContext>
+    public class DbInitializer : DropCreateDatabaseIfModelChanges<CoopContext>
     {
         protected override void Seed(CoopContext context)
         {

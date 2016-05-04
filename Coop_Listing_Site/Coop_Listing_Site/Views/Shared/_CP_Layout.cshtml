@@ -2,18 +2,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-    <div class="col-md-2 sidebar">
+    <div class="col-sm-3 col-md-2 sidebar">
         @if (User.IsInRole("Student"))
         {
         <h4>Student</h4>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-sidebar">
             <li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
         </ul>
         }
         @if (User.IsInRole("Coordinator"))
         {
         <h4>Coordinator</h4>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-sidebar">
             <li>@Html.ActionLink("Invite a student", "InviteStudent")</li>
             <li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
             <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>
@@ -23,7 +23,7 @@
         @if (User.IsInRole("Admin"))
         {
         <h4>Administrator</h4>
-        <ul class="nav nav-pills">
+        <ul class="nav nav-sidebar">
             <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator")</li>
             <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators")</li>
             <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators")</li>
@@ -34,7 +34,7 @@
         </ul>
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         @RenderBody()
     </div>
 </div>
