@@ -139,7 +139,7 @@ namespace Coop_Listing_Site.Controllers
 
                 var coordinfo = new CoordinatorInfo
                 {
-                    UserId = user.Id
+                    User = user
                 };
 
                 if(dept != null)

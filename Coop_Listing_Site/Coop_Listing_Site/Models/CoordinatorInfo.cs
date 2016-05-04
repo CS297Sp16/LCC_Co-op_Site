@@ -14,7 +14,9 @@ namespace Coop_Listing_Site.Models
         }
 
         [Key]
-        public string UserId { get; set; }
+        public int CoordInfoID { get; set; }
+        
+        public User User { get; set; }
 
         public virtual ICollection<Department> Departments { get; set; }
     }
