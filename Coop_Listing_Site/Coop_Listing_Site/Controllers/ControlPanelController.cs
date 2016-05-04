@@ -518,6 +518,11 @@ namespace Coop_Listing_Site.Controllers
             return students;
         }
 
+        public ActionResult DepartmentList()
+        {
+            return View(db.Departments.ToList());
+        }
+
         private Dictionary<string, string> GetEnabledCoordinators()
         {
             var coordinators = new Dictionary<string, string>();
@@ -597,6 +602,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //POST: ControlPAnelController/EditDepartment
+        [HttpPost]
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
         {
@@ -604,7 +610,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 db.Entry(dept).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("DepartmentList");
             }
             //not sure if we need the viewBag or not, delete if not needed
             ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
