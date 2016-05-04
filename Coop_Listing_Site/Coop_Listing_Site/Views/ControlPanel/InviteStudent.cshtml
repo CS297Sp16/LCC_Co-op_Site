@@ -5,7 +5,12 @@
     Layout = "~/Views/Shared/_CP_Layout.cshtml";
 }
 
-<h2>Invite</h2>
+<h2>Invite Student</h2>
+
+<p>
+    This page is for inviting students to the website. Please enter their email in the field below, and click Invite.
+</p>
+
 @if (ViewBag.SMTPReady != null && ViewBag.SMTPReady)
 {
     if (ViewBag.ReturnMessage != null)
@@ -25,14 +30,6 @@
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.UserType, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.UserType, "Select the user type", new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
                 </div>
             </div>
 

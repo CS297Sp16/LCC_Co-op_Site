@@ -69,13 +69,13 @@ namespace Coop_Listing_Site.Controllers
 
                 var studentInfo = new StudentInfo
                 {
-                    UserId = user.Id,
+                    User = user,
                     LNumber = student.LNumber,
                     GPA = student.GPA
                 };
 
                 if (major != null)
-                    studentInfo.MajorID = major.MajorID;
+                    studentInfo.Major = major;
 
                 db.Students.Add(studentInfo);
                 db.SaveChanges();
