@@ -42,12 +42,14 @@ namespace Coop_Listing_Site.Controllers
 
             if (User.IsInRole("Student"))
             {
-                var sInfo = db.Students.Include("Major").SingleOrDefault(si => si.User.Id == userId);
+                db.Majors.Load();
+                db.Departments.Load();
+                var sInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
 
                 if (sInfo != null)
                 {
                     oppList = db.Opportunities.Where(
-                        o => o.DepartmentID == sInfo.Major.DepartmentID
+                        o => o.DepartmentID == sInfo.Major.Department.DepartmentID
                         ).ToList();
                 }
             }
@@ -218,7 +220,7 @@ namespace Coop_Listing_Site.Controllers
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
                     application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
-                    
+
                     using (var reader = new System.IO.BinaryReader(CoverLetterUpload.InputStream))
                     {
                         application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
@@ -236,7 +238,7 @@ namespace Coop_Listing_Site.Controllers
                     }
                 }
 
-                //Saves anything else that might be needed into the other 
+                //Saves anything else that might be needed into the other
                 if (OtherUpload != null && OtherUpload.ContentLength > 0)
                 {
                     application.FileName_Other = System.IO.Path.GetFileName(OtherUpload.FileName);
@@ -254,7 +256,7 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return View();
-            
+
         }
         protected override void Dispose(bool disposing)
         {
