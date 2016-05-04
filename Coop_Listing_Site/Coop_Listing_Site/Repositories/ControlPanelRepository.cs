@@ -98,18 +98,17 @@ namespace Coop_Listing_Site.Repositories
         {
             var user = db.Users.FirstOrDefault(u => u.Id == currentUser.Id);
 
-            var studInfo = db.Students.FirstOrDefault(si => si.UserId == user.Id);
+            var studInfo = db.Students.FirstOrDefault(si => si.User == user);
 
-            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studInfo.MajorID);
+            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studentUpdateModel.MajorID);
 
             var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
 
             studInfo.GPA = studentUpdateModel.GPA;
-            studInfo.MajorID = studentUpdateModel.MajorID;
 
-            if (major.MajorID != studentUpdateModel.MajorID)
+            if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
             {
-                studInfo.MajorID = studentUpdateModel.MajorID;
+                studInfo.Major = major;
             }
 
             if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)

@@ -44,13 +44,13 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Listings()
         {
-            string userId = User.Identity.GetUserId();
-            var sInfo = db.Students.SingleOrDefault(si => si.UserId == userId);
+            var user = CurrentUser;
+            var sInfo = db.Students.SingleOrDefault(si => si.User.Id == user.Id);
 
             if (sInfo != null)
             {
-                var sMajor = db.Majors.Find(sInfo.MajorID);
-                var x = db.Opportunities.Where(o => o.DepartmentID == sMajor.DepartmentID);
+                db.Majors.Load();
+                var x = db.Opportunities.Where(o => o.DepartmentID == sInfo.Major.DepartmentID);
                 return View(x.ToList());
             }
 
