@@ -7,9 +7,10 @@
 
 <script>
     $(document).ready(function () {
-        $("#state").change(function () {
+        $("#Paid").change(function () {
             if ($(this).val() != "#Paid") {
                 $("#Wage").show();
+                $("#Amount").hide();
             }
             else {
                 $("#Wage").hide();
@@ -18,11 +19,21 @@
     });
 
     $(document).ready(function () {
-        $("#state").change(function () {
+        $("#Stippened").change(function () {
             if ($(this).val() != "#Stippened") {
                 $("#Amount").show();
+                $("#Wage").hide();
             }
             else {
+                $("#Amount").hide();
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#UnPaid").change(function () {
+            if ($(this).val() != "#UnPaid"){
+                $("#Wage").hide();
                 $("#Amount").hide();
             }
         });
@@ -123,21 +134,11 @@
         </div>
         <div class="form-group" >
             @Html.LabelFor(model => model.Paid, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" id="Paid">
-                @Html.RadioButton("Paid", "Paid")
+            <div class="col-md-10" >
+                Paid: @Html.RadioButton("Compensation", "Paid", new { id = "Paid" } )
+                Stippened: @Html.RadioButton("Compensation", "Stippened", new { id = "Stippened" })
+                UnPaid: @Html.RadioButton("Compensation", "UnPaid", new { id = "UnPaid" })
              </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Stippened, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10" id="Stippened">
-                @Html.RadioButton("Stippened", "Stippened")
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UnPaid, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.RadioButton("UnPaid", "UnPaid")
-            </div>
         </div>
         <div class="form-group" style="display:none" id="Wage">
             @Html.LabelFor(model => model.Wage, htmlAttributes: new { @class = "control-label col-md-2" })
