@@ -491,7 +491,7 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetEnabledStudents()
         {
-            var coordInfo = db.Coordinators.FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
 
             foreach (var dept in coordInfo.Departments)
@@ -510,7 +510,7 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetDisabledStudents()
         {
-            var coordInfo = db.Coordinators.FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
 
             foreach (var dept in coordInfo.Departments)
@@ -536,7 +536,7 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordinators = new Dictionary<string, string>();
 
-            foreach (var coord in db.Coordinators)
+            foreach (var coord in db.Coordinators.Include(c => c.User))
             {
                 if (coord.User.Enabled)
                 {
@@ -551,7 +551,7 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordinators = new Dictionary<string, string>();
 
-            foreach (var coord in db.Coordinators)
+            foreach (var coord in db.Coordinators.Include(c => c.User))
             {
                 if (coord.User.Enabled)
                 {

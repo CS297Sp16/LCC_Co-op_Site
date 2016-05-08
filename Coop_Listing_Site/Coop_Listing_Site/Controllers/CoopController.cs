@@ -59,7 +59,7 @@ namespace Coop_Listing_Site.Controllers
             }
             else if (User.IsInRole("Coordinator"))
             {
-                var cInfo = db.Coordinators.SingleOrDefault(ci => ci.UserId == userId);
+                var cInfo = db.Coordinators.Include(c => c.User).SingleOrDefault(ci => ci.User == CurrentUser);
                 if (cInfo != null)
                 {
                     var depts = cInfo.Departments.Select(d => d.DepartmentID);
