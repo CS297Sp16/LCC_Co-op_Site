@@ -26,8 +26,9 @@ namespace Coop_Listing_Site.Controllers
 
         public ControlPanelController()
         {
-            db = new CoopContext();
-            userManager = new UserManager<User>(new UserStore<User>(db));
+            db = db ?? new CoopContext();
+
+            userManager = userManager ?? new UserManager<User>(new UserStore<User>(db));
 
             // icpr = new ControlPanelRepository(); //uncomment for testing
         }
@@ -328,43 +329,76 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult UpdateStudent()
         {
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+            var studInfo = db.Students
+                .Where(si => si.User.Id == CurrentUser.Id)
+                .Include(si => si.User)
+                .Include(si => si.Major)              
+                .FirstOrDefault();
 
-            return View();
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
+
+           var studentVM = new StudentUpdateModel()
+            {
+                UserId = studInfo.User.Id,
+                MajorID = studInfo.Major.MajorID,
+                GPA = studInfo.GPA
+            };
+
+            return View(studentVM);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
         {
-            var user = CurrentUser;
+            bool newPasswordMatches = false;
+            bool passwordValidated = false;
+            bool passwordChangeRequested = false;
 
-            var studInfo = db.Students.FirstOrDefault(si => si.User == user);
+            var studInfo = db.Students
+                .Where(si => si.User.Id == CurrentUser.Id)
+                .Include(si => si.User)
+                .Include(si => si.Major)
+                .FirstOrDefault();
 
-            var major = db.Majors.FirstOrDefault(m => m.MajorID == studentUpdateModel.MajorID);
+            var major = db.Majors.FirstOrDefault(m => m.MajorID == studInfo.Major.MajorID);
 
-            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
+            if (studentUpdateModel.CurrentPassword != null)
+            {
+                passwordValidated = userManager.CheckPassword(studInfo.User, studentUpdateModel.CurrentPassword);
+            }
 
-            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
+            if(studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+            {
+                newPasswordMatches = true; 
+            }
+
+            if (!userManager.CheckPassword(studInfo.User, studentUpdateModel.NewPassword))
+            {
+                passwordChangeRequested = true;
+            }
 
             if (!ModelState.IsValid) return View();
 
             if (ModelState.IsValid)
             {
-                studInfo.GPA = studentUpdateModel.GPA;
-
+                if (studInfo.GPA != studentUpdateModel.GPA)
+                {
+                    studInfo.GPA = studentUpdateModel.GPA;
+                    db.Entry(studInfo).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+               
                 if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
                 {
                     studInfo.Major = major;
+                    db.Entry(studInfo.Major).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
 
-                if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                if (passwordValidated && newPasswordMatches && passwordChangeRequested )
                 {
-                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
+                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
                 }
-
-                db.Entry(user).State = EntityState.Modified;
-                db.Entry(studInfo).State = EntityState.Modified;
-                db.SaveChanges();
             }
             return RedirectToAction("Index");
         }

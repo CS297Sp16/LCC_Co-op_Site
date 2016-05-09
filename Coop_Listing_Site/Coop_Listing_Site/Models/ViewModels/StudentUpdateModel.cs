@@ -12,11 +12,14 @@ namespace Coop_Listing_Site.Models.ViewModels
     public class StudentUpdateModel
     {
         public string UserId { get; set; }
+        [Display(Name = "Major")]
         public int MajorID { get; set; }
         public double GPA { get; set; }
+
+        [DataType(DataType.Password), Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
 
-        [DataType(DataType.Password)]
+        [DataType(DataType.Password), Display(Name = "New Password")]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-zA-Z]).{8,16}$", ErrorMessage = "Your password must be at least 8 characters and include at least one letter and one number")]
         public string NewPassword { get; set; }
 
