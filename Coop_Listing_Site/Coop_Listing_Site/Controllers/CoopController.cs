@@ -9,29 +9,22 @@ using System.Net;
 using System.Data.Entity;
 using Coop_Listing_Site.Models.ViewModels;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Coop_Listing_Site.Controllers
 {
     public class CoopController : Controller
     {
-        // This controller will have List, Details, and possibly Create, Delete, and Edit for all co-op opportunities
-
         private CoopContext db;
-        // not using this atm, consider removing it later
-        //private UserManager<User> userManager;
 
         public CoopController()
         {
             db = new CoopContext();
-            //userManager = new UserManager<User>(new UserStore<User>(db));
         }
 
         private User CurrentUser
         {
             get
             {
-                //returndb.Users.Single(u => u.UserName == User.Identity.Name);
                 return db.Users.Find(User.Identity.GetUserId());
             }
         }
@@ -44,17 +37,40 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Listings()
         {
-            var user = CurrentUser;
-            var sInfo = db.Students.SingleOrDefault(si => si.User.Id == user.Id);
+            string userId = User.Identity.GetUserId();
+            List<Opportunity> oppList = null;
 
-            if (sInfo != null)
+            if (User.IsInRole("Student"))
             {
                 db.Majors.Load();
-                var x = db.Opportunities.Where(o => o.DepartmentID == sInfo.Major.DepartmentID);
-                return View(x.ToList());
+                db.Departments.Load();
+                var sInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
+
+                if (sInfo != null)
+                {
+                    oppList = db.Opportunities.Where(
+                        o => o.DepartmentID == sInfo.Major.Department.DepartmentID
+                        ).ToList();
+                }
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                oppList = db.Opportunities.ToList();
+            }
+            else if (User.IsInRole("Coordinator"))
+            {
+                var cInfo = db.Coordinators.SingleOrDefault(ci => ci.UserId == userId);
+                if (cInfo != null)
+                {
+                    var depts = cInfo.Departments.Select(d => d.DepartmentID);
+                    var opps = from opp in db.Opportunities
+                               where depts.Contains(opp.DepartmentID)
+                               select opp;
+                    oppList = opps.ToList();
+                }
             }
 
-            return View();
+            return View(oppList);
         }
 
         public ActionResult Details(int id)
@@ -63,16 +79,17 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //GET: CoopController/AddOpportunity
-        //[Authorize(Roles = "Coordinator")]
+        [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
-            //not sure if I should have a viewbag with users, and one for opportunities here
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View();
         }
 
         //POST: CoopController/AddOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
             CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunityVM)
@@ -105,12 +122,13 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here
+
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View(opportunityVM);
         }
 
         //GET: CoopController/EditOpportunity
-        //[Authorize(Roles = "Coordinator")]
+        [Authorize(Roles = "Coordinator")]
         public ActionResult EditOpportunity(int? id)
         {
             if (id == null)
@@ -128,6 +146,7 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/EditOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coordinator")]
         public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
             CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable,
@@ -139,7 +158,8 @@ namespace Coop_Listing_Site.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            //not sure if I should have a viewbag with users, and one for opportunities here
+
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
             return View(opportunity);
         }
 
@@ -162,24 +182,13 @@ namespace Coop_Listing_Site.Controllers
         //POST: CoopController/DeleteOpportunity
         [HttpPost, ActionName("DeleteOpportunity")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coordinator")]
         public ActionResult DeleteConfirmed(int id)
         {
             Opportunity opportunity = db.Opportunities.Find(id);
             db.Opportunities.Remove(opportunity);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        //retrieve a single opportunity
-        private Opportunity GetOpportunity(int opportunityID)
-        {
-            return db.Opportunities.Find(opportunityID);
-        }
-
-        //retrieve all opportunities
-        private List<Opportunity> GetOpportunities()
-        {
-            return db.Opportunities.ToList();
         }
 
         public ActionResult Upload()
@@ -211,7 +220,7 @@ namespace Coop_Listing_Site.Controllers
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
                     application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
-                    
+
                     using (var reader = new System.IO.BinaryReader(CoverLetterUpload.InputStream))
                     {
                         application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
@@ -229,7 +238,7 @@ namespace Coop_Listing_Site.Controllers
                     }
                 }
 
-                //Saves anything else that might be needed into the other 
+                //Saves anything else that might be needed into the other
                 if (OtherUpload != null && OtherUpload.ContentLength > 0)
                 {
                     application.FileName_Other = System.IO.Path.GetFileName(OtherUpload.FileName);
@@ -247,16 +256,13 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return View();
-            
+
         }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 db.Dispose();
-
-                //if (userManager != null)
-                //    userManager.Dispose();
             }
             base.Dispose(disposing);
         }

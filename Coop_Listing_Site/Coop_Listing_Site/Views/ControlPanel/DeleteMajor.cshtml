@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "DeleteMajor";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
 }
 
 <h2>DeleteMajor</h2>
@@ -12,11 +13,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.DepartmentID)
+            @Html.DisplayNameFor(model => model.Department)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DepartmentID)
+            @Html.DisplayFor(model => model.Department.DepartmentName)
         </dd>
 
         <dt>

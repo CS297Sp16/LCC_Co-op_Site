@@ -131,13 +131,16 @@ namespace Coop_Listing_Site.Models
                 CompanyWebsite = "http://ori.org",
                 AboutCompany = "Please follow link: http://ori.org/about_ori",
                 AboutDepartment = "This is more about the type of projects we create: http://ori.org/infantnet",
-                CoopPositionTitle = "Web Developer Internist",
+                CoopPositionTitle = "Web Developer Intern",
                 CoopPositionDuties = @"Oregon Research Institute is seeking students interested in working on web technologies and gaining practical programming experience.Those who have already been introduced to core web technologies will also have
                                         the opportunity to learn the full stack from front end responsive design to backend database schematics.The intern will also have opportunity to collaborate with a software development firm.This is an internship with a
                                         three or four term commitment and a weekly time commitment will ideally be around 10 hours with compensation at $10 / hr.",
                 Qualifications = @"Suggested skills:  Web Design (HTML, CSS, JavaScript), Database Querying, Problem Solving Skills, Curiosity and willingness to learn, Ability to work within a team and take feedback,
                                    Attention to detail: Nice skills to have: Android Application Programming experience, Objective C and iOS programming experience, AngularJS, Node JS",
-                Paid = true,//$10 per hour after we implement a check box system for paid, stippened, or unpaid
+                Paid = true,
+                Stippened = false,
+                UnPaid = false,
+                Wage = "$10 per hour",
                 Duration = "three to four terms",
                 OpeningsAvailable = 1,
                 TermAvailable = "Fall",
@@ -154,13 +157,15 @@ namespace Coop_Listing_Site.Models
                 CompanyWebsite = "http://getfoundeugene.com",
                 AboutCompany = @"Get Found, Eugene, LLC is a small, local web development company based in Eugene.Find out more about what makes it a unique company here: http://getfoundeugene.com",
                 CoopPositionTitle = " Web Development Intern",
-                CoopPositionDuties = @"Website development using HTML5/CSS3, Javascript, JQuery, & PHP; Wordpress, Researching existing templates / layouts and markets for clients’ websites,
+                CoopPositionDuties = @"Website development using HTML5/CSS3, Javascript, JQuery, & PHP; Wordpress, Researching existing templates / layouts and markets for clientsï¿½ websites,
                                         Creating web pages aligned with customer order specifications and industry best, practices such as responsive design for mobile devices; search - engine optimization,
                                         Occasional and limited office support ranging from answering phones to assisting, technical support staff with hardware / software troubleshooting tasks.",
                 Qualifications = @"2nd-year AAS in Computer Programming student (1st-year / certificate-seeking students considered individually), Specific interest in front - end web coding and design work,
                                     Requires high degree of attention to detail; detail - oriented; excellent knowledge of spelling, grammar, punctuation, Successful completion of Web Authoring, JavaScript courses,
                                     completion of Academic Writing (WR 121) and Technical Writing(WR 227) highly recommended, Students with skills in advanced web coding / programming technologies such as PHP,preferred",
                 Paid = false,
+                Stippened = false,
+                UnPaid = true,
                 Duration = "11 weeks maximum",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
@@ -176,15 +181,61 @@ namespace Coop_Listing_Site.Models
                 Location = "1675 W 11th ave. Eugene, OR 97402",
                 CompanyWebsite = "http://afamilyforeverychild.org",
                 AboutCompany = "AFFEC is agreat company doing wonderful things for children and families.",
-                CoopPositionTitle = "Internist",
+                CoopPositionTitle = "Intern",
                 CoopPositionDuties = "not provided yet",
                 Qualifications = @"Having enough self-confidence to be psychologically stressed during the first few weeks until they understand what is here,
                                      Not so headstrong as to think that they have time to change everything, Willing to use their skills to build better interfaces to what we already have.",
                 Paid = false,
+                Stippened = false,
+                UnPaid = true,
                 Duration = "One term",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
                 DepartmentID = dept.DepartmentID
+            };
+
+            Opportunity opp4 = new Opportunity
+            {
+                CompanyName = "Lane County Finacial Division",
+                ContactName = "Mike Barnhart",
+                ContactNumber = "(541)682-4199",
+                ContactEmail = "michael.barnhart@co.lane.us",
+                Location = "125 E. 8th Ave. Eugene, OR 97401",
+                CompanyWebsite = "http://lanecounty.org",
+                CoopPositionTitle = "Intern",
+                CoopPositionDuties = @"Auditing the weekly accounts payable vendor checks for accuracy. Agreeing the invoices to the voucher in the computer system,
+                                        utilizing Excel spreadsheets. Resolving invoice or voucher discrepancies: includes interaction with other departments, Folding, stuffing, and mailing vendor checks.
+                                        Disbursing checks internally.",
+                Qualifications = @"Must be available to work the following days: Monday, Tuesday, and Thursday",
+                Paid = true,
+                Stippened = false,
+                UnPaid = false,
+                Wage = "$12 per hour",
+                DepartmentID = dept1.DepartmentID
+            };
+
+            Opportunity opp5 = new Opportunity
+            {
+                CompanyName = "Budget Services",
+                ContactName = "University Advancement Human Resources Manager",
+                ContactNumber = "(541)346-3123",
+                ContactEmail = "@uoregon.edu",
+                Location = "1720 E 13th ave. Ste 312 Eugene, OR 97403",
+                CompanyWebsite = "http://@uoregon.edu",
+                AboutCompany = "Budget Services provides central support services for University Advancement of all financial transactions and contracts.",
+                AboutDepartment = @"Budget Services provides central support services for University Advancement of all financial transactions and contracts.  These services include accounts payable, accounts receivable, contracts, financial statements and retention and archiving of all financial and contractual documents",
+                CoopPositionTitle = "Assistant",
+                CoopPositionDuties = @"Document intake processing, Financial reporting functions, Review, edit and proof documents (contracts, forms and intranet),
+                                        Copy, scan and log accounting transactions and other documents, Prepare binders and meeting materials, Data entry, Editing/updating spreadsheets and PDFï¿½s,
+                                        Maintain electronic libraries and back up documentation, Assist with record retention management, Assist with various other projects as assigned",
+                Qualifications = @"High level proficiency with spreadsheet and word processing computer applications, Strong organizational skills, attention to detail, ability to prioritize, and exercise sound independent judgment
+                                    Experience creating and maintaining computer spreadsheets and databases. Demonstrated independent problem solving skills; ability to maintain confidentiality and professionalism,
+                                    Ability to work cooperatively and strategically in a team environment with all levels of professionals. Excellent oral and written communication skills and ability to communicate and work effectively with individuals from diverse backgrounds and cultures
+                                    Commitment to and experience promoting and enhancing diversity and equity",
+                Paid = false,
+                Stippened = false,
+                UnPaid = true,
+                DepartmentID = dept1.DepartmentID
             };
 
             // invites
@@ -220,6 +271,8 @@ namespace Coop_Listing_Site.Models
             context.Opportunities.Add(opp1);
             context.Opportunities.Add(opp2);
             context.Opportunities.Add(opp3);
+            context.Opportunities.Add(opp4);
+            context.Opportunities.Add(opp5);
 
             context.SaveChanges();
 
