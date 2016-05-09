@@ -10,14 +10,16 @@ namespace Coop_Listing_Site.Models
     {
         public CoordinatorInfo()
         {
-            Departments = new List<Department>();
+            Majors = new List<Major>();
         }
 
         [Key]
         public int CoordInfoID { get; set; }
         
+        // The user this information is linked to
         public User User { get; set; }
 
-        public virtual ICollection<Department> Departments { get; set; }
+        // The majors the coordinator oversees
+        public virtual ICollection<Major> Majors { get; set; }
     }
 }

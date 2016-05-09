@@ -111,15 +111,15 @@ namespace Coop_Listing_Site.Controllers
             }
 
             CoordRegModel model = new CoordRegModel { Email = invite.Email };
-            ViewBag.Department = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
 
             return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int Department)
+        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int Majors)
         {
-            ViewBag.Department = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
             if (!ModelState.IsValid) return View();
 
             User user = new User
@@ -135,15 +135,15 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
-                var dept = db.Departments.Find(Department);
+                var major = db.Majors.Find(Majors);
 
                 var coordinfo = new CoordinatorInfo
                 {
                     User = user
                 };
 
-                if(dept != null)
-                    coordinfo.Departments.Add(dept);
+                if(major != null)
+                    coordinfo.Majors.Add(major);
 
                 db.Coordinators.Add(coordinfo);
                 db.SaveChanges();
@@ -185,19 +185,5 @@ namespace Coop_Listing_Site.Controllers
 
             base.Dispose(disposing);
         }
-
-        /*
-         * Company's will wait, as they are not essential to getting the site running.
-         * // GET: Register/Company
-        public ActionResult Company()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Company(CompanyRegistrationModel company)
-        {
-            return View();
-        }*/
     }
 }

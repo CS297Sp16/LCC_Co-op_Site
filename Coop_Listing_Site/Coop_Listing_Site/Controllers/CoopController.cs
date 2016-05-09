@@ -39,11 +39,11 @@ namespace Coop_Listing_Site.Controllers
         {
             string userId = User.Identity.GetUserId();
             List<Opportunity> oppList = null;
+            db.Majors.Load();
+            db.Departments.Load();
 
             if (User.IsInRole("Student"))
             {
-                db.Majors.Load();
-                db.Departments.Load();
                 var sInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
 
                 if (sInfo != null)
@@ -62,7 +62,7 @@ namespace Coop_Listing_Site.Controllers
                 var cInfo = db.Coordinators.Include(c => c.User).SingleOrDefault(ci => ci.User == CurrentUser);
                 if (cInfo != null)
                 {
-                    var depts = cInfo.Departments.Select(d => d.DepartmentID);
+                    var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
                     var opps = from opp in db.Opportunities
                                where depts.Contains(opp.DepartmentID)
                                select opp;
@@ -111,7 +111,7 @@ namespace Coop_Listing_Site.Controllers
                     CoopPositionTitle = opportunityVM.CoopPositionTitle,
                     CoopPositionDuties = opportunityVM.CoopPositionDuties,
                     Qualifications = opportunityVM.Qualifications,
-                    GPA =opportunityVM.GPA,
+                    GPA = opportunityVM.GPA,
                     Paid = opportunityVM.Paid,
                     Duration = opportunityVM.Duration,
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
@@ -136,7 +136,7 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Opportunity opportunity = db.Opportunities.Find(id);
-            if(opportunity == null)
+            if (opportunity == null)
             {
                 return HttpNotFound();
             }

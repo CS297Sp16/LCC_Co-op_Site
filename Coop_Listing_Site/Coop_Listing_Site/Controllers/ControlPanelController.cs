@@ -493,15 +493,11 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-
-            foreach (var dept in coordInfo.Departments)
+            foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
             {
-                foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
+                if (coordInfo.Majors.Contains(student.Major))
                 {
-                    if (dept.Majors.Contains(student.Major))
-                    {
-                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
-                    }
+                    students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                 }
             }
 
@@ -512,15 +508,11 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-
-            foreach (var dept in coordInfo.Departments)
+            foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
             {
-                foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
+                if (coordInfo.Majors.Contains(student.Major))
                 {
-                    if (dept.Majors.Contains(student.Major))
-                    {
-                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
-                    }
+                    students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                 }
             }
 
