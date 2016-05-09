@@ -138,8 +138,6 @@ namespace Coop_Listing_Site.Models
                 Qualifications = @"Suggested skills:  Web Design (HTML, CSS, JavaScript), Database Querying, Problem Solving Skills, Curiosity and willingness to learn, Ability to work within a team and take feedback,
                                    Attention to detail: Nice skills to have: Android Application Programming experience, Objective C and iOS programming experience, AngularJS, Node JS",
                 Paid = true,
-                Stippened = false,
-                UnPaid = false,
                 Wage = "$10 per hour",
                 Duration = "three to four terms",
                 OpeningsAvailable = 1,
@@ -164,8 +162,6 @@ namespace Coop_Listing_Site.Models
                                     Requires high degree of attention to detail; detail - oriented; excellent knowledge of spelling, grammar, punctuation, Successful completion of Web Authoring, JavaScript courses,
                                     completion of Academic Writing (WR 121) and Technical Writing(WR 227) highly recommended, Students with skills in advanced web coding / programming technologies such as PHP,preferred",
                 Paid = false,
-                Stippened = false,
-                UnPaid = true,
                 Duration = "11 weeks maximum",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
@@ -186,8 +182,6 @@ namespace Coop_Listing_Site.Models
                 Qualifications = @"Having enough self-confidence to be psychologically stressed during the first few weeks until they understand what is here,
                                      Not so headstrong as to think that they have time to change everything, Willing to use their skills to build better interfaces to what we already have.",
                 Paid = false,
-                Stippened = false,
-                UnPaid = true,
                 Duration = "One term",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
@@ -208,8 +202,6 @@ namespace Coop_Listing_Site.Models
                                         Disbursing checks internally.",
                 Qualifications = @"Must be available to work the following days: Monday, Tuesday, and Thursday",
                 Paid = true,
-                Stippened = false,
-                UnPaid = false,
                 Wage = "$12 per hour",
                 DepartmentID = dept1.DepartmentID
             };
@@ -233,8 +225,6 @@ namespace Coop_Listing_Site.Models
                                     Ability to work cooperatively and strategically in a team environment with all levels of professionals. Excellent oral and written communication skills and ability to communicate and work effectively with individuals from diverse backgrounds and cultures
                                     Commitment to and experience promoting and enhancing diversity and equity",
                 Paid = false,
-                Stippened = false,
-                UnPaid = true,
                 DepartmentID = dept1.DepartmentID
             };
 
