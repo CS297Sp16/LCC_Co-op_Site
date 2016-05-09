@@ -109,10 +109,12 @@ namespace Coop_Listing_Site.Models
 
             CoordinatorInfo cInfo1 = new CoordinatorInfo
             {
-                UserId = user3.Id
+                User = user3
             };
 
-            cInfo1.Departments.Add(dept);
+            cInfo1.Majors.Add(major);
+            cInfo1.Majors.Add(major1);
+            cInfo1.Majors.Add(major2);
 
             // Add the student role to them
             userManager.AddToRole(user1.Id, "Student");
@@ -157,7 +159,7 @@ namespace Coop_Listing_Site.Models
                 CompanyWebsite = "http://getfoundeugene.com",
                 AboutCompany = @"Get Found, Eugene, LLC is a small, local web development company based in Eugene.Find out more about what makes it a unique company here: http://getfoundeugene.com",
                 CoopPositionTitle = " Web Development Intern",
-                CoopPositionDuties = @"Website development using HTML5/CSS3, Javascript, JQuery, & PHP; Wordpress, Researching existing templates / layouts and markets for clients� websites,
+                CoopPositionDuties = @"Website development using HTML5/CSS3, Javascript, JQuery, & PHP; Wordpress, Researching existing templates / layouts and markets for client's websites,
                                         Creating web pages aligned with customer order specifications and industry best, practices such as responsive design for mobile devices; search - engine optimization,
                                         Occasional and limited office support ranging from answering phones to assisting, technical support staff with hardware / software troubleshooting tasks.",
                 Qualifications = @"2nd-year AAS in Computer Programming student (1st-year / certificate-seeking students considered individually), Specific interest in front - end web coding and design work,
@@ -226,7 +228,7 @@ namespace Coop_Listing_Site.Models
                 AboutDepartment = @"Budget Services provides central support services for University Advancement of all financial transactions and contracts.  These services include accounts payable, accounts receivable, contracts, financial statements and retention and archiving of all financial and contractual documents",
                 CoopPositionTitle = "Assistant",
                 CoopPositionDuties = @"Document intake processing, Financial reporting functions, Review, edit and proof documents (contracts, forms and intranet),
-                                        Copy, scan and log accounting transactions and other documents, Prepare binders and meeting materials, Data entry, Editing/updating spreadsheets and PDF�s,
+                                        Copy, scan and log accounting transactions and other documents, Prepare binders and meeting materials, Data entry, Editing/updating spreadsheets and PDFs,
                                         Maintain electronic libraries and back up documentation, Assist with record retention management, Assist with various other projects as assigned",
                 Qualifications = @"High level proficiency with spreadsheet and word processing computer applications, Strong organizational skills, attention to detail, ability to prioritize, and exercise sound independent judgment
                                     Experience creating and maintaining computer spreadsheets and databases. Demonstrated independent problem solving skills; ability to maintain confidentiality and professionalism,
