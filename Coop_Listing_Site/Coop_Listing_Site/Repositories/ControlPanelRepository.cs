@@ -100,13 +100,13 @@ namespace Coop_Listing_Site.Repositories
 
             var studInfo = db.Students.FirstOrDefault(si => si.User == user);
 
-            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == (int)studentUpdateModel.Majors.SelectedValue);
+            var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studentUpdateModel.MajorID);
 
             var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
 
             studInfo.GPA = studentUpdateModel.GPA;
 
-            if (studInfo.Major.MajorID != (int)studentUpdateModel.Majors.SelectedValue)
+            if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
             {
                 studInfo.Major = major;
             }
