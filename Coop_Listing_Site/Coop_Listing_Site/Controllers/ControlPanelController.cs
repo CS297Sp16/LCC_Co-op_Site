@@ -525,17 +525,13 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetEnabledStudents()
         {
-            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-
-            foreach (var dept in coordInfo.Departments)
+            foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
             {
-                foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
+                if (coordInfo.Majors.Contains(student.Major))
                 {
-                    if (dept.Majors.Contains(student.Major))
-                    {
-                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
-                    }
+                    students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                 }
             }
 
@@ -544,17 +540,13 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetDisabledStudents()
         {
-            var coordInfo = db.Coordinators.Find(CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-
-            foreach (var dept in coordInfo.Departments)
+            foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
             {
-                foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
+                if (coordInfo.Majors.Contains(student.Major))
                 {
-                    if (dept.Majors.Contains(student.Major))
-                    {
-                        students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
-                    }
+                    students[student.User.Id] = string.Format("{0} - {1} {2}", student.LNumber, student.User.FirstName, student.User.LastName);
                 }
             }
 
@@ -570,12 +562,11 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordinators = new Dictionary<string, string>();
 
-            foreach (var coord in db.Coordinators)
+            foreach (var coord in db.Coordinators.Include(c => c.User))
             {
-                var user = db.Users.Find(coord.UserId);
-                if (user.Enabled)
+                if (coord.User.Enabled)
                 {
-                    coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
+                    coordinators[coord.User.Id] = string.Format("{0} - {1} {2}", coord.User.Email, coord.User.FirstName, coord.User.LastName);
                 }
             }
 
@@ -586,12 +577,11 @@ namespace Coop_Listing_Site.Controllers
         {
             var coordinators = new Dictionary<string, string>();
 
-            foreach (var coord in db.Coordinators)
+            foreach (var coord in db.Coordinators.Include(c => c.User))
             {
-                var user = db.Users.Find(coord.UserId);
-                if (!user.Enabled)
+                if (coord.User.Enabled)
                 {
-                    coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
+                    coordinators[coord.User.Id] = string.Format("{0} - {1} {2}", coord.User.Email, coord.User.FirstName, coord.User.LastName);
                 }
             }
 
