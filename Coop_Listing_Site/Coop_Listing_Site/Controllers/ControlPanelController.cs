@@ -26,9 +26,9 @@ namespace Coop_Listing_Site.Controllers
 
         public ControlPanelController()
         {
-            db = db ?? new CoopContext();
+            db =  new CoopContext();
 
-            userManager = userManager ?? new UserManager<User>(new UserStore<User>(db));
+            userManager = new UserManager<User>(new UserStore<User>(db));
 
             // icpr = new ControlPanelRepository(); //uncomment for testing
         }
@@ -372,7 +372,7 @@ namespace Coop_Listing_Site.Controllers
                 newPasswordMatches = true; 
             }
 
-            if (!userManager.CheckPassword(studInfo.User, studentUpdateModel.NewPassword))
+            if (studentUpdateModel.NewPassword != null && !userManager.CheckPassword(studInfo.User, studentUpdateModel.NewPassword))
             {
                 passwordChangeRequested = true;
             }
