@@ -355,12 +355,12 @@ namespace Coop_Listing_Site.Controllers
             bool passwordChangeRequested = false;
 
             var studInfo = db.Students
-                .Where(si => si.User.Id == CurrentUser.Id)
+                .Where(si => si.User.Id == studentUpdateModel.UserId)
                 .Include(si => si.User)
                 .Include(si => si.Major)
                 .FirstOrDefault();
 
-            var major = db.Majors.FirstOrDefault(m => m.MajorID == studInfo.Major.MajorID);
+            var major = db.Majors.FirstOrDefault(m => m.MajorID == studentUpdateModel.MajorID);
 
             if (studentUpdateModel.CurrentPassword != null)
             {
@@ -388,7 +388,7 @@ namespace Coop_Listing_Site.Controllers
                     db.SaveChanges();
                 }
                
-                if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
+                if (studInfo.Major != major)
                 {
                     studInfo.Major = major;
                     db.Entry(studInfo.Major).State = EntityState.Modified;
