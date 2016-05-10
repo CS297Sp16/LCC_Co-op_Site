@@ -2,8 +2,6 @@
 
 @{
     ViewBag.Title = "UpdateStudent";
-
-    SelectList majorSelectList = ViewBag.Majors;
 }
 
 <h2>UpdateStudent</h2>
@@ -21,7 +19,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.MajorID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.MajorID, majorSelectList, new { htmlAttributes = new { @class = "form-control" } });
+                @Html.EditorFor(model => model.MajorID, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.MajorID, "", new { @class = "text-danger" })
             </div>
         </div>
