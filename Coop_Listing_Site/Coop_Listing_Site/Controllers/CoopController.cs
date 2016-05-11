@@ -190,17 +190,38 @@ namespace Coop_Listing_Site.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        //retrieve a single opportunity
+        private Opportunity GetOpportunity(int opportunityID)
+        {
+            return db.Opportunities.Find(opportunityID);
+        }
 
-        public ActionResult Upload()
+        //retrieve all opportunities
+        private List<Opportunity> GetOpportunities()
+        {
+            return db.Opportunities.ToList();
+        }
+
+        public ActionResult Upload(int id)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload)
+        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, int id)
         {
             if (ModelState.IsValid)
             {
+                //Gets the opportunity that is being applied for
+                var internship = db.Opportunities.Find(id);
+
+                //Attaches the opportunity that the student is applying for to the application
+                application.Opportunity = internship;
+
+                //Attaches the current student to the application that is being submitted
+                application.User = CurrentUser;
+
+                //Allows for the upload of a resume
                 if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
                 {
                     application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
@@ -216,6 +237,7 @@ namespace Coop_Listing_Site.Controllers
                     return View();
                 }
 
+                //Allows for the upload of a cover letter
                 if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
