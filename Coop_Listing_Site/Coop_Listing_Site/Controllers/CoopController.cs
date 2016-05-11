@@ -188,10 +188,17 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload)
+        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, Opportunity internship)
         {
             if (ModelState.IsValid)
             {
+                //Attaches the opportunity that the student is applying for to the application
+                application.Opportunity = internship;
+
+                //Attaches the current student to the application that is being submitted
+                application.User = CurrentUser;
+
+                //Allows for the upload of a resume
                 if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
                 {
                     application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
@@ -207,6 +214,7 @@ namespace Coop_Listing_Site.Controllers
                     return View();
                 }
 
+                //Allows for the upload of a cover letter
                 if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
