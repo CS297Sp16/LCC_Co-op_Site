@@ -182,16 +182,19 @@ namespace Coop_Listing_Site.Controllers
             return db.Opportunities.ToList();
         }
 
-        public ActionResult Upload()
+        public ActionResult Upload(int id)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, Opportunity internship)
+        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, int id)
         {
             if (ModelState.IsValid)
             {
+                //Gets the opportunity that is being applied for
+                var internship = db.Opportunities.Find(id);
+
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
 
