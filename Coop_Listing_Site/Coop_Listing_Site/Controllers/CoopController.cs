@@ -39,11 +39,11 @@ namespace Coop_Listing_Site.Controllers
         {
             string userId = User.Identity.GetUserId();
             List<Opportunity> oppList = null;
+            db.Majors.Load();
+            db.Departments.Load();
 
             if (User.IsInRole("Student"))
             {
-                db.Majors.Load();
-                db.Departments.Load();
                 var sInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
 
                 if (sInfo != null)
@@ -59,10 +59,10 @@ namespace Coop_Listing_Site.Controllers
             }
             else if (User.IsInRole("Coordinator"))
             {
-                var cInfo = db.Coordinators.SingleOrDefault(ci => ci.UserId == userId);
+                var cInfo = db.Coordinators.Include(c => c.User).SingleOrDefault(ci => ci.User == CurrentUser);
                 if (cInfo != null)
                 {
-                    var depts = cInfo.Departments.Select(d => d.DepartmentID);
+                    var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
                     var opps = from opp in db.Opportunities
                                where depts.Contains(opp.DepartmentID)
                                select opp;
@@ -111,7 +111,7 @@ namespace Coop_Listing_Site.Controllers
                     CoopPositionTitle = opportunityVM.CoopPositionTitle,
                     CoopPositionDuties = opportunityVM.CoopPositionDuties,
                     Qualifications = opportunityVM.Qualifications,
-                    GPA =opportunityVM.GPA,
+                    GPA = opportunityVM.GPA,
                     Paid = opportunityVM.Paid,
                     Duration = opportunityVM.Duration,
                     OpeningsAvailable = opportunityVM.OpeningsAvailable,
@@ -136,7 +136,7 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Opportunity opportunity = db.Opportunities.Find(id);
-            if(opportunity == null)
+            if (opportunity == null)
             {
                 return HttpNotFound();
             }
@@ -190,17 +190,38 @@ namespace Coop_Listing_Site.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        //retrieve a single opportunity
+        private Opportunity GetOpportunity(int opportunityID)
+        {
+            return db.Opportunities.Find(opportunityID);
+        }
 
-        public ActionResult Upload()
+        //retrieve all opportunities
+        private List<Opportunity> GetOpportunities()
+        {
+            return db.Opportunities.ToList();
+        }
+
+        public ActionResult Upload(int id)
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload)
+        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, int id)
         {
             if (ModelState.IsValid)
             {
+                //Gets the opportunity that is being applied for
+                var internship = db.Opportunities.Find(id);
+
+                //Attaches the opportunity that the student is applying for to the application
+                application.Opportunity = internship;
+
+                //Attaches the current student to the application that is being submitted
+                application.User = CurrentUser;
+
+                //Allows for the upload of a resume
                 if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
                 {
                     application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
@@ -216,6 +237,7 @@ namespace Coop_Listing_Site.Controllers
                     return View();
                 }
 
+                //Allows for the upload of a cover letter
                 if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
                 {
                     application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
