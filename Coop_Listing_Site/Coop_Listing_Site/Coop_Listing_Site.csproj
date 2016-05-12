@@ -163,7 +163,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MajorController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
     <Compile Include="DAL\ETC\CourseConfiguration.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
@@ -171,6 +170,8 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="DAL\IMajorRepo.cs" />
+    <Compile Include="DAL\MajorRepo.cs" />
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

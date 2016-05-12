@@ -572,8 +572,8 @@ namespace Coop_Listing_Site.Controllers
             {
                 db.Dispose();
 
-                //if (userManager != null)
-                //    userManager.Dispose();
+                if (userManager != null)
+                    userManager.Dispose();
             }
             base.Dispose(disposing);
         }
