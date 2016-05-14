@@ -337,12 +337,39 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-           var studentVM = new StudentUpdateModel()
+            var gpaList = new Dictionary<double,string>();
+            double gpaMin = 2.00d;
+            double inc = 0.01d;
+            double key;
+            string value;
+            double gpaSelectedValue;
+
+            while (gpaMin <= 4.5)
+            {                
+                value = gpaMin.ToString("N2");  //used to format the displayed value
+                key = Convert.ToDouble(value);  //produces the values => key
+
+                gpaList.Add(key,value);
+                gpaMin += inc;
+            }
+
+            var studentVM = new StudentUpdateModel()
+                            {
+                                UserId = studInfo.User.Id,
+                                MajorID = studInfo.Major.MajorID,
+                                GPA = studInfo.GPA
+                            };
+
+            if(studentVM.GPA > 2)
             {
-                UserId = studInfo.User.Id,
-                MajorID = studInfo.Major.MajorID,
-                GPA = studInfo.GPA
-            };
+                gpaSelectedValue = studentVM.GPA;
+            }
+            else
+            {
+                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
+            }
+
+            ViewBag.GPAs = new SelectList(gpaList, "key", "value",gpaSelectedValue);
 
             return View(studentVM);
         }
