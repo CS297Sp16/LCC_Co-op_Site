@@ -15,6 +15,8 @@ namespace Coop_Listing_Site.Models.ViewModels
         [Display(Name = "Major")]
         public int MajorID { get; set; }
         public double GPA { get; set; }
+        [Display(Name = "Do you want to change your password?")]
+        public bool UpdatePass { get; set; }
 
         [DataType(DataType.Password), Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
