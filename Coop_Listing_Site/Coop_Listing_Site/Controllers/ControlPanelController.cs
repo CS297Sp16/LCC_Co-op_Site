@@ -392,6 +392,22 @@ namespace Coop_Listing_Site.Controllers
             if (studentUpdateModel.CurrentPassword != null)
             {
                 passwordValidated = userManager.CheckPassword(studInfo.User, studentUpdateModel.CurrentPassword);
+                if(passwordValidated)
+                {
+                    //TODO: trigger flag on the ViewModel that triggers jQuery
+
+                    studentUpdateModel.resetFlag = true;
+
+                    passwordValidated = false; //reset flag
+                    studentUpdateModel.CurrentPassword = null; //reset to stop infinite loop 
+
+                    //TODO:redirect student back to the GET
+                    return RedirectToAction("UpdateStudent");
+                }
+
+                //TODO: Else redirect back to get with message stating action could not complete
+                ViewBag.NoMatch = "Password does not match";
+                return RedirectToAction("UpdateStudent");
             }
 
             if(studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
@@ -422,9 +438,14 @@ namespace Coop_Listing_Site.Controllers
                     db.SaveChanges();
                 }
 
-                if (passwordValidated && newPasswordMatches && passwordChangeRequested )
+                if (newPasswordMatches && passwordChangeRequested )
                 {
+
                     userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
+
+                    //TODO: redirect back to index with message confirming
+                    ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
+                    return RedirectToAction("Index");
                 }
             }
             return RedirectToAction("Index");

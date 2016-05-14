@@ -15,8 +15,6 @@ namespace Coop_Listing_Site.Models.ViewModels
         [Display(Name = "Major")]
         public int MajorID { get; set; }
         public double GPA { get; set; }
-        [Display(Name = "Do you want to change your password?")]
-        public bool UpdatePass { get; set; }
 
         [DataType(DataType.Password), Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
@@ -28,5 +26,12 @@ namespace Coop_Listing_Site.Models.ViewModels
         [DataType(DataType.Password), Display(Name = "Confirm Password")]
         [Compare("NewPassword", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmNewPassword { get; set; }
+
+        /**************************************** VIEW SPECIFIC HELPER PROPERTIES *********************************************************/
+
+        public bool resetFlag { get; set; }
+
+        [Display(Name = "Do you want to change your password?")]
+        public bool UpdatePass { get; set; }
     }
 }

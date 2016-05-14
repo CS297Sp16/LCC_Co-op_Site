@@ -7,7 +7,12 @@
     SelectList gpaSelectList = ViewBag.GPAs;
 }
 
-<h2>UpdateStudent</h2>
+<h2>@Html.Raw(ViewBag.Title)</h2>
+
+@if (ViewBag.NoMatch != null)
+{
+    <h3>@Html.Raw(ViewBag.NoMatch)</h3>
+}
 
 
 @using (Html.BeginForm())
@@ -55,8 +60,14 @@
                     @Html.ValidationMessageFor(model => model.UpdatePass, "", new { @class = "text-danger" })
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
+
+        @*resolve jQuery redirects*@
+           
+        
+        
+         <div class="form-group">
                 @Html.LabelFor(model => model.CurrentPassword, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.CurrentPassword, new { htmlAttributes = new { @class = "form-control" } })
@@ -79,14 +90,18 @@
                     @Html.ValidationMessageFor(model => model.ConfirmNewPassword, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
+      
        
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Save" class="btn btn-default" /> 
             </div>
-        </div>
+
+            <div class="col-md-offset-2 col-md-5">
+                <input type="button" onclick="document.location.href='@Url.Action("Index","ControlPanel")';" value="Cancel" class="btn btn-default" />
+            </div>
     </div>
 }
 
