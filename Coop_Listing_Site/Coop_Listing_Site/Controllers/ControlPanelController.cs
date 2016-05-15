@@ -26,8 +26,7 @@ namespace Coop_Listing_Site.Controllers
 
         public ControlPanelController()
         {
-            db =  new CoopContext();
-
+            db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
 
             // icpr = new ControlPanelRepository(); //uncomment for testing
@@ -332,12 +331,12 @@ namespace Coop_Listing_Site.Controllers
             var studInfo = db.Students
                 .Where(si => si.User.Id == CurrentUser.Id)
                 .Include(si => si.User)
-                .Include(si => si.Major)              
+                .Include(si => si.Major)
                 .FirstOrDefault();
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            var gpaList = new Dictionary<double,string>();
+            var gpaList = new Dictionary<double, string>();
             double gpaMin = 2.00d;
             double inc = 0.01d;
             double key;
@@ -345,22 +344,22 @@ namespace Coop_Listing_Site.Controllers
             double gpaSelectedValue;
 
             while (gpaMin <= 4.5)
-            {                
+            {
                 value = gpaMin.ToString("N2");  //used to format the displayed value
                 key = Convert.ToDouble(value);  //produces the values => key
 
-                gpaList.Add(key,value);
+                gpaList.Add(key, value);
                 gpaMin += inc;
             }
 
             var studentVM = new StudentUpdateModel()
-                            {
-                                UserId = studInfo.User.Id,
-                                MajorID = studInfo.Major.MajorID,
-                                GPA = studInfo.GPA
-                            };
+            {
+                UserId = studInfo.User.Id,
+                MajorID = studInfo.Major.MajorID,
+                GPA = studInfo.GPA
+            };
 
-            if(studentVM.GPA > 2)
+            if (studentVM.GPA > 2)
             {
                 gpaSelectedValue = studentVM.GPA;
             }
@@ -369,7 +368,7 @@ namespace Coop_Listing_Site.Controllers
                 gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
             }
 
-            ViewBag.GPAs = new SelectList(gpaList, "key", "value",gpaSelectedValue);
+            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
 
             return View(studentVM);
         }
@@ -421,7 +420,7 @@ namespace Coop_Listing_Site.Controllers
             if (studentUpdateModel.CurrentPassword != null)
             {
                 var user = userManager.Find(studInfo.User.Email, studentUpdateModel.CurrentPassword);  //userManager.checkPassword not working
-                if(user != null)
+                if (user != null)
                 {
                     passwordValidated = true;
                 }
@@ -429,12 +428,12 @@ namespace Coop_Listing_Site.Controllers
                 {
                     ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
                     return View("UpdateStudent");
-                }             
+                }
             }
 
-            if(studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+            if (studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
             {
-                newPasswordMatches = true; 
+                newPasswordMatches = true;
             }
 
             if (studentUpdateModel.NewPassword != null && userManager.Find(studInfo.User.Email, studentUpdateModel.NewPassword) == null)
@@ -452,7 +451,7 @@ namespace Coop_Listing_Site.Controllers
                     db.Entry(studInfo).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-               
+
                 if (studInfo.Major != major)
                 {
                     studInfo.Major = major;
@@ -460,9 +459,9 @@ namespace Coop_Listing_Site.Controllers
                     db.SaveChanges();
                 }
 
-                if (passwordValidated && newPasswordMatches && passwordChangeRequested )
+                if (passwordValidated && newPasswordMatches && passwordChangeRequested)
                 {
-                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword , studentUpdateModel.NewPassword);
+                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
 
                     //TODO: redirect back to index with message confirming
                     ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";

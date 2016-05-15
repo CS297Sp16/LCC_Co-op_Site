@@ -169,6 +169,10 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="Migrations\201605150301215_Initial_Migration.cs" />
+    <Compile Include="Migrations\201605150301215_Initial_Migration.Designer.cs">
+      <DependentUpon>201605150301215_Initial_Migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -286,6 +290,11 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605150301215_Initial_Migration.resx">
+      <DependentUpon>201605150301215_Initial_Migration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
