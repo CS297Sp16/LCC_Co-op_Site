@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 using Coop_Listing_Site.Models;
 
 namespace Coop_Listing_Site.DAL
 {
-    public class MajorRepo : IMajorRepo
+    public class MajorsRepo : IMajorRepo
     {
         private CoopContext db;
 
-        public MajorRepo()
+        public MajorsRepo()
         {
             db = new CoopContext();
         }
 
-        public MajorRepo(CoopContext context)
+        public MajorsRepo(CoopContext context)
         {
             db = context;
         }
@@ -30,27 +31,34 @@ namespace Coop_Listing_Site.DAL
 
         public Major Delete(Major major)
         {
-            throw new NotImplementedException();
+            db.Majors.Remove(major);
+            db.SaveChanges();
+            return major;
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            db.Dispose();
         }
 
         public IEnumerable<Major> GetAll()
         {
-            throw new NotImplementedException();
+            var majors = db.Majors.Include(m => m.Department);
+            return majors.ToList();
         }
 
-        public Major GetByID(int id)
+        public Major GetByID(int? id)
         {
-            throw new NotImplementedException();
+            db.Departments.Load();
+            return db.Majors.Find(id);
         }
 
         public Major Update(Major major)
         {
-            throw new NotImplementedException();
+            db.Entry(major).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return major;
         }
     }
 }

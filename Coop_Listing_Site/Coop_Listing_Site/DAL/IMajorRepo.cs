@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Coop_Listing_Site.DAL
 {
-    interface IMajorRepo : IDisposable
+    public interface IMajorRepo : IDisposable
     {
         IEnumerable<Major> GetAll();
 
-        Major GetByID(int id);
+        Major GetByID(int? id);
 
         Major Add(Major major);
 

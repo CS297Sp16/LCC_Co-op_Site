@@ -12,16 +12,28 @@ namespace Coop_Listing_Site.Controllers
 {
     public class MajorController : Controller
     {
-        private CoopContext db;
+        //private CoopContext db;
+        private IMajorRepo majorsRepo;
+        private IRepository<Department> departmentsRepo;
+
 
         public MajorController()
         {
-            db = new CoopContext();
+            var db = new CoopContext();
+            majorsRepo = new MajorsRepo(db);
+            departmentsRepo = new DepartmentsRepo(db);
         }
+
+        public MajorController(IMajorRepo repo, IRepository<Department> deptRepo)
+        {
+            majorsRepo = repo;
+            departmentsRepo = deptRepo;
+        }
+
 
         public ActionResult Index()
         {
-            var majors = db.Majors.Include(m => m.Department).OrderBy(m => m.Department.DepartmentName);
+            var majors = majorsRepo.GetAll();
 
             return View(majors);
         }
@@ -29,7 +41,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Add()
         {
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+            var depts = departmentsRepo.GetAll();
 
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
 
@@ -39,14 +51,15 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
         public ActionResult Add([Bind(Include = "MajorName")] Major major, int DepartmentID)
         {
-            var dept = db.Departments.Find(DepartmentID);
-            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
+            var dept = departmentsRepo.GetByID(DepartmentID);
+
+            if (dept == null)
+                ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
 
             if (ModelState.IsValid)
             {
                 major.Department = dept;
-                db.Majors.Add(major);
-                db.SaveChanges();
+                majorsRepo.Add(major);
 
                 return RedirectToAction("Index");
             }
@@ -62,13 +75,11 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            db.Departments.Load();
-            var major = db.Majors.Find(id);
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+            var major = majorsRepo.GetByID(id);
+            var depts = departmentsRepo.GetAll().OrderBy(d => d.DepartmentName);
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", major.Department.DepartmentID);
 
             /* For if/when we add courses
-            
             var courses = db.Courses.OrderBy(c => c.CourseNumber);
             var selectedCourses = db.Majors.Find(id).Courses.Select(c => c.CourseNumber);
             ViewBag.Courses = new MultiSelectList(courses, "CourseID", "CourseNumber", selectedCourses);
@@ -80,9 +91,8 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "MajorID, MajorName")] Major major, int DepartmentID)
         {
-            db.Majors.Load();
-            var dept = db.Departments.Find(DepartmentID);
-            var dbMajor = db.Majors.Find(major.MajorID);
+            var dept = departmentsRepo.GetByID(DepartmentID);
+            var dbMajor = majorsRepo.GetByID(major.MajorID);
 
             if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
 
@@ -90,11 +100,10 @@ namespace Coop_Listing_Site.Controllers
             {
                 dbMajor.Department = dept;
                 dbMajor.MajorName = major.MajorName;
-                db.Entry(dbMajor).State = EntityState.Modified;
-                db.SaveChanges();
+                majorsRepo.Update(dbMajor);
             }
 
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
+            var depts = departmentsRepo.GetAll().OrderBy(d => d.DepartmentName);
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
 
             ViewBag.Updated = true;
@@ -109,12 +118,12 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Major major = db.Majors.Find(id);
+            var major = majorsRepo.GetByID(id);
             if (major == null)
             {
                 return HttpNotFound();
             }
-            db.Departments.Load();
+            //db.Departments.Load();
             return View(major);
         }
 
@@ -122,9 +131,8 @@ namespace Coop_Listing_Site.Controllers
             ValidateAntiForgeryToken]
         public ActionResult ConfirmDeleteMajor(int id)
         {
-            Major major = db.Majors.Find(id);
-            db.Majors.Remove(major);
-            db.SaveChanges();
+            Major major = majorsRepo.GetByID(id);
+            majorsRepo.Delete(major);
 
             return RedirectToAction("Index");
         }
@@ -133,7 +141,8 @@ namespace Coop_Listing_Site.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                majorsRepo.Dispose();
+                departmentsRepo.Dispose();
             }
             base.Dispose(disposing);
         }
