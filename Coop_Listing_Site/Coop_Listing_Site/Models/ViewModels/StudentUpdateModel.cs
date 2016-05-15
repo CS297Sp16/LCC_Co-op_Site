@@ -26,9 +26,8 @@ namespace Coop_Listing_Site.Models.ViewModels
 
         /**************************************** VIEW SPECIFIC HELPER PROPERTIES *********************************************************/
 
-        public bool resetFlag { get; set; }
 
         [Display(Name = "Do you want to change your password?")]
-        public bool UpdatePass { get; set; }
+        public bool? UpdatePass { get; set; }
     }
 }

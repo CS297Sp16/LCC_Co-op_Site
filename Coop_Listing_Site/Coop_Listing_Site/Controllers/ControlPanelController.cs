@@ -380,6 +380,22 @@ namespace Coop_Listing_Site.Controllers
             bool passwordValidated = false;
             bool passwordChangeRequested = false;
 
+            var gpaList = new Dictionary<double, string>();
+            double gpaMin = 2.00d;
+            double inc = 0.01d;
+            double key;
+            string value;
+            double gpaSelectedValue;
+
+            while (gpaMin <= 4.5)
+            {
+                value = gpaMin.ToString("N2");  //used to format the displayed value
+                key = Convert.ToDouble(value);  //produces the values => key
+
+                gpaList.Add(key, value);
+                gpaMin += inc;
+            }
+
             var studInfo = db.Students
                 .Where(si => si.User.Id == studentUpdateModel.UserId)
                 .Include(si => si.User)
@@ -388,25 +404,31 @@ namespace Coop_Listing_Site.Controllers
 
             var major = db.Majors.FirstOrDefault(m => m.MajorID == studentUpdateModel.MajorID);
 
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
+
+            if (studentUpdateModel.GPA > 2)
+            {
+                gpaSelectedValue = studentUpdateModel.GPA;
+            }
+            else
+            {
+                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
+            }
+
+            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
+
             if (studentUpdateModel.CurrentPassword != null)
             {
-                passwordValidated = userManager.CheckPassword(studInfo.User, studentUpdateModel.CurrentPassword);
-                if (passwordValidated)
+                var user = userManager.Find(studInfo.User.Email, studentUpdateModel.CurrentPassword);  //userManager.checkPassword not working
+                if (user != null)
                 {
-                    //TODO: trigger flag on the ViewModel that triggers jQuery
-
-                    studentUpdateModel.resetFlag = true;
-
-                    passwordValidated = false; //reset flag
-                    studentUpdateModel.CurrentPassword = null; //reset to stop infinite loop 
-
-                    //TODO:redirect student back to the GET
-                    return RedirectToAction("UpdateStudent");
+                    passwordValidated = true;
                 }
-
-                //TODO: Else redirect back to get with message stating action could not complete
-                ViewBag.NoMatch = "Password does not match";
-                return RedirectToAction("UpdateStudent");
+                else
+                {
+                    ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
+                    return View("UpdateStudent");
+                }
             }
 
             if (studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
@@ -414,7 +436,7 @@ namespace Coop_Listing_Site.Controllers
                 newPasswordMatches = true;
             }
 
-            if (studentUpdateModel.NewPassword != null && !userManager.CheckPassword(studInfo.User, studentUpdateModel.NewPassword))
+            if (studentUpdateModel.NewPassword != null && userManager.Find(studInfo.User.Email, studentUpdateModel.NewPassword) == null)
             {
                 passwordChangeRequested = true;
             }
@@ -437,14 +459,13 @@ namespace Coop_Listing_Site.Controllers
                     db.SaveChanges();
                 }
 
-                if (newPasswordMatches && passwordChangeRequested)
+                if (passwordValidated && newPasswordMatches && passwordChangeRequested)
                 {
-
                     userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
 
                     //TODO: redirect back to index with message confirming
                     ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
-                    return RedirectToAction("Index");
+                    return View("Index");
                 }
             }
             return RedirectToAction("Index");
