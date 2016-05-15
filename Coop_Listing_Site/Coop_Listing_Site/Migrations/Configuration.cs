@@ -168,7 +168,7 @@ namespace Coop_Listing_Site.Migrations
                         throw new Exception("Creation of default administrator account failed");
                 }
 
-                userManager.AddToRole(admin.Id, "SuperAdmin");
+                userManager.AddToRoles(admin.Id, "SuperAdmin", "Admin");
             }
 #endif
 
