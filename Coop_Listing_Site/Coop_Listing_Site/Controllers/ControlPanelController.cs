@@ -328,43 +328,145 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult UpdateStudent()
         {
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+            var studInfo = db.Students
+                .Where(si => si.User.Id == CurrentUser.Id)
+                .Include(si => si.User)
+                .Include(si => si.Major)
+                .FirstOrDefault();
 
-            return View();
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
+
+            var gpaList = new Dictionary<double, string>();
+            double gpaMin = 2.00d;
+            double inc = 0.01d;
+            double key;
+            string value;
+            double gpaSelectedValue;
+
+            while (gpaMin <= 4.5)
+            {
+                value = gpaMin.ToString("N2");  //used to format the displayed value
+                key = Convert.ToDouble(value);  //produces the values => key
+
+                gpaList.Add(key, value);
+                gpaMin += inc;
+            }
+
+            var studentVM = new StudentUpdateModel()
+            {
+                UserId = studInfo.User.Id,
+                MajorID = studInfo.Major.MajorID,
+                GPA = studInfo.GPA
+            };
+
+            if (studentVM.GPA > 2)
+            {
+                gpaSelectedValue = studentVM.GPA;
+            }
+            else
+            {
+                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
+            }
+
+            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
+
+            return View(studentVM);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
         {
-            var user = CurrentUser;
+            bool newPasswordMatches = false;
+            bool passwordValidated = false;
+            bool passwordChangeRequested = false;
 
-            var studInfo = db.Students.FirstOrDefault(si => si.User == user);
+            var gpaList = new Dictionary<double, string>();
+            double gpaMin = 2.00d;
+            double inc = 0.01d;
+            double key;
+            string value;
+            double gpaSelectedValue;
+
+            while (gpaMin <= 4.5)
+            {
+                value = gpaMin.ToString("N2");  //used to format the displayed value
+                key = Convert.ToDouble(value);  //produces the values => key
+
+                gpaList.Add(key, value);
+                gpaMin += inc;
+            }
+
+            var studInfo = db.Students
+                .Where(si => si.User.Id == studentUpdateModel.UserId)
+                .Include(si => si.User)
+                .Include(si => si.Major)
+                .FirstOrDefault();
 
             var major = db.Majors.FirstOrDefault(m => m.MajorID == studentUpdateModel.MajorID);
 
-            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
+            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            //var passVerification = userManager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, studentUpdateModel.Password);
+            if (studentUpdateModel.GPA > 2)
+            {
+                gpaSelectedValue = studentUpdateModel.GPA;
+            }
+            else
+            {
+                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
+            }
+
+            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
+
+            if (studentUpdateModel.CurrentPassword != null)
+            {
+                var user = userManager.Find(studInfo.User.Email, studentUpdateModel.CurrentPassword);  //userManager.checkPassword not working
+                if (user != null)
+                {
+                    passwordValidated = true;
+                }
+                else
+                {
+                    ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
+                    return View("UpdateStudent");
+                }
+            }
+
+            if (studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+            {
+                newPasswordMatches = true;
+            }
+
+            if (studentUpdateModel.NewPassword != null && userManager.Find(studInfo.User.Email, studentUpdateModel.NewPassword) == null)
+            {
+                passwordChangeRequested = true;
+            }
 
             if (!ModelState.IsValid) return View();
 
             if (ModelState.IsValid)
             {
-                studInfo.GPA = studentUpdateModel.GPA;
+                if (studInfo.GPA != studentUpdateModel.GPA)
+                {
+                    studInfo.GPA = studentUpdateModel.GPA;
+                    db.Entry(studInfo).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
 
-                if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
+                if (studInfo.Major != major)
                 {
                     studInfo.Major = major;
+                    db.Entry(studInfo.Major).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
 
-                if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
+                if (passwordValidated && newPasswordMatches && passwordChangeRequested)
                 {
-                    userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
-                }
+                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
 
-                db.Entry(user).State = EntityState.Modified;
-                db.Entry(studInfo).State = EntityState.Modified;
-                db.SaveChanges();
+                    //TODO: redirect back to index with message confirming
+                    ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
+                    return View("Index");
+                }
             }
             return RedirectToAction("Index");
         }
