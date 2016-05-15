@@ -37,7 +37,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public double GPA { get; set; }
         [Display(Name = "Paid")]
         public bool Paid { get; set; }
-        [Display(Name = "Pay rate")]
+        [Display(Name = "Enter actual rate or salary")]
         public string Wage { get; set; }
         [Display(Name = "Total stipend amount")]
         public string Amount { get; set; }
