@@ -9,3 +9,8 @@
 <div>
     <p>Pretend content.</p>
 </div>
+
+@if(ViewBag.PassConfirm != null)
+{
+    <h3>@Html.Raw(ViewBag.PassConfirm)</h3>
+}
