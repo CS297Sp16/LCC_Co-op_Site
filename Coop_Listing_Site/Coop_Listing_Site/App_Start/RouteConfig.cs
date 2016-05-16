@@ -17,7 +17,7 @@ namespace Coop_Listing_Site
                 name: "ControlPanel",
                 url: "ControlPanel/{controller}/{action}/{id}",
                 defaults: new { action = "Index", id = UrlParameter.Optional },
-                constraints: new { controller = "Test|Major" }
+                constraints: new { controller = "Test|Major|Student" }
             );
             routes.MapRoute(
                 name: "Default",

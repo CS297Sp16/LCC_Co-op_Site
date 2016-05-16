@@ -13,7 +13,7 @@ namespace Coop_Listing_Site.Controllers
     public class MajorController : Controller
     {
         //private CoopContext db;
-        private IMajorRepo majorsRepo;
+        private IRepository<Major> majorsRepo;
         private IRepository<Department> departmentsRepo;
 
 
@@ -21,10 +21,11 @@ namespace Coop_Listing_Site.Controllers
         {
             var db = new CoopContext();
             majorsRepo = new MajorsRepo(db);
-            departmentsRepo = new DepartmentsRepo(db);
+            departmentsRepo = new DepartmentRepo(db);
         }
 
-        public MajorController(IMajorRepo repo, IRepository<Department> deptRepo)
+        // for unit testing
+        public MajorController(IRepository<Major> repo, IRepository<Department> deptRepo)
         {
             majorsRepo = repo;
             departmentsRepo = deptRepo;

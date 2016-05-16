@@ -7,7 +7,7 @@ using Coop_Listing_Site.Models;
 
 namespace Coop_Listing_Site.DAL
 {
-    public class MajorsRepo : IMajorRepo
+    public class MajorsRepo : IRepository<Major>
     {
         private CoopContext db;
 
@@ -47,7 +47,7 @@ namespace Coop_Listing_Site.DAL
             return majors.ToList();
         }
 
-        public Major GetByID(int? id)
+        public Major GetByID(object id)
         {
             db.Departments.Load();
             return db.Majors.Find(id);

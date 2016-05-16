@@ -18,7 +18,6 @@ namespace Coop_Listing_Site.Controllers
 {
     public class ControlPanelController : Controller
     {
-        // Look into separating this controller into multiple. One for Student, Coordinator, and Admin. Maybe rename to cpanel to shorten the URL length, too
         private CoopContext db;
         private UserManager<User> userManager;
 
@@ -39,8 +38,8 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Index()
         {
-            var currentUser = CurrentUser;
-            return View(currentUser);
+            // consider using this page to display relevant user specific information
+            return View();
         }
 
         [Authorize(Roles = "Admin")]

@@ -10,7 +10,7 @@ namespace Coop_Listing_Site.DAL
     {
         IEnumerable<T> GetAll();
 
-        T GetByID(int? id);
+        T GetByID(object id);
 
         T Add(T dbObj);
 

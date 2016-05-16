@@ -2,21 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data.Entity;
 
 namespace Coop_Listing_Site.DAL
 {
-    public class DepartmentsRepo : IRepository<Department>
+    public class DepartmentRepo : IRepository<Department>
     {
         private CoopContext db;
 
-        public DepartmentsRepo()
+        public DepartmentRepo()
         {
             db = new CoopContext();
         }
 
-        public DepartmentsRepo(CoopContext context)
+        public DepartmentRepo(CoopContext context)
         {
             db = context;
         }
@@ -47,7 +46,7 @@ namespace Coop_Listing_Site.DAL
             return dept.ToList();
         }
 
-        public Department GetByID(int? id)
+        public Department GetByID(object id)
         {
             db.Majors.Load();
             return db.Departments.Find(id);

@@ -1,0 +1,73 @@
+﻿@model Coop_Listing_Site.Models.ViewModels.StudentViewModel
+
+@{
+    ViewBag.Title = "Student Details";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+}
+
+<h2>Student Details</h2>
+
+<div>
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.FirstName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.FirstName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.LastName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.LastName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.LNumber)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.LNumber)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Major)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Major)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Email)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Email)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.GPA)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.GPA)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Enabled)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Enabled)
+		</dd>
+
+	</dl>
+</div>
+<p>
+	@*Html.ActionLink("Edit", "Edit", new { id = Model.LNumber }) |*@
+	@Html.ActionLink("Back to List", "Index")
+</p>
