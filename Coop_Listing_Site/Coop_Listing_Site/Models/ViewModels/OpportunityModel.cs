@@ -11,7 +11,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public int OpportunityID { get; set; }
         public int UserID { get; set; }
         public int CompanyID { get; set; }
-        [Required(ErrorMessage ="Please enter a company name"), Display(Name ="Business Name")]
+        [Required(ErrorMessage ="Please enter a company name"), Display(Name ="Organization Name")]
         public string CompanyName { get; set; }
         [Required(ErrorMessage = "Please enter a contact person's name"), Display(Name ="Contact Name")]
         public string ContactName { get; set; }
@@ -21,9 +21,9 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string ContactEmail { get; set; }
         [Required(ErrorMessage = "Please enter the cooperative opportunity's place of employment"), Display(Name ="Worksite")]
         public string Location { get; set; }
-        [Display(Name ="Business Website Address")]
+        [Display(Name = "Organization Website Address")]
         public string CompanyWebsite { get; set; }
-        [Display(Name ="Business Mission Statement")]
+        [Display(Name = "Organization Mission Statement")]
         public string AboutCompany { get; set; }
         [Display(Name ="Department Description")]
         public string AboutDepartment { get; set; }
@@ -37,14 +37,10 @@ namespace Coop_Listing_Site.Models.ViewModels
         public double GPA { get; set; }
         [Display(Name = "Paid")]
         public bool Paid { get; set; }
-        [Display(Name = "Pay rate")]
+        [Display(Name = "Enter actual rate or salary")]
         public string Wage { get; set; }
-        [Display(Name = "Stippened")]
-        public bool Stippened { get; set; }
-        [Display(Name = "Total stippend amount")]
+        [Display(Name = "Total stipend amount")]
         public string Amount { get; set; }
-        [Display(Name = "Experience Only")]
-        public bool UnPaid { get; set; } 
         [Required(ErrorMessage = "Please enter the duration of the cooperative opportunity"), Display(Name ="Position Duration")]
         public string Duration { get; set; }
         [Display(Name ="Number of Fillable Positions")]

@@ -26,9 +26,7 @@ namespace Coop_Listing_Site.Models
         public double GPA { get; set; }  //Required minimum grade point average
         public bool Paid { get; set; }  //Paid, stippened, or unpaid coop
         public string Wage { get; set; } // to enter a wage if paid is selected
-        public bool Stippened { get; set; } //Paid, stippened, or unpaid coop
         public string Amount { get; set; }// to enter amount if stippened is selected
-        public bool UnPaid { get; set; } //Paid, stippened, or unpaid coop 
         public string Duration { get; set; }  //Duration of co-op
         public int OpeningsAvailable { get; set; } //Represents the quantity of available opportunities offered by the company
         public string TermAvailable { get; set; }  //Datatype could also be DateTime and/or create an additional Term Class Entity        
