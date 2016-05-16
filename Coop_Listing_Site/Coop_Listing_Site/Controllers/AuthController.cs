@@ -30,6 +30,8 @@ namespace Coop_Listing_Site.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            var emailInfo = db.Emails.First();
+            ViewBag.Error = !emailInfo.ProperlySet;
             return View();
         }
 
@@ -57,7 +59,7 @@ namespace Coop_Listing_Site.Controllers
                 db.ResetTokens.Add(passReset);
                 db.SaveChanges();
 
-                var response = passReset.SendResetEmail(emailInfo);
+                var response = emailInfo.SendResetEmail(passReset);
                 var success = response.Keys.First();
 
                 if (!success)
