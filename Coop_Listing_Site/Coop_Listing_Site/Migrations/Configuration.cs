@@ -69,7 +69,8 @@ namespace Coop_Listing_Site.Migrations
                     UserName = "test@test.com",
                     Email = "test@test.com",
                     FirstName = "Test",
-                    LastName = "Testman"
+                    LastName = "Testman",
+                    Enabled = true
                 };
 
                 result1 = userManager.Create(user1, "password1");
@@ -85,7 +86,8 @@ namespace Coop_Listing_Site.Migrations
                     UserName = "thinger@test.com",
                     Email = "thinger@test.com",
                     FirstName = "Jon",
-                    LastName = "Doe"
+                    LastName = "Doe",
+                    Enabled = true
                 };
 
                 result2 = userManager.Create(user2, "password1");
@@ -101,7 +103,8 @@ namespace Coop_Listing_Site.Migrations
                     UserName = "testcoord@test.com",
                     Email = "testcoord@test.com",
                     FirstName = "John",
-                    LastName = "Smith"
+                    LastName = "Smith",
+                    Enabled = true
                 };
 
                 result3 = userManager.Create(user3, "password1");
@@ -159,7 +162,8 @@ namespace Coop_Listing_Site.Migrations
                         UserName = "admin@admin.com",
                         Email = "admin@admin.com",
                         FirstName = "Admin",
-                        LastName = "Default"
+                        LastName = "Default",
+                        Enabled = true
                     };
 
                     var result = userManager.Create(admin, "password1");

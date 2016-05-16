@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Coop_Listing_Site.Models
 {
@@ -14,7 +8,7 @@ namespace Coop_Listing_Site.Models
         public string Id { get; set; }
         public string Email { get; set; }
 
-
+        /*
         public Dictionary<bool, string> SendResetEmail(EmailInfo emailInfo)
         {
             var retVal = new Dictionary<bool, string>();
@@ -52,5 +46,6 @@ namespace Coop_Listing_Site.Models
 
             return retVal;
         }
+        */
     }
 }

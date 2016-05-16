@@ -227,7 +227,7 @@ namespace Coop_Listing_Site.Controllers
             db.Invites.Add(invitation);
             db.SaveChanges();
 
-            var response = invitation.SendInvite(emailInfo);
+            var response = emailInfo.SendInviteEmail(invitation);
             var success = response.Keys.First();
 
             if (!success)
@@ -280,7 +280,7 @@ namespace Coop_Listing_Site.Controllers
             db.Invites.Add(invitation);
             db.SaveChanges();
 
-            var response = invitation.SendInvite(emailInfo);
+            var response = emailInfo.SendInviteEmail(invitation);
             var success = response.Keys.First();
 
             if (!success)
