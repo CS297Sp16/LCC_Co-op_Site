@@ -274,6 +274,10 @@ namespace Coop_Listing_Site.Controllers
                 db.Applications.Add(application);
                 db.SaveChanges();
 
+                var email = db.Emails.FirstOrDefault();
+                if(email != null)
+                    email.SendApplicationNotification(application);
+
                 return View("Submitted");
             }
 

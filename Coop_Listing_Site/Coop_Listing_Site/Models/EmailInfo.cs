@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Coop_Listing_Site.DAL;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using System.Linq;
+using System.Data.Entity;
 
 namespace Coop_Listing_Site.Models
 {
@@ -122,6 +125,57 @@ namespace Coop_Listing_Site.Models
             }
 
             return retVal;
+        }
+
+        public void SendApplicationNotification(Application app)
+        {
+            if (CheckIfInfoIsSet())
+            {
+                StudentInfo student;
+                CoordinatorInfo coord = null;
+
+                using (var db = new CoopContext())
+                {
+                    db.Majors.Load();
+                    db.Users.Load();
+
+                    student = db.Students.FirstOrDefault(s => s.User.Id == app.User.Id);
+                    foreach (var cInfo in db.Coordinators.ToList())
+                    {
+                        if(cInfo.Majors.Contains(student.Major))
+                        {
+                            coord = cInfo;
+                            break;
+                        }
+                    }
+                }
+
+                try
+                {
+                    string fromEmail = string.Format("noreply@{0}", Domain);
+
+                    using (var client = new SmtpClient(SMTPAddress, 587))
+                    {
+                        client.EnableSsl = true;
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.UseDefaultCredentials = false;
+                        client.Credentials = new NetworkCredential(SMTPAccountName, SMTPPassword);
+
+                        using (var mail = new MailMessage(fromEmail, coord.User.Email))
+                        {
+                            string message = "{1} {2} has applied for the co-op opportunity {3} at {4}.{0}{0}" +
+                                                "Visit your control panel at the co-op listing site to review this application.{0}{0}" +
+                                                "This is an automatic message. Any replies sent to this e-mail will not be viewed.";
+
+                            mail.Subject = "New Co-op Application";
+                            mail.Body = string.Format(message, "\r\n", app.User.FirstName, app.User.LastName, app.Opportunity.CoopPositionTitle, app.Opportunity.CompanyName);
+
+                            client.Send(mail);
+                        }
+                    }
+                }
+                catch { }
+            }
         }
     }
 }
