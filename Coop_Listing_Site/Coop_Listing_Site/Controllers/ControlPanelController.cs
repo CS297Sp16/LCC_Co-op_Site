@@ -298,13 +298,13 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult InviteList()
         {
             var inviteList = new List<RegisterInvite>();
-            if (User.IsInRole("Coordinator"))
+            if (User.IsInRole("Admin"))
             {
-                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
+                inviteList = db.Invites.ToList();
             }
             else
             {
-                inviteList = db.Invites.ToList();
+                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
             }
 
             return View(inviteList);
@@ -330,8 +330,16 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmRescind(string id)
         {
             RegisterInvite inv = db.Invites.Find(id);
-            db.Invites.Remove(inv);
-            db.SaveChanges();
+            if (inv.UserType == RegisterInvite.AccountType.Coordinator && !User.IsInRole("Admin"))
+            {
+                ViewBag.Message = "You must be an administrator to rescind a coordinator's registration invite.";
+                return View(inv);
+            }
+            else
+            {
+                db.Invites.Remove(inv);
+                db.SaveChanges();
+            }
 
             return RedirectToAction("InviteList");
         }
