@@ -30,8 +30,8 @@ namespace Coop_Listing_Site.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
-            var emailInfo = db.Emails.First();
-            ViewBag.Error = !emailInfo.ProperlySet;
+            var emailInfo = db.Emails.FirstOrDefault();
+            ViewBag.Error = (emailInfo == null || !emailInfo.ProperlySet);
             return View();
         }
 
