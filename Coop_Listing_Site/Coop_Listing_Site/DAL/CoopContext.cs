@@ -63,5 +63,7 @@ namespace Coop_Listing_Site.DAL
 
             base.OnModelCreating(modelBuilder);
         }
+
+        public System.Data.Entity.DbSet<Coop_Listing_Site.Models.ViewModels.StudentViewModel> StudentViewModels { get; set; }
     }
 }

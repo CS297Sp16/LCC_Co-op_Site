@@ -1,0 +1,56 @@
+﻿@model Coop_Listing_Site.Models.ViewModels.StudentViewModel
+
+@{
+    ViewBag.Title = "Enable Student";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+}
+
+<h2>Enable Student</h2>
+
+<h3>Are you sure you want to enable this student?</h3>
+<div>
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.FirstName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.FirstName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.LastName)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.LastName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.LNumber)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.LNumber)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Enabled)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Enabled)
+		</dd>
+
+	</dl>
+
+	@using (Html.BeginForm())
+	{
+	@Html.AntiForgeryToken()
+
+	<div class="form-actions no-color">
+		<input type="submit" value="Enable" class="btn btn-default" /> |
+		@Html.ActionLink("Back to List", "Index")
+	</div>
+	}
+</div>

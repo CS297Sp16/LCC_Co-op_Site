@@ -49,5 +49,26 @@ namespace Coop_Listing_Site.Controllers
 
             return View(new StudentViewModel(student));
         }
+
+        public ActionResult Enable(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var student = studentsRepo.GetByID(id);
+
+            return View(new StudentViewModel(student));
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                majorsRepo.Dispose();
+                departmentsRepo.Dispose();
+                studentsRepo.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

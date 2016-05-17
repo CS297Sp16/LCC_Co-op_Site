@@ -8,8 +8,7 @@ namespace Coop_Listing_Site.Models.ViewModels
 {
     public class StudentViewModel
     {
-        public string Id { get; set; }
-
+        [Key]
         [Display(Name = "L-Number")]
         public string LNumber { get; set; }
 
@@ -31,7 +30,6 @@ namespace Coop_Listing_Site.Models.ViewModels
 
         public StudentViewModel(StudentInfo sInfo)
         {
-            Id = sInfo.User.Id;
             LNumber = sInfo.LNumber;
             FirstName = sInfo.User.FirstName;
             LastName = sInfo.User.LastName;
