@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Linq;
 using Coop_Listing_Site.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -46,21 +47,25 @@ namespace Coop_Listing_Site.Controllers
             }
             else
             {
+                Dictionary<bool, string> response;
+                bool success;
                 var emailInfo = db.Emails.First();
                 var passReset = db.ResetTokens.FirstOrDefault(r => r.Email.ToLower() == email.ToLower());
 
                 if (passReset != null)
                 {
-                    db.ResetTokens.Remove(passReset);
-                    db.SaveChanges();
+                    response = emailInfo.SendResetEmail(passReset);
+                    success = response.Keys.First();
                 }
+                else
+                {
+                    passReset = new PasswordReset { Email = email, Id = Guid.NewGuid().ToString("N") };
+                    db.ResetTokens.Add(passReset);
+                    db.SaveChanges();
 
-                passReset = new PasswordReset { Email = email, Id = Guid.NewGuid().ToString("N") };
-                db.ResetTokens.Add(passReset);
-                db.SaveChanges();
-
-                var response = emailInfo.SendResetEmail(passReset);
-                var success = response.Keys.First();
+                    response = emailInfo.SendResetEmail(passReset);
+                    success = response.Keys.First();
+                }
 
                 if (!success)
                 {
