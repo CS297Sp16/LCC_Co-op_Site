@@ -294,9 +294,20 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult InviteList()
         {
-            return View(db.Invites);
+            var inviteList = new List<RegisterInvite>();
+            if (User.IsInRole("Coordinator"))
+            {
+                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
+            }
+            else
+            {
+                inviteList = db.Invites.ToList();
+            }
+
+            return View(inviteList);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
