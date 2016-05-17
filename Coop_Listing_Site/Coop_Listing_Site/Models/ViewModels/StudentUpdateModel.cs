@@ -23,5 +23,11 @@ namespace Coop_Listing_Site.Models.ViewModels
         [DataType(DataType.Password), Display(Name = "Confirm Password")]
         [Compare("NewPassword", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmNewPassword { get; set; }
+
+        /**************************************** VIEW SPECIFIC HELPER PROPERTIES *********************************************************/
+
+
+        [Display(Name = "Do you want to change your password?")]
+        public bool? UpdatePass { get; set; }
     }
 }

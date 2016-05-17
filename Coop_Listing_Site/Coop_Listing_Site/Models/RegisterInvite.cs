@@ -27,6 +27,7 @@ namespace Coop_Listing_Site.Models
             Coordinator = 2
         };
 
+        /*
         public Dictionary<bool, string> SendInvite(EmailInfo emailInfo)
         {
             var retVal = new Dictionary<bool, string>();
@@ -72,8 +73,9 @@ namespace Coop_Listing_Site.Models
 
             return retVal;
         }
+        */
 
-        private bool UserTypeSet()
+        public bool UserTypeSet()
         {
             // Checks if the UserType is set to one of the available enum values in AccountType using bitwise operators
             return ((UserType & AccountType.Student) == AccountType.Student || (UserType & AccountType.Coordinator) == AccountType.Coordinator);

@@ -12,7 +12,7 @@
                 $("#Wage").show();
                 $("#Amount").hide();
                 break;
-            case "Stippened":
+            case "Stipend":
                 $("#Amount").show();
                 $("#Wage").hide();
                 break;
@@ -25,7 +25,7 @@
 
     $(document).ready(function () {
         $("#Paid").change(compensationChange);
-        $("#Stippened").change(compensationChange);
+        $("#Stipend").change(compensationChange);
         $("#UnPaid").change(compensationChange);
     });
 </script>
@@ -83,14 +83,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AboutCompany, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AboutCompany, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.AboutCompany, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.AboutCompany, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.AboutDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.AboutDepartment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.AboutDepartment, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.AboutDepartment, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -104,14 +104,14 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CoopPositionDuties, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CoopPositionDuties, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.CoopPositionDuties, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CoopPositionDuties, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Qualifications, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Qualifications, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Qualifications, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -126,7 +126,7 @@
             @Html.LabelFor(model => model.Paid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10" >
                 Paid: @Html.RadioButton("Compensation", "Paid", new { id = "Paid" } )
-                Stippened: @Html.RadioButton("Compensation", "Stippened", new { id = "Stippened" })
+                Stipend: @Html.RadioButton("Compensation", "Stipend", new { id = "Stipend" })
                 UnPaid: @Html.RadioButton("Compensation", "UnPaid", new { id = "UnPaid" })
              </div>
         </div>
