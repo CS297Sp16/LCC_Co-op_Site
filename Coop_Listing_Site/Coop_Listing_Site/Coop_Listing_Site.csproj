@@ -172,6 +172,7 @@
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="DAL\InvitationRepo.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\MajorRepo.cs" />
     <Compile Include="DAL\StudentRepo.cs" />
@@ -302,6 +303,8 @@
     <Content Include="Views\Student\Index.cshtml" />
     <Content Include="Views\Student\Details.cshtml" />
     <Content Include="Views\Student\Enable.cshtml" />
+    <Content Include="Views\Student\Disable.cshtml" />
+    <Content Include="Views\Student\Invitations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

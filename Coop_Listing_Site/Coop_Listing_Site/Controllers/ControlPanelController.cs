@@ -21,20 +21,11 @@ namespace Coop_Listing_Site.Controllers
         private CoopContext db;
         private UserManager<User> userManager;
 
-        //IControlPanelRepository icpr; //uncomment for testing
-
         public ControlPanelController()
         {
             db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
-
-            // icpr = new ControlPanelRepository(); //uncomment for testing
         }
-
-        /* public ControlPanelController(IControlPanelRepository contPanel)
-         {
-             icpr = contPanel;  //uncomment for testing
-         }*/
 
         public ActionResult Index()
         {
@@ -369,6 +360,8 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("Index");
         }
 
+        /* remove later
+         * 
         [Authorize(Roles = "Coordinator")]
         public ActionResult DisableStudents()
         {
@@ -427,7 +420,7 @@ namespace Coop_Listing_Site.Controllers
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
 
             return View();
-        }
+        }*/
 
         [Authorize(Roles = "Admin")]
         public ActionResult DisableCoordinators()

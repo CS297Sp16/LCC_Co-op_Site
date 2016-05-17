@@ -10,27 +10,27 @@
             <li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
         </ul>
         }
-        @if (User.IsInRole("Coordinator"))
+        @if (User.IsInRole("Coordinator") || User.IsInRole("Admin"))
         {
         <h4>Coordinator</h4>
         <ul class="nav nav-sidebar">
-            <li>@Html.ActionLink("Invite a student", "InviteStudent")</li>
-            <li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
-            <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>
-            <li>@Html.ActionLink("Active Invitations", "InviteList")</li>
+            <li>@Html.ActionLink("Invite a student", "InviteStudent", "ControlPanel")</li>
+            @*<li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
+            <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>*@
+            <li>@Html.ActionLink("Active Student Invitations", "Invitations", "Student")</li>
+	       <li>@Html.ActionLink("View Majors", "", "Major")</li>
+	       <li>@Html.ActionLink("View Departments", "DepartmentList", "ControlPanel")</li>
+	   <li>@Html.ActionLink("View Students", "", "Student")</li>
         </ul>
         }
         @if (User.IsInRole("Admin"))
         {
         <h4>Administrator</h4>
         <ul class="nav nav-sidebar">
-            <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator")</li>
-            <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators")</li>
-            <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators")</li>
-            <li>@Html.ActionLink("Set SMTP Information", "SMTP")</li>
-            <li>@Html.ActionLink("View Majors", "", "Major")</li>
-            <li>@Html.ActionLink("View Departments", "DepartmentList")</li>
-            <li>@Html.ActionLink("View Student", "StudentList")</li>
+            <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator", "ControlPanel")</li>
+            <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators", "ControlPanel")</li>
+            <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators", "ControlPanel")</li>
+            <li>@Html.ActionLink("Set SMTP Information", "SMTP", "ControlPanel")</li>
         </ul>
         }
     </div>

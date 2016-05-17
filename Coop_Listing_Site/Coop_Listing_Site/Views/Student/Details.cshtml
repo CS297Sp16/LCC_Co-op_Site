@@ -60,11 +60,18 @@
 		<dt>
 			@Html.DisplayNameFor(model => model.Enabled)
 		</dt>
-
+		@if (Model.Enabled)
+		{
 		<dd>
-			@Html.DisplayFor(model => model.Enabled)
+			Enabled
 		</dd>
-
+		}
+		else
+		{
+		<dd>
+			Disabled
+		</dd>
+		}
 	</dl>
 </div>
 <p>
