@@ -73,7 +73,7 @@ namespace Coop_Listing_Site.Controllers
                     db.SaveChanges();
                 }
 
-                ViewBag.ReturnMessage = response[success];
+                ViewBag.Message = response[success];
             }
 
             return View();
