@@ -593,9 +593,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetEnabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
@@ -608,9 +608,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetDisabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => !s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
