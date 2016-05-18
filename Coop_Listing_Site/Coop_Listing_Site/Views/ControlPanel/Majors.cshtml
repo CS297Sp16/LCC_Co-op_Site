@@ -10,30 +10,34 @@
 <p>
     @Html.ActionLink("Create New", "AddMajor")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Department.DepartmentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MajorName)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Department.DepartmentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MajorName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department.DepartmentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MajorName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditMajor", new { id=item.MajorID }) |
-            @Html.ActionLink("Delete", "DeleteMajor", new { id=item.MajorID })
-        </td>
-    </tr>
-}
-
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MajorName)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditMajor", new { id = item.MajorID }) |
+                    @Html.ActionLink("Delete", "DeleteMajor", new { id = item.MajorID })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

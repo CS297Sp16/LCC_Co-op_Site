@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Coop_Listing_Site.Models.RegisterInvite>
+
+@{
+    ViewBag.Title = "Current Student Invitations";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+}
+
+<h2>Active Student Invitations</h2>
+
+<p>@* TODO: move student invitation to StudentController *@
+	@Html.ActionLink("Send New Invitation", "InviteStudent", "ControlPanel")
+</p>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Email)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@foreach (var item in Model)
+		{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Email)
+			</td>
+			<td>
+				@Html.ActionLink("Rescind Invitation", "Rescind", new { controller = "ControlPanel", id = item.RegisterInviteID })
+			</td>
+		</tr>
+
+		}
+	</tbody>
+</table>

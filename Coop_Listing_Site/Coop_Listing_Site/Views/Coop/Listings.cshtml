@@ -7,44 +7,49 @@
 @if (Model != null)
 {
 <table class="table table-striped">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CoopPositionTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Paid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OpeningsAvailable)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TermAvailable)
-        </th>
-    </tr>
-
-    @foreach (var opp in Model)
-    {
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => opp.CompanyName)
-            </td>
-            <td>
-                @Html.ActionLink(opp.CoopPositionTitle, "Details", new { id = opp.OpportunityID })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => opp.Paid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => opp.TermAvailable)
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoopPositionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningsAvailable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TermAvailable)
+            </th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var opp in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => opp.CompanyName)
+                </td>
+                <td>
+                    @Html.ActionLink(opp.CoopPositionTitle, "Details", new { id = opp.OpportunityID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => opp.Paid)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => opp.TermAvailable)
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 }
 else

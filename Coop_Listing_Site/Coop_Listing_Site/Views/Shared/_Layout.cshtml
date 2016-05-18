@@ -6,13 +6,13 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
@@ -22,21 +22,19 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
                         <li>@Html.ActionLink("Control Panel", "Index", "ControlPanel")</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Logout", "LogOut", "Auth")</li>
+                        <li><a href="/Auth/LogOut">Log Out <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
                     </ul>
                 }
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container-fluid">
         @RenderBody()
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

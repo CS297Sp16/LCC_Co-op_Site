@@ -1,17 +1,4 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-    background-color: #EEE;
-    line-height: 1.6;
-    font-size: 16px;
-    color: #444;
-}
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+﻿
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -22,22 +9,22 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select {
     max-width: 280px;
 }
 
+/* Because 280px felt a little too small */
+textarea {
+    max-width: 500px;
+}
 
-/* Fresh CSS */
+
+/* Fresh CSS 
 .sidebar {
 	background-color: white;
 	border-right: 1px solid black;
 }
 
-.sidebar .nav a {
-	/*padding: 5px;*/
-}
-
 .nav-pills > li {
 	float: none;
-}
+}*/
