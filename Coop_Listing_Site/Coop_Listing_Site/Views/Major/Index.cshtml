@@ -8,7 +8,7 @@
 <h2>Majors</h2>
 
 <p>
-    @Html.ActionLink("Create New", "AddMajor")
+    @Html.ActionLink("Create New", "Add")
 </p>
 <table class="table table-striped">
     <thead>
@@ -34,8 +34,8 @@
                     @Html.DisplayFor(modelItem => item.MajorName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditMajor", new { id = item.MajorID }) |
-                    @Html.ActionLink("Delete", "DeleteMajor", new { id = item.MajorID })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.MajorID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.MajorID })
                 </td>
             </tr>
         }
