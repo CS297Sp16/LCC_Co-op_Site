@@ -151,6 +151,14 @@ namespace Coop_Listing_Site.Controllers
                 userManager.AddToRole(user.Id, "Coordinator");
 
                 SignIn(user);
+
+                var invite = db.Invites.FirstOrDefault(i => i.Email.ToLower() == coordinator.Email.ToLower());
+                if (invite != null) // Should never be null, but check anyway
+                {
+                    db.Invites.Remove(invite);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index", "Home");
             }
 

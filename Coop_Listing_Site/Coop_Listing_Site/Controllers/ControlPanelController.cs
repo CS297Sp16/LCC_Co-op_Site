@@ -183,9 +183,20 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult InviteList()
         {
-            return View(db.Invites);
+            var inviteList = new List<RegisterInvite>();
+            if (User.IsInRole("Admin"))
+            {
+                inviteList = db.Invites.ToList();
+            }
+            else
+            {
+                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
+            }
+
+            return View(inviteList);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
@@ -208,8 +219,16 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmRescind(string id)
         {
             RegisterInvite inv = db.Invites.Find(id);
-            db.Invites.Remove(inv);
-            db.SaveChanges();
+            if (inv.UserType == RegisterInvite.AccountType.Coordinator && !User.IsInRole("Admin"))
+            {
+                ViewBag.Message = "You must be an administrator to rescind a coordinator's registration invite.";
+                return View(inv);
+            }
+            else
+            {
+                db.Invites.Remove(inv);
+                db.SaveChanges();
+            }
 
             return RedirectToAction("InviteList");
         }
@@ -484,9 +503,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetEnabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
@@ -499,9 +518,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetDisabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => !s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
