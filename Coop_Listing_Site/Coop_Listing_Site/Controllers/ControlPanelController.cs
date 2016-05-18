@@ -355,17 +355,18 @@ namespace Coop_Listing_Site.Controllers
             var studentVM = new StudentUpdateModel()
             {
                 UserId = studInfo.User.Id,
-                MajorID = studInfo.Major.MajorID,
-                GPA = studInfo.GPA
+                MajorID = studInfo.Major.MajorID
             };
 
-            if (studentVM.GPA > 2)
+            if (studInfo.GPA >= 2)
             {
+                studentVM.GPA = studInfo.GPA;
                 gpaSelectedValue = studentVM.GPA;
+               //TODO: only show GPA selectedList if the student needs or wants to show their GPA
             }
             else
             {
-                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
+                gpaSelectedValue = 2; //placeholder for now so it does not break
             }
 
             ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
