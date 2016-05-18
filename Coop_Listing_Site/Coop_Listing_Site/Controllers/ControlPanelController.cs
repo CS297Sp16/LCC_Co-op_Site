@@ -18,130 +18,19 @@ namespace Coop_Listing_Site.Controllers
 {
     public class ControlPanelController : Controller
     {
-        // Look into separating this controller into multiple. One for Student, Coordinator, and Admin. Maybe rename to cpanel to shorten the URL length, too
         private CoopContext db;
         private UserManager<User> userManager;
-
-        //IControlPanelRepository icpr; //uncomment for testing
 
         public ControlPanelController()
         {
             db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
-
-            // icpr = new ControlPanelRepository(); //uncomment for testing
         }
-
-        /* public ControlPanelController(IControlPanelRepository contPanel)
-         {
-             icpr = contPanel;  //uncomment for testing
-         }*/
 
         public ActionResult Index()
         {
-            var currentUser = CurrentUser;
-            return View(currentUser);
-        }
-
-        [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult Majors()
-        {
-            var majors = db.Majors.Include(m => m.Department).OrderBy(m => m.Department.DepartmentName);
-
-            return View(majors);
-        }
-
-        [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult AddMajor()
-        {
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
-
-            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
-
+            // consider using this page to display relevant user specific information
             return View();
-        }
-
-        [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult AddMajor([Bind(Include = "MajorName")] Major major, int DepartmentID)
-        {
-            var dept = db.Departments.Find(DepartmentID);
-            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
-
-            if (ModelState.IsValid)
-            {
-                major.Department = dept;
-                db.Majors.Add(major);
-                db.SaveChanges();
-
-                return RedirectToAction("Majors");
-            }
-
-            return View();
-        }
-
-        [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult EditMajor(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
-            }
-
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
-            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
-
-            // for if/when we add courses
-            //var courses = db.Courses.OrderBy(c => c.CourseNumber);
-            //var selectedCourses = db.Majors.Find(id).Courses.Select(c => c.CourseNumber);
-            //ViewBag.Courses = new MultiSelectList(courses, "CourseID", "CourseNumber", selectedCourses);
-
-            return View(db.Majors.Find(id));
-        }
-
-        [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult EditMajor([Bind(Include = "MajorID, MajorName")] Major major, int DepartmentID)
-        {
-            var dept = db.Departments.Find(DepartmentID);
-            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
-
-            if (ModelState.IsValid)
-            {
-                major.Department = dept;
-                db.Entry(major).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            var depts = db.Departments.OrderBy(d => d.DepartmentName);
-            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName");
-
-            return View(major);
-        }
-
-        [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult DeleteMajor(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Major major = db.Majors.Find(id);
-            if (major == null)
-            {
-                return HttpNotFound();
-            }
-            db.Departments.Load();
-            return View(major);
-        }
-
-        [HttpPost, ActionName("DeleteMajor"), Authorize(Roles = "Admin, Coordinator"),
-            ValidateAntiForgeryToken]
-        public ActionResult ConfirmDeleteMajor(int id)
-        {
-            Major major = db.Majors.Find(id);
-            db.Majors.Remove(major);
-            db.SaveChanges();
-
-            return RedirectToAction("Majors");
         }
 
         [Authorize(Roles = "Admin")]
@@ -294,9 +183,20 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult InviteList()
         {
-            return View(db.Invites);
+            var inviteList = new List<RegisterInvite>();
+            if (User.IsInRole("Admin"))
+            {
+                inviteList = db.Invites.ToList();
+            }
+            else
+            {
+                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
+            }
+
+            return View(inviteList);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
@@ -319,8 +219,16 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmRescind(string id)
         {
             RegisterInvite inv = db.Invites.Find(id);
-            db.Invites.Remove(inv);
-            db.SaveChanges();
+            if (inv.UserType == RegisterInvite.AccountType.Coordinator && !User.IsInRole("Admin"))
+            {
+                ViewBag.Message = "You must be an administrator to rescind a coordinator's registration invite.";
+                return View(inv);
+            }
+            else
+            {
+                db.Invites.Remove(inv);
+                db.SaveChanges();
+            }
 
             return RedirectToAction("InviteList");
         }
@@ -471,6 +379,8 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("Index");
         }
 
+        /* remove later
+         * 
         [Authorize(Roles = "Coordinator")]
         public ActionResult DisableStudents()
         {
@@ -529,7 +439,7 @@ namespace Coop_Listing_Site.Controllers
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
 
             return View();
-        }
+        }*/
 
         [Authorize(Roles = "Admin")]
         public ActionResult DisableCoordinators()
@@ -593,9 +503,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetEnabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
@@ -608,9 +518,9 @@ namespace Coop_Listing_Site.Controllers
 
         private Dictionary<string, string> GetDisabledStudents()
         {
-            var coordInfo = db.Coordinators.Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
+            var coordInfo = db.Coordinators.Include(c => c.Majors).Include(c => c.User).FirstOrDefault(c => c.User.Id == CurrentUser.Id);
             var students = new Dictionary<string, string>();
-            foreach (var student in db.Students.Include(s => s.User).Where(s => !s.User.Enabled))
+            foreach (var student in db.Students.Include(s => s.Major).Include(s => s.User).Where(s => !s.User.Enabled).ToList())
             {
                 if (coordInfo.Majors.Contains(student.Major))
                 {
@@ -765,8 +675,8 @@ namespace Coop_Listing_Site.Controllers
             {
                 db.Dispose();
 
-                //if (userManager != null)
-                //    userManager.Dispose();
+                if (userManager != null)
+                    userManager.Dispose();
             }
             base.Dispose(disposing);
         }
