@@ -6,37 +6,27 @@
 }
 
 <script>
-    $(document).ready(function () {
-        $("#Paid").change(function () {
-            if ($(this).val() != "#Paid") {
+    function compensationChange() {
+        switch (this.value) {
+            case "Paid":
                 $("#Wage").show();
                 $("#Amount").hide();
-            }
-            else {
-                $("#Wage").hide();
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $("#Stipend").change(function () {
-            if ($(this).val() != "#Stippened") {
+                break;
+            case "Stipend":
                 $("#Amount").show();
                 $("#Wage").hide();
-            }
-            else {
-                $("#Amount").hide();
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        $("#UnPaid").change(function () {
-            if ($(this).val() != "#UnPaid"){
+                break;
+            case "UnPaid":
                 $("#Wage").hide();
                 $("#Amount").hide();
-            }
-        });
+                break;
+        }
+    }
+
+    $(document).ready(function () {
+        $("#Paid").change(compensationChange);
+        $("#Stipend").change(compensationChange);
+        $("#UnPaid").change(compensationChange);
     });
 </script>
 
@@ -136,7 +126,7 @@
             @Html.LabelFor(model => model.Paid, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10" >
                 Paid: @Html.RadioButton("Compensation", "Paid", new { id = "Paid" } )
-                Stippened: @Html.RadioButton("Compensation", "Stippened", new { id = "Stippened" })
+                Stipend: @Html.RadioButton("Compensation", "Stipend", new { id = "Stipend" })
                 UnPaid: @Html.RadioButton("Compensation", "UnPaid", new { id = "UnPaid" })
              </div>
         </div>

@@ -161,14 +161,21 @@
     <Compile Include="Controllers\CoopController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MajorController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
+    <Compile Include="DAL\DepartmentRepo.cs" />
     <Compile Include="DAL\ETC\CourseConfiguration.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
+    <Compile Include="DAL\InvitationRepo.cs" />
+    <Compile Include="DAL\IRepository.cs" />
+    <Compile Include="DAL\MajorRepo.cs" />
+    <Compile Include="DAL\StudentRepo.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.Designer.cs">
       <DependentUpon>201605150301215_Initial_Migration.cs</DependentUpon>
@@ -201,6 +208,7 @@
     <Compile Include="Models\ViewModels\PassResetModel.cs" />
     <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
     <Compile Include="Models\ViewModels\StudentUpdateModel.cs" />
+    <Compile Include="Models\ViewModels\StudentViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ControlPanelRepository.cs" />
     <Compile Include="Repositories\IControlPanelRepository.cs" />
@@ -211,6 +219,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dashboard.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -287,6 +296,15 @@
     <Content Include="Views\ControlPanel\InviteCoordinator.cshtml" />
     <Content Include="Views\ControlPanel\DisableCoordinators.cshtml" />
     <Content Include="Views\ControlPanel\EnableCoordinators.cshtml" />
+    <Content Include="Views\Major\Add.cshtml" />
+    <Content Include="Views\Major\Edit.cshtml" />
+    <Content Include="Views\Major\Delete.cshtml" />
+    <Content Include="Views\Major\Index.cshtml" />
+    <Content Include="Views\Student\Index.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
+    <Content Include="Views\Student\Enable.cshtml" />
+    <Content Include="Views\Student\Disable.cshtml" />
+    <Content Include="Views\Student\Invitations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
