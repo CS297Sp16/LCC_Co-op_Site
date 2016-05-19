@@ -30,6 +30,11 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Index()
         {
             // consider using this page to display relevant user specific information
+
+            Repository r = new Repository(db);
+
+            var x = r.GetByID<Major>(1);
+
             return View();
         }
 

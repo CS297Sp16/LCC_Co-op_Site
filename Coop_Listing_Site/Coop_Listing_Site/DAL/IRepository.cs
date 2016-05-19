@@ -10,6 +10,8 @@ namespace Coop_Listing_Site.DAL
     {
         IEnumerable<T> GetAll();
 
+        //IEnumerable<T> GetAll(Func<T, bool> where);
+
         T GetByID(object id);
 
         T Add(T dbObj);

@@ -175,6 +175,7 @@
     <Compile Include="DAL\InvitationRepo.cs" />
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\MajorRepo.cs" />
+    <Compile Include="DAL\Repository.cs" />
     <Compile Include="DAL\StudentRepo.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.Designer.cs">
