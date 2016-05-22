@@ -284,6 +284,47 @@ namespace Coop_Listing_Site.Controllers
             return View();
 
         }
+
+        public ActionResult GetFiles(int? id, string type)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var app = db.Applications.Find(id);
+            if (app == null)
+            {
+                return HttpNotFound();
+            }
+
+            FileContentResult file = null;
+
+            switch (type)
+            {
+                case "Resume":
+                    if(app.Resume != null)
+                        file = File(app.Resume, app.Resume_ContentType);
+                    break;
+                case "CoverLetter":
+                    if (app.CoverLetter != null)
+                        file = File(app.CoverLetter, app.CoverLetter_ContentType);
+                    break;
+                case "DriverLicense":
+                    if (app.DriverLicense != null)
+                        file = File(app.DriverLicense, app.DriverLicense_ContentType);
+                    break;
+                case "Other":
+                    if (app.Other != null)
+                        file = File(app.Other, app.Other_ContentType);
+                    break;
+            }
+
+            if (file == null)
+                return HttpNotFound();
+
+            return file;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
