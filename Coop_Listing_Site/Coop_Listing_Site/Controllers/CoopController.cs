@@ -322,6 +322,37 @@ namespace Coop_Listing_Site.Controllers
 
             return View(appList);
         }
+        public ActionResult AppDetails(int id)
+        {
+            return View(db.Applications.Find(id));
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AppDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Application application = db.Applications.Find(id);
+            if (application == null)
+            {
+                return HttpNotFound();
+            }
+            return View(application);
+        }
+
+        //POST: CoopController/DeleteOpportunity
+        [HttpPost, ActionName("AppDelete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AppDeleteConfirmed(int id)
+        {
+            Application application = db.Applications.Find(id);
+            db.Applications.Remove(application);
+            db.SaveChanges();
+            return RedirectToAction("Applications");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
