@@ -9,6 +9,7 @@ using System.Net;
 using System.Data.Entity;
 using Coop_Listing_Site.Models.ViewModels;
 using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -221,12 +222,39 @@ namespace Coop_Listing_Site.Controllers
                 //Attaches the current student to the application that is being submitted
                 application.User = CurrentUser;
 
+                /*
+                var files = HttpContext.Request.Files;
+
+                for (int i = 0; i < files.Count; i++)
+                {
+                    var uploadedFile = files.Get(i);
+                    var slot = files.GetKey(i);
+
+                    if(uploadedFile.ContentLength > 0)
+                    {
+                        var file = new UserFile();
+                        file.ContentType = uploadedFile.ContentType;
+                        file.FileName = uploadedFile.FileName;
+                        using (var stream = new BinaryReader(uploadedFile.InputStream))
+                            file.FileData = stream.ReadBytes(uploadedFile.ContentLength);
+                    }
+                    else
+                    {
+                        if (slot == "Resume")
+                        {
+                            ModelState.AddModelError("", "A Resume is required to apply for an opportunity.");
+                            break;
+                        }
+                    }
+                }
+                */
+
                 //Allows for the upload of a resume
                 if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
                 {
-                    application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
+                    application.FileName_Resume = Path.GetFileName(ResumeUpload.FileName);
                     application.Resume_ContentType = ResumeUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(ResumeUpload.InputStream))
+                    using (var reader = new BinaryReader(ResumeUpload.InputStream))
                     {
                         application.Resume = reader.ReadBytes(ResumeUpload.ContentLength);
                     }
@@ -240,10 +268,10 @@ namespace Coop_Listing_Site.Controllers
                 //Allows for the upload of a cover letter
                 if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
                 {
-                    application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
+                    application.FileName_CoverLetter = Path.GetFileName(CoverLetterUpload.FileName);
                     application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
 
-                    using (var reader = new System.IO.BinaryReader(CoverLetterUpload.InputStream))
+                    using (var reader = new BinaryReader(CoverLetterUpload.InputStream))
                     {
                         application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
                     }
@@ -252,9 +280,9 @@ namespace Coop_Listing_Site.Controllers
                 //Saves the Drivers License
                 if (DriverLicenseUpload != null && DriverLicenseUpload.ContentLength > 0)
                 {
-                    application.FileName_DriverLicense = System.IO.Path.GetFileName(DriverLicenseUpload.FileName);
+                    application.FileName_DriverLicense = Path.GetFileName(DriverLicenseUpload.FileName);
                     application.DriverLicense_ContentType = DriverLicenseUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(DriverLicenseUpload.InputStream))
+                    using (var reader = new BinaryReader(DriverLicenseUpload.InputStream))
                     {
                         application.DriverLicense = reader.ReadBytes(DriverLicenseUpload.ContentLength);
                     }
@@ -263,9 +291,9 @@ namespace Coop_Listing_Site.Controllers
                 //Saves anything else that might be needed into the other
                 if (OtherUpload != null && OtherUpload.ContentLength > 0)
                 {
-                    application.FileName_Other = System.IO.Path.GetFileName(OtherUpload.FileName);
+                    application.FileName_Other = Path.GetFileName(OtherUpload.FileName);
                     application.Other_ContentType = OtherUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(OtherUpload.InputStream))
+                    using (var reader = new BinaryReader(OtherUpload.InputStream))
                     {
                         application.Other = reader.ReadBytes(OtherUpload.ContentLength);
                     }
