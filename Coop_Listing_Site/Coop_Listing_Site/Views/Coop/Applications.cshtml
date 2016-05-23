@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Coop_Listing_Site.Models.Application>
+@{
+    ViewBag.Title = "Applications";
+}
+
+<h2>Applications</h2>
+@if (Model != null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.FirstName)
+                </th>
+                <th>
+                    @* This is for adding the L# to the list of applications *@
+                    @*@Html.DisplayNameFor(model => model.User.L#)*@
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Opportunity.CompanyName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Opportunity.CoopPositionTitle)
+                </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var app in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => app.User.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => app.User.FirstName)
+                    </td>
+                    <td>
+                        @* This is for displaying the L# of the student that has applied for the position *@
+                        @*@Html.DisplayFor(modelItem => app.User.L#)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => app.Opportunity.CompanyName)
+                    </td>
+                    <td>
+                        @Html.ActionLink(app.Opportunity.CoopPositionTitle, "Details", new { id = app.Opportunity.OpportunityID })
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No Applications are available at this time.</p>
+
+
+
+}
