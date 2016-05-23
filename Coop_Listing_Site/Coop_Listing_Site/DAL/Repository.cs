@@ -46,16 +46,28 @@ namespace Coop_Listing_Site.DAL
 
         public IEnumerable<T> GetAll<T>() where T : class
         {
-            LoadRefs(typeof(T));
-
             var results = db.Set<T>();
             return results.ToList();
         }
 
+        public IEnumerable<T> GetWhere<T>(Func<T, bool> check) where T : class
+        {
+            var results = db.Set<T>().Where(check);
+            return results.ToList();
+        }
+
+        public T GetOne<T>() where T : class
+        {
+            return db.Set<T>().FirstOrDefault();
+        }
+
+        public T GetOne<T>(Func<T, bool> check) where T : class
+        {
+            return db.Set<T>().SingleOrDefault(check);
+        }
+
         public T GetByID<T>(object id) where T : class
         {
-            LoadRefs(typeof(T));
-
             return db.Set<T>().Find(id);
         }
 
@@ -67,6 +79,7 @@ namespace Coop_Listing_Site.DAL
             return dbObj;
         }
 
+        // now totally usless, yay!
         private void LoadRefs(Type type)
         {
             // get the types properties

@@ -21,15 +21,6 @@ namespace Coop_Listing_Site.Controllers
             repo = new Repository(db);
         }
 
-        /*public StudentController(IRepository<StudentInfo> sRepo,
-            IRepository<Major> mRepo, IRepository<Department> dRepo, IRepository<RegisterInvite> iRepo)
-        {
-            studentsRepo = sRepo;
-            majorsRepo = mRepo;
-            departmentsRepo = dRepo;
-            invitationsRepo = iRepo;
-        }*/
-
         public ActionResult Index()
         {
             //TODO: be more specific sbout who sees what students

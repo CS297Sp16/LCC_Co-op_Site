@@ -14,18 +14,19 @@ namespace Coop_Listing_Site.Controllers
 {
     public class CoopController : Controller
     {
-        private CoopContext db;
+        private Repository repo;
 
         public CoopController()
         {
-            db = new CoopContext();
+            var db = new CoopContext();
+            repo = new Repository(db);
         }
 
         private User CurrentUser
         {
             get
             {
-                return db.Users.Find(User.Identity.GetUserId());
+                return repo.GetByID<User>(User.Identity.GetUserId());
             }
         }
 
@@ -38,35 +39,36 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Listings()
         {
             string userId = User.Identity.GetUserId();
-            List<Opportunity> oppList = null;
-            db.Majors.Load();
-            db.Departments.Load();
+            IEnumerable<Opportunity> oppList = null;
 
             if (User.IsInRole("Student"))
             {
-                var sInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
+                var sInfo = repo.GetOne<StudentInfo>(si => si.User.Id == userId);
 
                 if (sInfo != null)
                 {
-                    oppList = db.Opportunities.Where(
-                        o => o.DepartmentID == sInfo.Major.Department.DepartmentID
-                        ).ToList();
+                    var dept = repo.GetOne<Department>(o => o.Majors.Contains(sInfo.Major));
+                    oppList = repo.GetWhere<Opportunity>(
+                        o => o.DepartmentID == dept.DepartmentID
+                        );
                 }
             }
             else if (User.IsInRole("Admin"))
             {
-                oppList = db.Opportunities.ToList();
+                oppList = repo.GetAll<Opportunity>();
             }
             else if (User.IsInRole("Coordinator"))
             {
-                var cInfo = db.Coordinators.Include(c => c.User).SingleOrDefault(ci => ci.User == CurrentUser);
+                var cInfo = repo.GetOne<CoordinatorInfo>(ci => ci.User.Id == userId);
+
                 if (cInfo != null)
                 {
                     var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
-                    var opps = from opp in db.Opportunities
-                               where depts.Contains(opp.DepartmentID)
-                               select opp;
-                    oppList = opps.ToList();
+                    //var opps = from opp in repo.GetAll<Opportunity>()
+                    //           where depts.Contains(opp.DepartmentID)
+                    //           select opp;
+
+                    oppList = repo.GetWhere<Opportunity>(o => depts.Contains(o.DepartmentID));
                 }
             }
 
@@ -75,14 +77,14 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Details(int id)
         {
-            return View(db.Opportunities.Find(id));
+            return View(repo.GetByID<Opportunity>(id));
         }
 
         //GET: CoopController/AddOpportunity
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>(), "DepartmentID", "DepartmentName");
             return View();
         }
 
@@ -118,12 +120,13 @@ namespace Coop_Listing_Site.Controllers
                     TermAvailable = opportunityVM.TermAvailable,
                     DepartmentID = opportunityVM.DepartmentID
                 };
-                db.Opportunities.Add(opportunity);
-                db.SaveChanges();
+
+                repo.Add<Opportunity>(opportunity);
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
+            ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>());
             return View(opportunityVM);
         }
 
@@ -135,7 +138,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Opportunity opportunity = db.Opportunities.Find(id);
+            Opportunity opportunity = repo.GetByID<Opportunity>(id);
             if (opportunity == null)
             {
                 return HttpNotFound();
@@ -154,12 +157,14 @@ namespace Coop_Listing_Site.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(opportunity).State = EntityState.Modified;
-                db.SaveChanges();
+                // TODO: figure out what Gabe was thinking when he wrote this
+                //db.Entry(opportunity).State = EntityState.Modified;
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
+            // TODO: actually use this, instead of dumping it on the floor
+            ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>());
             return View(opportunity);
         }
 
@@ -171,7 +176,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Opportunity opportunity = db.Opportunities.Find(id);
+            Opportunity opportunity = repo.GetByID<Opportunity>(id);
             if (opportunity == null)
             {
                 return HttpNotFound();
@@ -185,21 +190,10 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Opportunity opportunity = db.Opportunities.Find(id);
-            db.Opportunities.Remove(opportunity);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        //retrieve a single opportunity
-        private Opportunity GetOpportunity(int opportunityID)
-        {
-            return db.Opportunities.Find(opportunityID);
-        }
+            Opportunity opportunity = repo.GetByID<Opportunity>(id);
+            repo.Delete<Opportunity>(opportunity);
 
-        //retrieve all opportunities
-        private List<Opportunity> GetOpportunities()
-        {
-            return db.Opportunities.ToList();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Upload(int id)
@@ -213,7 +207,7 @@ namespace Coop_Listing_Site.Controllers
             if (ModelState.IsValid)
             {
                 //Gets the opportunity that is being applied for
-                var internship = db.Opportunities.Find(id);
+                var internship = repo.GetByID<Opportunity>(id);
 
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
@@ -271,10 +265,9 @@ namespace Coop_Listing_Site.Controllers
                     }
                 }
 
-                db.Applications.Add(application);
-                db.SaveChanges();
+                repo.Add<Application>(application);
 
-                var email = db.Emails.FirstOrDefault();
+                var email = repo.GetOne<EmailInfo>();
                 if(email != null)
                     email.SendApplicationNotification(application);
 
@@ -288,7 +281,8 @@ namespace Coop_Listing_Site.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }
