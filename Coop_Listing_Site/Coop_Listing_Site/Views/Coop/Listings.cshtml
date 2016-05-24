@@ -39,7 +39,14 @@
                     @Html.ActionLink(opp.CoopPositionTitle, "Details", new { id = opp.OpportunityID })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => opp.Paid)
+                    @if (opp.Paid)
+                    {
+                        @:Yes
+                    }
+                    else
+                    {
+                        @:No
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => opp.OpeningsAvailable)
