@@ -161,8 +161,11 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
+            var oppMajors = opportunity.Majors.Select(m => m.MajorID);
+            var majors = db.Majors.Where(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName).ToList();
 
-            ViewBag.MajorIDs = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
+            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+
             var oppvm = new OpportunityModel(opportunity);
             return View(oppvm);
         }
@@ -216,7 +219,11 @@ namespace Coop_Listing_Site.Controllers
             opportunityvm.Department = opp.Department;
             opportunityvm.Majors = opp.Majors;
 
-            ViewBag.MajorIDs = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
+            var oppMajors = opp.Majors.Select(m => m.MajorID);
+            var majors = db.Majors.Where(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName).ToList();
+
+            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+
             return View(opportunityvm);
         }
 
