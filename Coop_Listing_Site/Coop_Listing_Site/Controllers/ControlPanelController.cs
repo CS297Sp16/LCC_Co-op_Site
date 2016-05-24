@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Coop_Listing_Site.Models;
 using Coop_Listing_Site.DAL;
@@ -9,11 +8,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
 using Coop_Listing_Site.Models.ViewModels;
-using System.Diagnostics;
 using System.Data.Entity;
 using System.Net;
-using Coop_Listing_Site.Repositories;
-using System.Text;
 
 namespace Coop_Listing_Site.Controllers
 {
