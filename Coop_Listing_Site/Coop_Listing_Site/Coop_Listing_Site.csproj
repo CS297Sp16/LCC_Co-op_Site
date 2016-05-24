@@ -306,6 +306,9 @@
     <Content Include="Views\Student\Enable.cshtml" />
     <Content Include="Views\Student\Disable.cshtml" />
     <Content Include="Views\Student\Invitations.cshtml" />
+    <Content Include="Views\Coop\Applications.cshtml" />
+    <Content Include="Views\Coop\AppDetails.cshtml" />
+    <Content Include="Views\Coop\AppDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
