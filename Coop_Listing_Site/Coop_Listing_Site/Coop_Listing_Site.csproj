@@ -184,6 +184,10 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
+    <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
+      <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -320,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
+      <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

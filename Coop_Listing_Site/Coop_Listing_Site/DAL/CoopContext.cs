@@ -29,6 +29,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<EmailInfo> Emails { get; set; }
         public DbSet<PasswordReset> ResetTokens { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<UserFile> UserFiles { get; set; }
 
         /*
          * Potential issues with User inheritance

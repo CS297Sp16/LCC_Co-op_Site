@@ -139,7 +139,7 @@ namespace Coop_Listing_Site.Models
                     db.Majors.Load();
                     db.Users.Load();
 
-                    student = db.Students.FirstOrDefault(s => s.User.Id == app.User.Id);
+                    student = db.Students.FirstOrDefault(s => s.User.Id == app.Student.User.Id);
                     foreach (var cInfo in db.Coordinators.ToList())
                     {
                         if(cInfo.Majors.Contains(student.Major))
@@ -168,7 +168,7 @@ namespace Coop_Listing_Site.Models
                                                 "This is an automatic message. Any replies sent to this e-mail will not be viewed.";
 
                             mail.Subject = "New Co-op Application";
-                            mail.Body = string.Format(message, "\r\n", app.User.FirstName, app.User.LastName, app.Opportunity.CoopPositionTitle, app.Opportunity.CompanyName);
+                            mail.Body = string.Format(message, "\r\n", app.Student.User.FirstName, app.Student.User.LastName, app.Opportunity.CoopPositionTitle, app.Opportunity.CompanyName);
 
                             client.Send(mail);
                         }

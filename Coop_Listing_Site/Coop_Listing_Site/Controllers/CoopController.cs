@@ -209,8 +209,42 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, int id)
+        public ActionResult Upload(Application application, int id)
         {
+            // Check if the user applying is even a student
+            var student = db.Students.FirstOrDefault(s => s.User.Id == CurrentUser.Id);
+
+            if (student == null)
+                ModelState.AddModelError("", "You must be a student to apply for a Co-op Opportunity.");
+
+            var files = HttpContext.Request.Files;
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                var uploadedFile = files.Get(i);
+                var slot = files.GetKey(i);
+
+                if (uploadedFile.ContentLength > 0)
+                {
+                    var file = new UserFile();
+                    file.ContentType = uploadedFile.ContentType;
+                    file.FileName = uploadedFile.FileName;
+
+                    using (var stream = new BinaryReader(uploadedFile.InputStream))
+                        file.FileData = stream.ReadBytes(uploadedFile.ContentLength);
+
+                    application.Files.Add(file);
+                }
+                else
+                {
+                    if (slot == "ResumeUpload")
+                    {
+                        ModelState.AddModelError("", "A Resume is required to apply for an opportunity.");
+                        break;
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 //Gets the opportunity that is being applied for
@@ -219,91 +253,11 @@ namespace Coop_Listing_Site.Controllers
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
 
-                //Attaches the current student to the application that is being submitted
-                application.User = CurrentUser;
-
-                /*
-                var files = HttpContext.Request.Files;
-
-                for (int i = 0; i < files.Count; i++)
-                {
-                    var uploadedFile = files.Get(i);
-                    var slot = files.GetKey(i);
-
-                    if(uploadedFile.ContentLength > 0)
-                    {
-                        var file = new UserFile();
-                        file.ContentType = uploadedFile.ContentType;
-                        file.FileName = uploadedFile.FileName;
-                        using (var stream = new BinaryReader(uploadedFile.InputStream))
-                            file.FileData = stream.ReadBytes(uploadedFile.ContentLength);
-                    }
-                    else
-                    {
-                        if (slot == "Resume")
-                        {
-                            ModelState.AddModelError("", "A Resume is required to apply for an opportunity.");
-                            break;
-                        }
-                    }
-                }
-                */
-
-                //Allows for the upload of a resume
-                if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
-                {
-                    application.FileName_Resume = Path.GetFileName(ResumeUpload.FileName);
-                    application.Resume_ContentType = ResumeUpload.ContentType;
-                    using (var reader = new BinaryReader(ResumeUpload.InputStream))
-                    {
-                        application.Resume = reader.ReadBytes(ResumeUpload.ContentLength);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("ResumeUpload", "A Resume is required");
-                    return View();
-                }
-
-                //Allows for the upload of a cover letter
-                if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
-                {
-                    application.FileName_CoverLetter = Path.GetFileName(CoverLetterUpload.FileName);
-                    application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
-
-                    using (var reader = new BinaryReader(CoverLetterUpload.InputStream))
-                    {
-                        application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
-                    }
-                }
-
-                //Saves the Drivers License
-                if (DriverLicenseUpload != null && DriverLicenseUpload.ContentLength > 0)
-                {
-                    application.FileName_DriverLicense = Path.GetFileName(DriverLicenseUpload.FileName);
-                    application.DriverLicense_ContentType = DriverLicenseUpload.ContentType;
-                    using (var reader = new BinaryReader(DriverLicenseUpload.InputStream))
-                    {
-                        application.DriverLicense = reader.ReadBytes(DriverLicenseUpload.ContentLength);
-                    }
-                }
-
-                //Saves anything else that might be needed into the other
-                if (OtherUpload != null && OtherUpload.ContentLength > 0)
-                {
-                    application.FileName_Other = Path.GetFileName(OtherUpload.FileName);
-                    application.Other_ContentType = OtherUpload.ContentType;
-                    using (var reader = new BinaryReader(OtherUpload.InputStream))
-                    {
-                        application.Other = reader.ReadBytes(OtherUpload.ContentLength);
-                    }
-                }
-
                 db.Applications.Add(application);
                 db.SaveChanges();
 
                 var email = db.Emails.FirstOrDefault();
-                if(email != null)
+                if (email != null)
                     email.SendApplicationNotification(application);
 
                 return View("Submitted");
@@ -313,44 +267,19 @@ namespace Coop_Listing_Site.Controllers
 
         }
 
-        public ActionResult GetFiles(int? id, string type)
+        public ActionResult GetFile(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var app = db.Applications.Find(id);
-            if (app == null)
-            {
-                return HttpNotFound();
-            }
-
-            FileContentResult file = null;
-
-            switch (type)
-            {
-                case "Resume":
-                    if(app.Resume != null)
-                        file = File(app.Resume, app.Resume_ContentType);
-                    break;
-                case "CoverLetter":
-                    if (app.CoverLetter != null)
-                        file = File(app.CoverLetter, app.CoverLetter_ContentType);
-                    break;
-                case "DriverLicense":
-                    if (app.DriverLicense != null)
-                        file = File(app.DriverLicense, app.DriverLicense_ContentType);
-                    break;
-                case "Other":
-                    if (app.Other != null)
-                        file = File(app.Other, app.Other_ContentType);
-                    break;
-            }
-
+            var file = db.UserFiles.Find(id);
             if (file == null)
+            {
                 return HttpNotFound();
+            }
 
-            return file;
+            return File(file.FileData, file.ContentType);
         }
 
         protected override void Dispose(bool disposing)
