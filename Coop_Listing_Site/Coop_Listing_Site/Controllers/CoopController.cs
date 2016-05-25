@@ -14,12 +14,17 @@ namespace Coop_Listing_Site.Controllers
 {
     public class CoopController : Controller
     {
-        private Repository repo;
+        private IRepository repo;
 
         public CoopController()
         {
             var db = new CoopContext();
             repo = new Repository(db);
+        }
+
+        public CoopController(IRepository r)
+        {
+            repo = r;
         }
 
         private User CurrentUser
@@ -121,7 +126,7 @@ namespace Coop_Listing_Site.Controllers
                     DepartmentID = opportunityVM.DepartmentID
                 };
 
-                repo.Add<Opportunity>(opportunity);
+                repo.Add(opportunity);
 
                 return RedirectToAction("Index");
             }
@@ -191,7 +196,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Opportunity opportunity = repo.GetByID<Opportunity>(id);
-            repo.Delete<Opportunity>(opportunity);
+            repo.Delete(opportunity);
 
             return RedirectToAction("Index");
         }

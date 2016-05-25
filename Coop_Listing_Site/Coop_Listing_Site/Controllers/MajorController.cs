@@ -13,7 +13,7 @@ namespace Coop_Listing_Site.Controllers
     public class MajorController : Controller
     {
         //private CoopContext db;
-        private Repository repo;
+        private IRepository repo;
 
 
         public MajorController()
@@ -23,7 +23,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         // for unit testing
-        public MajorController(Repository r)
+        public MajorController(IRepository r)
         {
             repo = r;
         }

@@ -8,7 +8,7 @@ namespace Coop_Listing_Site.DAL
     /// <summary>
     /// A painfully thin layer of abstraction over the dbContext
     /// </summary>
-    public class Repository
+    public class Repository : IRepository
     {
         private CoopContext db;
 
@@ -17,12 +17,19 @@ namespace Coop_Listing_Site.DAL
             db = new CoopContext();
         }
 
+        /// <summary>
+        /// Creates a Repository using the provided dbContext
+        /// </summary>
+        /// <param name="context">The dbContext that the Repository will use</param>
         public Repository(CoopContext context)
         {
             db = context;
         }
 
 
+        /// <summary>
+        /// Adds a new entry to the database
+        /// </summary>
         public T Add<T>(T dbObj) where T : class
         {
             db.Set<T>().Add(dbObj);
@@ -31,6 +38,9 @@ namespace Coop_Listing_Site.DAL
             return dbObj;
         }
 
+        /// <summary>
+        /// Removes an entry from the database
+        /// </summary>
         public T Delete<T>(T dbObj) where T : class
         {
             db.Set<T>().Remove(dbObj);
@@ -44,18 +54,29 @@ namespace Coop_Listing_Site.DAL
             db.Dispose();
         }
 
+        /// <summary>
+        /// Returns all entries of the specified type
+        /// </summary>
         public IEnumerable<T> GetAll<T>() where T : class
         {
             var results = db.Set<T>();
             return results.ToList();
         }
 
+        /// <summary>
+        /// Returns all entries matched by the check function
+        /// </summary>
+        /// <param name="check">A function that returns true for entries that
+        /// should be included in the returned list</param>
         public IEnumerable<T> GetWhere<T>(Func<T, bool> check) where T : class
         {
             var results = db.Set<T>().Where(check);
             return results.ToList();
         }
 
+        /// <summary>
+        /// Returns the first item of the supplied type, or null if there are none
+        /// </summary>
         public T GetOne<T>() where T : class
         {
             return db.Set<T>().FirstOrDefault();
@@ -77,29 +98,6 @@ namespace Coop_Listing_Site.DAL
             db.SaveChanges();
 
             return dbObj;
-        }
-
-        // now totally usless, yay!
-        private void LoadRefs(Type type)
-        {
-            // get the types properties
-            var properties = type.GetProperties();
-            // list of db types to load
-            List<Type> props = new List<Type>();
-
-            foreach (var prop in properties)
-            {
-                // if it's one of our models, add it to the list
-                if (prop.PropertyType.IsClass &&
-                    prop.PropertyType.Namespace == "Coop_Listing_Site.Models")
-                {
-                    props.Add(prop.PropertyType);
-                }
-            }
-
-            // load all the dbSets in the list
-            foreach (var t in props)
-                db.Set(t).Load();
         }
     }
 }

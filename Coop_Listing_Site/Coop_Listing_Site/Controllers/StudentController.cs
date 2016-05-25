@@ -13,12 +13,17 @@ namespace Coop_Listing_Site.Controllers
     [Authorize(Roles = "Admin, Coordinator")]
     public class StudentController : Controller
     {
-        private Repository repo;
+        private IRepository repo;
 
         public StudentController()
         {
             var db = new CoopContext();
             repo = new Repository(db);
+        }
+
+        public StudentController(IRepository r)
+        {
+            repo = r;
         }
 
         public ActionResult Index()
