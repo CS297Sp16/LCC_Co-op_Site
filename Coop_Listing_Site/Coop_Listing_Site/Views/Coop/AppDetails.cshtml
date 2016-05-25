@@ -1,0 +1,94 @@
+﻿@model Coop_Listing_Site.Models.Application
+
+@{
+    ViewBag.Title = "Application Details";
+}
+
+<h2>Application Details</h2>
+
+<div>
+    <h4>Opportunity</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opportunity.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opportunity.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opportunity.CoopPositionTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Resume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Resume) @* This needs to be changed to point at 
+                                                        something to get it out of array*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CoverLetter)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoverLetter)  @* This needs to be changed to point at
+                                                            something to get it out of array*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DriverLicense)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DriverLicense) @* This needs to be changed to point at
+                                                                something to get it out of array*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Other)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Other)  @* This needs to be changed to point at
+                                                        something to get it out of array*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>       
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "AppDetails") ||
+    @Html.ActionLink("Delete Application", "AppDelete")
+   
+</p>
