@@ -26,8 +26,6 @@ namespace Coop_Listing_Site.Models
 
         public virtual StudentInfo Student { get; set; }
 
-        public virtual Opportunity Opportunity { get; set; }
-
         [Required]
         public string Message { get; set; }
 
