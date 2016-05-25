@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Coop_Listing_Site.Models
 {
@@ -10,7 +9,9 @@ namespace Coop_Listing_Site.Models
             // make sure Majors isn't null when we make a new Department
             Majors = new List<Major>();
         }
+
         public int DepartmentID { get; set; }
+		
         public string DepartmentName { get; set; }
 
         public virtual ICollection<Major> Majors { get; set; }
