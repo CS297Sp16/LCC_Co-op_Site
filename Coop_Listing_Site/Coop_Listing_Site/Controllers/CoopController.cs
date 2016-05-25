@@ -75,7 +75,7 @@ namespace Coop_Listing_Site.Controllers
                 }
             }
 
-            return View(oppList);
+            return View(oppList.Select(o => new OpportunityModel(o)));
         }
 
         public ActionResult Details(int? id)
