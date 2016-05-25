@@ -184,6 +184,14 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605250504016_Class_Updates1.cs" />
+    <Compile Include="Migrations\201605250504016_Class_Updates1.Designer.cs">
+      <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605250516036_Initial.cs" />
+    <Compile Include="Migrations\201605250516036_Initial.Designer.cs">
+      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -322,6 +330,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605250504016_Class_Updates1.resx">
+      <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605250516036_Initial.resx">
+      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
