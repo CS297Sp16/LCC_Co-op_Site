@@ -183,10 +183,6 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605250504016_Class_Updates1.cs" />
-    <Compile Include="Migrations\201605250504016_Class_Updates1.Designer.cs">
-      <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201605250516036_Initial.cs" />
     <Compile Include="Migrations\201605250516036_Initial.Designer.cs">
       <DependentUpon>201605250516036_Initial.cs</DependentUpon>
@@ -194,7 +190,7 @@
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Migrations\201605240142154_Opportunity_Update2.cs" />
     <Compile Include="Migrations\201605240142154_Opportunity_Update2.Designer.cs">
       <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
@@ -337,15 +333,12 @@
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605250504016_Class_Updates1.resx">
-      <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605250516036_Initial.resx">
       <DependentUpon>201605250516036_Initial.cs</DependentUpon>
-	</EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
-	</EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605240142154_Opportunity_Update2.resx">
       <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
     </EmbeddedResource>
