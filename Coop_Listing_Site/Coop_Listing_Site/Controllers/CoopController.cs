@@ -267,8 +267,7 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Upload(int id)
         {
-            // no get requests for this page
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return View();
         }
 
         [HttpPost]

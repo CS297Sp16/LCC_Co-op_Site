@@ -77,12 +77,6 @@ namespace Coop_Listing_Site.Controllers
             var depts = repo.GetAll<Department>().OrderBy(d => d.DepartmentName);
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", major.Department.DepartmentID);
 
-            /* For if/when we add courses
-            var courses = db.Courses.OrderBy(c => c.CourseNumber);
-            var selectedCourses = db.Majors.Find(id).Courses.Select(c => c.CourseNumber);
-            ViewBag.Courses = new MultiSelectList(courses, "CourseID", "CourseNumber", selectedCourses);
-            */
-
             return View(major);
         }
 
