@@ -595,7 +595,7 @@ namespace Coop_Listing_Site.Controllers
 
             foreach (var coord in db.Coordinators.Include(c => c.User))
             {
-                if (coord.User.Enabled)
+                if (!coord.User.Enabled)
                 {
                     coordinators[coord.User.Id] = string.Format("{0} - {1} {2}", coord.User.Email, coord.User.FirstName, coord.User.LastName);
                 }
