@@ -13,33 +13,23 @@ namespace Coop_Listing_Site.Controllers
     [Authorize(Roles = "Admin, Coordinator")]
     public class StudentController : Controller
     {
-        private IRepository<StudentInfo> studentsRepo;
-        private IRepository<Major> majorsRepo;
-        private IRepository<Department> departmentsRepo;
-        private IRepository<RegisterInvite> invitationsRepo;
+        private IRepository repo;
 
         public StudentController()
         {
             var db = new CoopContext();
-            studentsRepo = new StudentRepo(db);
-            majorsRepo = new MajorsRepo(db);
-            departmentsRepo = new DepartmentRepo(db);
-            invitationsRepo = new InvitationRepo(db);
+            repo = new Repository(db);
         }
 
-        public StudentController(IRepository<StudentInfo> sRepo,
-            IRepository<Major> mRepo, IRepository<Department> dRepo, IRepository<RegisterInvite> iRepo)
+        public StudentController(IRepository r)
         {
-            studentsRepo = sRepo;
-            majorsRepo = mRepo;
-            departmentsRepo = dRepo;
-            invitationsRepo = iRepo;
+            repo = r;
         }
 
         public ActionResult Index()
         {
             //TODO: be more specific sbout who sees what students
-            var studentVMs = studentsRepo.GetAll().Select(s => new StudentViewModel(s));
+            var studentVMs = repo.GetAll<StudentInfo>().Select(s => new StudentViewModel(s));
 
             return View(studentVMs);
         }
@@ -49,7 +39,7 @@ namespace Coop_Listing_Site.Controllers
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var student = studentsRepo.GetByID(id);
+            var student = repo.GetByID<StudentInfo>(id);
 
             return View(new StudentViewModel(student));
         }
@@ -60,7 +50,7 @@ namespace Coop_Listing_Site.Controllers
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var student = studentsRepo.GetByID(id);
+            var student = repo.GetByID<StudentInfo>(id);
 
             return View(new StudentViewModel(student));
         }
@@ -71,10 +61,10 @@ namespace Coop_Listing_Site.Controllers
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var student = studentsRepo.GetByID(id);
+            var student = repo.GetByID<StudentInfo>(id);
 
             student.User.Enabled = true;
-            studentsRepo.Update(student);
+            repo.Update<StudentInfo>(student);
 
             ViewBag.Updated = true;
 
@@ -86,7 +76,7 @@ namespace Coop_Listing_Site.Controllers
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var student = studentsRepo.GetByID(id);
+            var student = repo.GetByID<StudentInfo>(id);
 
             return View(new StudentViewModel(student));
         }
@@ -97,26 +87,24 @@ namespace Coop_Listing_Site.Controllers
             if (string.IsNullOrEmpty(id))
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var student = studentsRepo.GetByID(id);
+            var student = repo.GetByID<StudentInfo>(id);
 
             student.User.Enabled = false;
-            studentsRepo.Update(student);
+            repo.Update<StudentInfo>(student);
 
             return RedirectToAction("Details", new { id = id });
         }
 
         public ActionResult Invitations()
         {
-            return View(invitationsRepo.GetAll());
+            return View(repo.GetAll<RegisterInvite>());
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                majorsRepo.Dispose();
-                departmentsRepo.Dispose();
-                studentsRepo.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

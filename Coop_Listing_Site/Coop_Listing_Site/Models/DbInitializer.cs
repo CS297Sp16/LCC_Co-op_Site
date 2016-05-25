@@ -100,12 +100,21 @@ namespace Coop_Listing_Site.Models
                 Major = major
             };
 
-            StudentInfo sInfo2 = new StudentInfo
+            /*StudentInfo sInfo2 = new StudentInfo
             {
                 LNumber = "L00000002",
                 User = user2,
                 Major = major
+            };*/
+
+            CoordinatorInfo cInfo0 = new CoordinatorInfo
+            {
+                User = user2
             };
+
+            cInfo0.Majors.Add(major4);
+            cInfo0.Majors.Add(major5);
+            cInfo0.Majors.Add(major6);
 
             CoordinatorInfo cInfo1 = new CoordinatorInfo
             {
@@ -118,7 +127,7 @@ namespace Coop_Listing_Site.Models
 
             // Add the student role to them
             userManager.AddToRole(user1.Id, "Student");
-            userManager.AddToRole(user2.Id, "Student");
+            userManager.AddToRole(user2.Id, "Coordinator");
             userManager.AddToRoles(user3.Id, "Coordinator", "Admin");
 
 
@@ -257,7 +266,8 @@ namespace Coop_Listing_Site.Models
             context.Invites.Add(inv3);
 
             context.Students.Add(sInfo1);
-            context.Students.Add(sInfo2);
+            //context.Students.Add(sInfo2);
+            context.Coordinators.Add(cInfo0);
             context.Coordinators.Add(cInfo1);
 
             context.Opportunities.Add(opp1);

@@ -9,7 +9,7 @@ namespace Coop_Listing_Site.Models
     {
         public int MajorID { get; set; }
 
-        public Department Department { get; set; }
+        public virtual Department Department { get; set; }
 
         public string MajorName { get; set; }
 

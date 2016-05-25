@@ -11,7 +11,7 @@ namespace Coop_Listing_Site.Models
         }
 
         public int ApplicationId { get; set; }
-
+        
         public virtual StudentInfo Student { get; set; }
 
         public virtual Opportunity Opportunity { get; set; }
