@@ -9,7 +9,7 @@
 @*one set of these buttons needs to be taken out, but lets show Gerry with both and let him decide*@
 <h2>Opportunity Details
     @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
-    @Html.ActionLink("Apply", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
+    @Html.ActionLink("Apply For Opportunity", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
 </h2>
 
 <div>
@@ -159,6 +159,6 @@
 </div>
 <p>
     @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" }) 
-    @Html.ActionLink("Apply", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Apply For Opportunity", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" })
 </p>
 

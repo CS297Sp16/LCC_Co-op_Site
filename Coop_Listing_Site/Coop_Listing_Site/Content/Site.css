@@ -51,3 +51,11 @@ textarea {
 .navbar-inverse .navbar-brand:hover {
     color:#E1CC33;
 }
+
+.navbar-inverse .navbar-nav > li > a {
+    color:#f5f5f5;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover {
+    color:#E1CC33;
+}

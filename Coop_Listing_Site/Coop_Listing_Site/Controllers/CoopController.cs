@@ -39,7 +39,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Listings()
         {
             string userId = User.Identity.GetUserId();
-            List<Opportunity> oppList = null;
+            List<OpportunityModel> oppList = null;
             db.Majors.Load();
             db.Departments.Load();
 
@@ -52,12 +52,13 @@ namespace Coop_Listing_Site.Controllers
                     var deptid = sInfo.Major.Department.DepartmentID;
                     oppList = db.Opportunities.Where(
                         o => o.Department.DepartmentID == deptid
-                        ).ToList();
+                        ).Select(o => new OpportunityModel(o)).ToList();
                 }
             }
             else if (User.IsInRole("Admin"))
             {
-                oppList = db.Opportunities.ToList();
+                var x = db.Opportunities.ToList();
+                oppList = x.Select(o => new OpportunityModel(o)).ToList();
             }
             else if (User.IsInRole("Coordinator"))
             {
@@ -68,7 +69,7 @@ namespace Coop_Listing_Site.Controllers
                     var opps = from opp in db.Opportunities
                                where depts.Contains(opp.Department.DepartmentID)
                                select opp;
-                    oppList = opps.ToList();
+                    oppList = opps.Select(o => new OpportunityModel(o)).ToList();
                 }
             }
 
