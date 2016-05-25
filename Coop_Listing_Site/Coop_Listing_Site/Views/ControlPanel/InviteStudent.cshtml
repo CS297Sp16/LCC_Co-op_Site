@@ -1,6 +1,4 @@
-﻿@model Coop_Listing_Site.Models.RegisterInvite
-
-@{
+﻿@{
     ViewBag.Title = "Invite Student";
     Layout = "~/Views/Shared/_CP_Layout.cshtml";
 }
@@ -8,14 +6,21 @@
 <h2>Invite Student</h2>
 
 <p>
-    This page is for inviting students to the website. Please enter their email in the field below, and click Invite.
+    This page is for inviting students to the website. Please enter their email(s) in the field below, and click Invite.
+</p>
+<p>
+    When sending multiple invites, press Enter after each email to ensure they are separated properly.
 </p>
 
 @if (ViewBag.SMTPReady != null && ViewBag.SMTPReady)
 {
-    if (ViewBag.ReturnMessage != null)
+    if (ViewBag.ReturnMessages != null)
     {
-        <p>@ViewBag.ReturnMessage</p>
+        <br />
+        foreach(string message in ViewBag.ReturnMessages)
+        {
+            <p>@message</p>
+        }
     }
 
     using (Html.BeginForm())
@@ -26,10 +31,9 @@
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Emails", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    @Html.TextArea("Emails", null, 8, 50, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 

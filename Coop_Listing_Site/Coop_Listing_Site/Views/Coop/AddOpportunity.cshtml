@@ -164,10 +164,15 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.DepartmentID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("DepartmentIDs")
-                @Html.ValidationMessageFor(model => model.DepartmentID, "", new { @class = "text-danger" })
+                @Html.DropDownList("DepartmentIDs", "Select One (Or none)...")
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Major", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MajorIDs", "Select One")
             </div>
         </div>
 

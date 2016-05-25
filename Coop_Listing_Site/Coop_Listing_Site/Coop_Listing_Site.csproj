@@ -166,7 +166,6 @@
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
     <Compile Include="DAL\DepartmentRepo.cs" />
-    <Compile Include="DAL\ETC\CourseConfiguration.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
@@ -184,6 +183,7 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Migrations\201605250504016_Class_Updates1.cs" />
     <Compile Include="Migrations\201605250504016_Class_Updates1.Designer.cs">
       <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
@@ -191,6 +191,12 @@
     <Compile Include="Migrations\201605250516036_Initial.cs" />
     <Compile Include="Migrations\201605250516036_Initial.Designer.cs">
       <DependentUpon>201605250516036_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
+    <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
+      <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
+    <Compile Include="Migrations\201605240142154_Opportunity_Update2.cs" />
+    <Compile Include="Migrations\201605240142154_Opportunity_Update2.Designer.cs">
+      <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,7 +205,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Application.cs" />
     <Compile Include="Models\CoordinatorInfo.cs" />
-    <Compile Include="Models\Course.cs" />
     <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\PasswordReset.cs" />
@@ -208,10 +213,10 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Opportunity.cs" />
+    <Compile Include="Models\UserFile.cs" />
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
     <Compile Include="Models\ViewModels\DepartmentModel.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
-    <Compile Include="Models\ViewModels\CompanyRegistrationModel.cs" />
     <Compile Include="Models\ViewModels\OpportunityModel.cs" />
     <Compile Include="Models\ViewModels\PassResetModel.cs" />
     <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
@@ -331,11 +336,16 @@
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </EmbeddedResource>
+<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201605250504016_Class_Updates1.resx">
       <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605250516036_Initial.resx">
       <DependentUpon>201605250516036_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
+      <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605240142154_Opportunity_Update2.resx">
+      <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

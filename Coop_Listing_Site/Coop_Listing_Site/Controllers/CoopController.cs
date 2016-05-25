@@ -9,6 +9,7 @@ using System.Net;
 using System.Data.Entity;
 using Coop_Listing_Site.Models.ViewModels;
 using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -48,8 +49,9 @@ namespace Coop_Listing_Site.Controllers
 
                 if (sInfo != null)
                 {
+                    var deptid = sInfo.Major.Department.DepartmentID;
                     oppList = db.Opportunities.Where(
-                        o => o.DepartmentID == sInfo.Major.Department.DepartmentID
+                        o => o.Department.DepartmentID == deptid
                         ).ToList();
                 }
             }
@@ -64,7 +66,7 @@ namespace Coop_Listing_Site.Controllers
                 {
                     var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
                     var opps = from opp in db.Opportunities
-                               where depts.Contains(opp.DepartmentID)
+                               where depts.Contains(opp.Department.DepartmentID)
                                select opp;
                     oppList = opps.ToList();
                 }
@@ -73,16 +75,30 @@ namespace Coop_Listing_Site.Controllers
             return View(oppList);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View(db.Opportunities.Find(id));
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var opp = db.Opportunities.Find(id);
+
+            if (opp == null)
+            {
+                return HttpNotFound();
+            }
+
+            var oppvm = new OpportunityModel(opp);
+            return View(oppvm);
         }
 
         //GET: CoopController/AddOpportunity
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity()
         {
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.OrderBy(d => d.DepartmentName).ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.MajorIDs = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
             return View();
         }
 
@@ -90,40 +106,47 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Coordinator")]
-        public ActionResult AddOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+        public ActionResult AddOpportunity([Bind(Include = @"CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] Opportunity opportunityVM)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM, int? DepartmentIDs, int? MajorIDs)
+
         {
+            Major major = null;
+            Department dept = null;
+
+            if (DepartmentIDs == null && MajorIDs == null)
+            {
+                ModelState.AddModelError("", "You must select either a Department or at least on Major to list this opportunity under");
+            }
+            else
+            {
+                if (MajorIDs != null)
+                    major = db.Majors.Find(MajorIDs);
+                else
+                    dept = db.Departments.Find(DepartmentIDs);
+            }
+
             if (ModelState.IsValid)
             {
-                Opportunity opportunity = new Opportunity()
-                {
-                    UserID = opportunityVM.UserID,
-                    CompanyID = opportunityVM.CompanyID,
-                    CompanyName = opportunityVM.CompanyName,
-                    ContactName = opportunityVM.ContactName,
-                    ContactNumber = opportunityVM.ContactNumber,
-                    ContactEmail = opportunityVM.ContactEmail,
-                    Location = opportunityVM.Location,
-                    CompanyWebsite = opportunityVM.CompanyWebsite,
-                    AboutCompany = opportunityVM.AboutCompany,
-                    AboutDepartment = opportunityVM.AboutDepartment,
-                    CoopPositionTitle = opportunityVM.CoopPositionTitle,
-                    CoopPositionDuties = opportunityVM.CoopPositionDuties,
-                    Qualifications = opportunityVM.Qualifications,
-                    GPA = opportunityVM.GPA,
-                    Paid = opportunityVM.Paid,
-                    Duration = opportunityVM.Duration,
-                    OpeningsAvailable = opportunityVM.OpeningsAvailable,
-                    TermAvailable = opportunityVM.TermAvailable,
-                    DepartmentID = opportunityVM.DepartmentID
-                };
+                Opportunity opportunity = opportunityVM.ToOpportunity();
+                opportunity.Approved = true;
+
+                if (major != null)
+                    opportunity.Majors.Add(major);
+                else
+                    opportunity.Department = dept;
+
+                if (opportunity.Wage != null || opportunity.Amount != null)
+                    opportunity.Paid = true; // Implement in JS using a Hidden field that to True/False depending on the pay type
+
                 db.Opportunities.Add(opportunity);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
+            ViewBag.DepartmentIDs = new SelectList(db.Departments.OrderBy(d => d.DepartmentName).ToList(), "DepartmentID", "DepartmentName");
+            ViewBag.MajorIDs = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
             return View(opportunityVM);
         }
 
@@ -140,27 +163,70 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return View(opportunity);
+            var oppMajors = opportunity.Majors.Select(m => m.MajorID);
+            var majors = db.Majors.Where(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName).ToList();
+
+            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+
+            var oppvm = new OpportunityModel(opportunity);
+            return View(oppvm);
         }
 
         //POST: CoopController/EditOpportunity
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Coordinator")]
-        public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
+        public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable,
-            TermAvailable, DepartmentID")] Opportunity opportunity)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityvm, int? MajorIDs)
         {
             if (ModelState.IsValid)
             {
+                Major major = null;
+                if (MajorIDs != null)
+                    major = db.Majors.Find(MajorIDs);
+
+                var opportunity = db.Opportunities.Find(opportunityvm.OpportunityID);
+
+                // This should be changed but I needed to get something working
+                opportunity.AboutCompany = opportunityvm.AboutCompany;
+                opportunity.AboutDepartment = opportunityvm.AboutDepartment;
+                opportunity.Amount = opportunityvm.Amount;
+                opportunity.Approved = opportunityvm.Approved;
+                opportunity.CompanyName = opportunityvm.CompanyName;
+                opportunity.CompanyWebsite = opportunityvm.CompanyWebsite;
+                opportunity.ContactEmail = opportunityvm.ContactEmail;
+                opportunity.ContactName = opportunityvm.ContactName;
+                opportunity.ContactNumber = opportunityvm.ContactNumber;
+                opportunity.CoopPositionDuties = opportunityvm.CoopPositionDuties;
+                opportunity.CoopPositionTitle = opportunityvm.CoopPositionTitle;
+                opportunity.Duration = opportunityvm.Duration;
+                opportunity.GPA = opportunityvm.GPA;
+                opportunity.Location = opportunityvm.Location;
+                opportunity.OpeningsAvailable = opportunityvm.OpeningsAvailable;
+                opportunity.Paid = opportunityvm.Paid;
+                opportunity.Qualifications = opportunityvm.Qualifications;
+                opportunity.TermAvailable = opportunityvm.TermAvailable;
+                opportunity.Wage = opportunityvm.Wage;
+
+                if(major != null)
+                    opportunity.Majors.Add(major); // Needs more logic for adding/removing majors
+
                 db.Entry(opportunity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var opp = db.Opportunities.Find(opportunityvm.OpportunityID);
 
-            ViewBag.DepartmentIDs = new SelectList(db.Departments.ToList());
-            return View(opportunity);
+            opportunityvm.Department = opp.Department;
+            opportunityvm.Majors = opp.Majors;
+
+            var oppMajors = opp.Majors.Select(m => m.MajorID);
+            var majors = db.Majors.Where(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName).ToList();
+
+            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+
+            return View(opportunityvm);
         }
 
         //GET: CoopController/DeleteOpportunity
@@ -176,7 +242,9 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return View(opportunity);
+
+            var oppvm = new OpportunityModel(opportunity);
+            return View(oppvm);
         }
 
         //POST: CoopController/DeleteOpportunity
@@ -208,8 +276,42 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(Application application, HttpPostedFileBase ResumeUpload, HttpPostedFileBase CoverLetterUpload, HttpPostedFileBase DriverLicenseUpload, HttpPostedFileBase OtherUpload, int id)
+        public ActionResult Upload(Application application, int id)
         {
+            // Check if the user applying is even a student
+            var student = db.Students.FirstOrDefault(s => s.User.Id == CurrentUser.Id);
+
+            if (student == null)
+                ModelState.AddModelError("", "You must be a student to apply for a Co-op Opportunity.");
+
+            var files = HttpContext.Request.Files;
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                var uploadedFile = files.Get(i);
+                var slot = files.GetKey(i);
+
+                if (uploadedFile.ContentLength > 0)
+                {
+                    var file = new UserFile();
+                    file.ContentType = uploadedFile.ContentType;
+                    file.FileName = uploadedFile.FileName;
+
+                    using (var stream = new BinaryReader(uploadedFile.InputStream))
+                        file.FileData = stream.ReadBytes(uploadedFile.ContentLength);
+
+                    application.Files.Add(file);
+                }
+                else
+                {
+                    if (slot == "ResumeUpload")
+                    {
+                        ModelState.AddModelError("", "A Resume is required to apply for an opportunity.");
+                        break;
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 //Gets the opportunity that is being applied for
@@ -218,64 +320,11 @@ namespace Coop_Listing_Site.Controllers
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
 
-                //Attaches the current student to the application that is being submitted
-                application.User = CurrentUser;
-
-                //Allows for the upload of a resume
-                if (ResumeUpload != null && ResumeUpload.ContentLength > 0)
-                {
-                    application.FileName_Resume = System.IO.Path.GetFileName(ResumeUpload.FileName);
-                    application.Resume_ContentType = ResumeUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(ResumeUpload.InputStream))
-                    {
-                        application.Resume = reader.ReadBytes(ResumeUpload.ContentLength);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("ResumeUpload", "A Resume is required");
-                    return View();
-                }
-
-                //Allows for the upload of a cover letter
-                if (CoverLetterUpload != null && CoverLetterUpload.ContentLength > 0)
-                {
-                    application.FileName_CoverLetter = System.IO.Path.GetFileName(CoverLetterUpload.FileName);
-                    application.CoverLetter_ContentType = CoverLetterUpload.ContentType;
-
-                    using (var reader = new System.IO.BinaryReader(CoverLetterUpload.InputStream))
-                    {
-                        application.CoverLetter = reader.ReadBytes(CoverLetterUpload.ContentLength);
-                    }
-                }
-
-                //Saves the Drivers License
-                if (DriverLicenseUpload != null && DriverLicenseUpload.ContentLength > 0)
-                {
-                    application.FileName_DriverLicense = System.IO.Path.GetFileName(DriverLicenseUpload.FileName);
-                    application.DriverLicense_ContentType = DriverLicenseUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(DriverLicenseUpload.InputStream))
-                    {
-                        application.DriverLicense = reader.ReadBytes(DriverLicenseUpload.ContentLength);
-                    }
-                }
-
-                //Saves anything else that might be needed into the other
-                if (OtherUpload != null && OtherUpload.ContentLength > 0)
-                {
-                    application.FileName_Other = System.IO.Path.GetFileName(OtherUpload.FileName);
-                    application.Other_ContentType = OtherUpload.ContentType;
-                    using (var reader = new System.IO.BinaryReader(OtherUpload.InputStream))
-                    {
-                        application.Other = reader.ReadBytes(OtherUpload.ContentLength);
-                    }
-                }
-
                 db.Applications.Add(application);
                 db.SaveChanges();
 
                 var email = db.Emails.FirstOrDefault();
-                if(email != null)
+                if (email != null)
                     email.SendApplicationNotification(application);
 
                 return View("Submitted");
@@ -284,6 +333,7 @@ namespace Coop_Listing_Site.Controllers
             return View();
 
         }
+
         public ActionResult Applications()
         {
             string userId = User.Identity.GetUserId();
@@ -353,6 +403,22 @@ namespace Coop_Listing_Site.Controllers
             db.SaveChanges();
             return RedirectToAction("Applications");
         }
+
+        public ActionResult GetFile(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var file = db.UserFiles.Find(id);
+            if (file == null)
+            {
+                return HttpNotFound();
+            }
+
+            return File(file.FileData, file.ContentType);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

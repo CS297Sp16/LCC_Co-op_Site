@@ -1,4 +1,4 @@
-﻿@model Coop_Listing_Site.Models.Opportunity
+﻿@model Coop_Listing_Site.Models.ViewModels.OpportunityModel
 @{
     ViewBag.Title = "Delete a Opportunity";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,16 +12,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            <strong>@Html.DisplayNameFor(model => model.OpportunityID)</strong>
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.OpportunityID)
-        </dd>
-        <dt>
             <strong>@Html.DisplayNameFor(model => model.CompanyName)</strong>
         </dt>
         <dd>
             @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.Location)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
         </dd>
         <dt>
             <strong>@Html.DisplayNameFor(model => model.CoopPositionTitle)</strong>
@@ -34,6 +34,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.CoopPositionDuties)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.OpeningsAvailable)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OpeningsAvailable)
         </dd>
         <dt>
             <strong>@Html.DisplayNameFor(model => model.TermAvailable)</strong>
