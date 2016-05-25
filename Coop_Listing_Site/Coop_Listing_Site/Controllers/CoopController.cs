@@ -108,6 +108,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult AddOpportunity([Bind(Include = @"CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
             CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM, int? DepartmentIDs, int? MajorIDs)
+
         {
             Major major = null;
             Department dept = null;

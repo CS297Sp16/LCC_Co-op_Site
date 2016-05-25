@@ -1,4 +1,4 @@
-﻿@model Coop_Listing_Site.Models.ViewModels.OpportunityModel
+﻿@model Coop_Listing_Site.Models.Opportunity
 
 @{
     ViewBag.Title = "Add an Opportunity";
@@ -178,13 +178,13 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="AddOpportunity" class="btn btn-default" />
+                <input type="submit" value="AddOpportunity" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Back to the opportunity list", "Index")
+    @Html.ActionLink("Back to the opportunity list", "Index")@*can't seem to make this a button like on the other opportunity views*@
 </div>
+
 

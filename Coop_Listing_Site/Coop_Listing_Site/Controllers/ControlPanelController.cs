@@ -634,7 +634,7 @@ namespace Coop_Listing_Site.Controllers
             return View(departmentVM);
         }
 
-        //GET: ControlPAnelController/EditDepartment
+        //GET: ControlPanelController/EditDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditDepartment(int? id)
         {
@@ -650,7 +650,7 @@ namespace Coop_Listing_Site.Controllers
             return View(department);
         }
 
-        //POST: ControlPAnelController/EditDepartment
+        //POST: ControlPanelController/EditDepartment
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
@@ -666,7 +666,7 @@ namespace Coop_Listing_Site.Controllers
             return View(dept);
         }
 
-        //GET: ControlPAnelController/DeleteDepartment
+        //GET: ControlPanelController/DeleteDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult DeleteDepartment(int? id)
         {

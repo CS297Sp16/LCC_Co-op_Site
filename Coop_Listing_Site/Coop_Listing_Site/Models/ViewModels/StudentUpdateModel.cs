@@ -14,6 +14,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string UserId { get; set; }
         public int MajorID { get; set; }
         public double GPA { get; set; }
+        [Display(Name ="Current Password")]
         public string CurrentPassword { get; set; }
 
         [DataType(DataType.Password)]

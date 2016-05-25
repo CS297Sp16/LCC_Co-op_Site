@@ -28,7 +28,7 @@ namespace Coop_Listing_Site.Migrations
 
             context.Roles.AddOrUpdate(r => r.Name, studentrole, coordrole, adminrole, superAdminRole);
 
-            //Create some majors
+            //Create LaneCC majors
             Major major = new Major { MajorName = "Computer Simulation and Game Development" };
             Major major1 = new Major { MajorName = "Computer Network Operations" };
             Major major2 = new Major { MajorName = "Computer Programming" };
@@ -36,9 +36,78 @@ namespace Coop_Listing_Site.Migrations
             Major major4 = new Major { MajorName = "Retail Management" };
             Major major5 = new Major { MajorName = "Business Management" };
             Major major6 = new Major { MajorName = "Accounting" };
+            Major major7 = new Major { MajorName = "Emergency Medical Technician(EMT)" };
+            Major major8 = new Major { MajorName = "Respiratory Care" };
+            Major major9 = new Major { MajorName = "Dental Assisting" };
+            Major major10 = new Major { MajorName = "Dental Hygiene" };
+            Major major11 = new Major { MajorName = "Medical Office Assistant(MOA)" };
+            Major major12 = new Major { MajorName = "Respiratory Care Clinical Practice" };
+            Major major13 = new Major { MajorName = "Physical Therapist Asistant(Clinical Affiliation)" };
+            Major major14 = new Major { MajorName = "Nursing" };
+            Major major15 = new Major { MajorName = "Auto Body & Fender" };
+            Major major16 = new Major { MajorName = "Automotive Technology" };
+            Major major17 = new Major { MajorName = "Aviation Maintenance" };
+            Major major18 = new Major { MajorName = "Construction" };
+            Major major19 = new Major { MajorName = "Diesel Technology" };
+            Major major20 = new Major { MajorName = "Drafting" };
+            Major major21 = new Major { MajorName = "Electronics Technology" };
+            Major major22 = new Major { MajorName = "Energy Management" };
+            Major major23 = new Major { MajorName = "Flight Technology" };
+            Major major24 = new Major { MajorName = "Gen Work Experience(180 & 280)" };
+            Major major25 = new Major { MajorName = "Health Occupations(Pharmacy Technician, Sterile Processing, Vet Assistant)" };
+            Major major26 = new Major { MajorName = "Occupational Skills" };
+            Major major27 = new Major { MajorName = "Landscape" };
+            Major major28 = new Major { MajorName = "Manufacturing Technology" };
+            Major major29 = new Major { MajorName = "Sustainability Coordinator" };
+            Major major30 = new Major { MajorName = "Water Conservation Technology" };
+            Major major31 = new Major { MajorName = "Watershed Science Technology" };
+            Major major32 = new Major { MajorName = "Welding/ASLCC" };
+            Major major33 = new Major { MajorName = "Pre-Law" };
+            Major major34 = new Major { MajorName = "Ethnic Studies" };
+            Major major35 = new Major { MajorName = "Psychology" };
+            Major major36 = new Major { MajorName = "Sociology" };
+            Major major37 = new Major { MajorName = "Service Learning +" };
+            Major major38 = new Major { MajorName = "Criminal Justice/Academy" };
+            Major major39 = new Major { MajorName = "Human Services" };
+            Major major40 = new Major { MajorName = "Geographic Information Science(GIS)" };
+            Major major41 = new Major { MajorName = "Education(K-12 Teacher Prep)" };
+            Major major42 = new Major { MajorName = "Career Skills Training" };
+            Major major43 = new Major { MajorName = "Gen Work Experience(280)" };
+            Major major44 = new Major { MajorName = "Health Records Technology(HRT)" };
+            Major major45 = new Major { MajorName = "Aerobics" };
+            Major major46 = new Major { MajorName = "Athletic Training" };
+            Major major47 = new Major { MajorName = "Athletics" };
+            Major major48 = new Major { MajorName = "Coaching" };
+            Major major49 = new Major { MajorName = "Corrective Fitness" };
+            Major major50 = new Major { MajorName = "Fitness" };
+            Major major51 = new Major { MajorName = "Fitness Management" };
+            Major major52 = new Major { MajorName = "Physical Education" };
+            Major major53 = new Major { MajorName = "Recreation" };
+            Major major54 = new Major { MajorName = "Wellness" };
+            Major major55 = new Major { MajorName = "Political Science" };
+            Major major56 = new Major { MajorName = "Art & Applied Design" };
+            Major major57 = new Major { MajorName = "Graphic Design" };
+            Major major58 = new Major { MajorName = "Journalism" };
+            Major major59 = new Major { MajorName = "Multimedia Design" };
+            Major major60 = new Major { MajorName = "Music" };
+            Major major61 = new Major { MajorName = "Performing Arts" };
+            Major major62 = new Major { MajorName = "Administration Office Professional" };
+            Major major63 = new Major { MajorName = "Medical Receptionist" };
+            Major major64 = new Major { MajorName = "Phlebotomy" };
+            Major major65 = new Major { MajorName = "Early Childhood Education" };
+            Major major66 = new Major { MajorName = "Culinary Arts" };
+            Major major67 = new Major { MajorName = "Hospitality Management" };
 
+            //Create LaneCC Departments
             Department dept = new Department { DepartmentName = "Computer Information Technologies" };
             Department dept1 = new Department { DepartmentName = "Business" };
+            Department dept2 = new Department { DepartmentName = "Health Professions" };
+            Department dept3 = new Department { DepartmentName = "Advanced Technology" };
+            Department dept4 = new Department { DepartmentName = "Social Science" };
+            Department dept5 = new Department { DepartmentName = "Cooperative Education" };
+            Department dept6 = new Department { DepartmentName = "Media Arts" };
+            Department dept7 = new Department { DepartmentName = "Child & Family Education" };
+            Department dept8 = new Department { DepartmentName = "Culinary/Foood Services" };
 
             dept.Majors.Add(major);
             dept.Majors.Add(major1);
@@ -47,10 +116,76 @@ namespace Coop_Listing_Site.Migrations
             dept1.Majors.Add(major4);
             dept1.Majors.Add(major5);
             dept1.Majors.Add(major6);
+            dept2.Majors.Add(major7);
+            dept2.Majors.Add(major8);
+            dept2.Majors.Add(major9);
+            dept2.Majors.Add(major10);
+            dept2.Majors.Add(major11);
+            dept2.Majors.Add(major12);
+            dept2.Majors.Add(major13);
+            dept2.Majors.Add(major14);
+            dept3.Majors.Add(major15);
+            dept3.Majors.Add(major16);
+            dept3.Majors.Add(major17);
+            dept3.Majors.Add(major18);
+            dept3.Majors.Add(major19);
+            dept3.Majors.Add(major20);
+            dept3.Majors.Add(major21);
+            dept3.Majors.Add(major22);
+            dept3.Majors.Add(major23);
+            dept3.Majors.Add(major24);
+            dept3.Majors.Add(major25);
+            dept3.Majors.Add(major26);
+            dept3.Majors.Add(major27);
+            dept3.Majors.Add(major28);
+            dept3.Majors.Add(major29);
+            dept3.Majors.Add(major30);
+            dept3.Majors.Add(major31);
+            dept3.Majors.Add(major32);
+            dept3.Majors.Add(major33);
+            dept4.Majors.Add(major34);
+            dept4.Majors.Add(major35);
+            dept4.Majors.Add(major36);
+            dept4.Majors.Add(major37);
+            dept4.Majors.Add(major38);
+            dept4.Majors.Add(major39);
+            dept4.Majors.Add(major40);
+            dept4.Majors.Add(major41);
+            dept5.Majors.Add(major42);
+            dept5.Majors.Add(major43);
+            dept5.Majors.Add(major44);
+            dept5.Majors.Add(major45);
+            dept5.Majors.Add(major46);
+            dept5.Majors.Add(major47);
+            dept5.Majors.Add(major48);
+            dept5.Majors.Add(major49);
+            dept5.Majors.Add(major50);
+            dept5.Majors.Add(major51);
+            dept5.Majors.Add(major52);
+            dept5.Majors.Add(major53);
+            dept5.Majors.Add(major54);
+            dept5.Majors.Add(major55);
+            dept6.Majors.Add(major56);
+            dept6.Majors.Add(major57);
+            dept6.Majors.Add(major58);
+            dept6.Majors.Add(major59);
+            dept6.Majors.Add(major60);
+            dept6.Majors.Add(major61);
+            dept2.Majors.Add(major62);
+            dept2.Majors.Add(major63);
+            dept2.Majors.Add(major64);
+            dept7.Majors.Add(major65);
+            dept8.Majors.Add(major66);
+            dept8.Majors.Add(major67);
 
-            context.Majors.AddOrUpdate(m => m.MajorName, major, major1, major2, major3, major4, major5, major6);
+            context.Majors.AddOrUpdate(m => m.MajorName, major, major1, major2, major3, major4, major5, major6, major7, major8, major9, major10,
+                                        major11, major12, major13, major14, major15, major16, major17, major18, major19, major20, major21, major22,
+                                        major23, major24, major25, major26, major27, major28, major29, major30, major31, major32, major33, major34,
+                                        major35, major36, major37, major38, major39, major40, major41, major42, major43, major44, major45, major46,
+                                        major47, major48, major49, major50, major51, major52, major53, major54, major55, major56, major57, major58,
+                                        major59, major60, major61, major62, major63, major64, major65, major66, major67);
 
-            context.Departments.AddOrUpdate(d => d.DepartmentName, dept, dept1);
+            context.Departments.AddOrUpdate(d => d.DepartmentName, dept, dept1, dept2, dept3, dept4, dept5, dept6, dept7, dept8);
 
             context.SaveChanges();
 
