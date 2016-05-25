@@ -1,40 +1,55 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">
+
+<div class="row ">
+    <div class="col-md-2 sidebar col-sytle-override">
         @if (User.IsInRole("Student"))
         {
         <h4>Student</h4>
-        <ul class="nav nav-sidebar">
+        <ul class="nav nav-pills">
             <li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
         </ul>
         }
-        @if (User.IsInRole("Coordinator") || User.IsInRole("Admin"))
+        @if (User.IsInRole("Coordinator"))
         {
         <h4>Coordinator</h4>
-        <ul class="nav nav-sidebar">
-            <li>@Html.ActionLink("Invite a student", "InviteStudent", "ControlPanel")</li>
-            @*<li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
-            <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>*@
-            <li>@Html.ActionLink("Active Student Invitations", "Invitations", "Student")</li>
-	       <li>@Html.ActionLink("View Majors", "", "Major")</li>
-	       <li>@Html.ActionLink("View Departments", "DepartmentList", "ControlPanel")</li>
-	   <li>@Html.ActionLink("View Students", "", "Student")</li>
+        <ul class="nav nav-pills">
+            <li>@Html.ActionLink("Invite a student", "InviteStudent")</li>
+            <li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
+            <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>
+            <li>@Html.ActionLink("Active Invitations", "InviteList")</li>
         </ul>
         }
         @if (User.IsInRole("Admin"))
         {
         <h4>Administrator</h4>
-        <ul class="nav nav-sidebar">
-            <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator", "ControlPanel")</li>
-            <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators", "ControlPanel")</li>
-            <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators", "ControlPanel")</li>
-            <li>@Html.ActionLink("Set SMTP Information", "SMTP", "ControlPanel")</li>
+        <ul class="nav nav-pills">
+            <li>@Html.ActionLink("Invite a coordinator", "InviteCoordinator")</li>
+            <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators")</li>
+            <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators")</li>
+            <li>@Html.ActionLink("Set SMTP Information", "SMTP")</li>
+            <li>@Html.ActionLink("View Majors", "Majors")</li>
+            <li>@Html.ActionLink("View Departments", "DepartmentList")</li>
+            <li>@Html.ActionLink("View Student", "StudentList")</li>
         </ul>
         }
     </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="col-md-10 col-style-override static-background-image" id="static-background-image">
+
         @RenderBody()
     </div>
+   
 </div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        setTimeout(
+        function(){
+            $("#static-background-image").addClass("fadeout");
+        }, 1000);
+    </script>
+
+} 
