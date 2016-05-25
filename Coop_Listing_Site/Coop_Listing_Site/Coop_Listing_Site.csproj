@@ -335,7 +335,6 @@
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </EmbeddedResource>
-<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201605250504016_Class_Updates1.resx">
       <DependentUpon>201605250504016_Class_Updates1.cs</DependentUpon>
     </EmbeddedResource>
