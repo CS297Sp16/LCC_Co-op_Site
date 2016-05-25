@@ -42,7 +42,7 @@ else
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "InviteList")
+            @Html.ActionLink("Back to List", "InviteList", new { id = Model.RegisterInviteID }, new { @class = "btn btn-primary" })
         </div>
     }
 </div>

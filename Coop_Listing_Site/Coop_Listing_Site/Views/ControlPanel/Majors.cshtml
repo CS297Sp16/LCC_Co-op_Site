@@ -34,8 +34,8 @@
                     @Html.DisplayFor(modelItem => item.MajorName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditMajor", new { id = item.MajorID }) |
-                    @Html.ActionLink("Delete", "DeleteMajor", new { id = item.MajorID })
+                    @Html.ActionLink("Edit", "EditMajor", new { id = item.MajorID }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Delete", "DeleteMajor", new { id = item.MajorID }, new { @class = "btn btn-primary" })
                 </td>
             </tr>
         }

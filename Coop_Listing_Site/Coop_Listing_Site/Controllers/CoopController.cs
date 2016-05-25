@@ -92,7 +92,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] OpportunityModel opportunityVM)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable, TermAvailable, DepartmentID")] Opportunity opportunityVM)
         {
             if (ModelState.IsValid)
             {
@@ -150,7 +150,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, UserID, CompanyID, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
             CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Duration, OpeningsAvailable,
-            TermAvailable, DepartmentID")] OpportunityModel opportunity)
+            TermAvailable, DepartmentID")] Opportunity opportunity)
         {
             if (ModelState.IsValid)
             {
