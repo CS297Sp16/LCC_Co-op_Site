@@ -28,3 +28,13 @@ textarea {
 .nav-pills > li {
 	float: none;
 }*/
+
+.btn-primary {
+    background-color:#003893;
+    color:#f5f5f5;
+}
+
+.navbar-inverse {
+    background-color:#003893;
+    color: #f5f5f5;
+}
