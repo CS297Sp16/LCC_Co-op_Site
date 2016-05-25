@@ -183,10 +183,10 @@
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
-	</Compile>
-    <Compile Include="Migrations\201605240142154_Opportunity_Update2.cs" />
-    <Compile Include="Migrations\201605240142154_Opportunity_Update2.Designer.cs">
-      <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605251919428_Opportunity_Update_fix.cs" />
+    <Compile Include="Migrations\201605251919428_Opportunity_Update_fix.Designer.cs">
+      <DependentUpon>201605251919428_Opportunity_Update_fix.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
@@ -325,8 +325,8 @@
     <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605240142154_Opportunity_Update2.resx">
-      <DependentUpon>201605240142154_Opportunity_Update2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605251919428_Opportunity_Update_fix.resx">
+      <DependentUpon>201605251919428_Opportunity_Update_fix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
