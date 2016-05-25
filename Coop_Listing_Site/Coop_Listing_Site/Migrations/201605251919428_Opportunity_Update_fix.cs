@@ -3,14 +3,14 @@ namespace Coop_Listing_Site.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Opportunity_Update2 : DbMigration
+    public partial class Opportunity_Update_fix : DbMigration
     {
         public override void Up()
         {
             AddColumn("dbo.Opportunity", "Approved", c => c.Boolean(nullable: false));
             AddColumn("dbo.Opportunity", "Department_DepartmentID", c => c.Int());
-            AddColumn("dbo.Major", "Opportunity_OpportunityID", c => c.Int());
             AddColumn("dbo.StudentInfo", "Opportunity_OpportunityID", c => c.Int());
+            AddColumn("dbo.Major", "Opportunity_OpportunityID", c => c.Int());
             AlterColumn("dbo.Opportunity", "GPA", c => c.Double());
             CreateIndex("dbo.Opportunity", "Department_DepartmentID");
             CreateIndex("dbo.Major", "Opportunity_OpportunityID");
@@ -47,8 +47,8 @@ namespace Coop_Listing_Site.Migrations
             DropIndex("dbo.Major", new[] { "Opportunity_OpportunityID" });
             DropIndex("dbo.Opportunity", new[] { "Department_DepartmentID" });
             AlterColumn("dbo.Opportunity", "GPA", c => c.Double(nullable: false));
-            DropColumn("dbo.StudentInfo", "Opportunity_OpportunityID");
             DropColumn("dbo.Major", "Opportunity_OpportunityID");
+            DropColumn("dbo.StudentInfo", "Opportunity_OpportunityID");
             DropColumn("dbo.Opportunity", "Department_DepartmentID");
             DropColumn("dbo.Opportunity", "Approved");
         }

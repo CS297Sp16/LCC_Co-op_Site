@@ -13,7 +13,5 @@ namespace Coop_Listing_Site.Models
         public User User { get; set; }
         public Major Major { get; set; }
         public double GPA { get; set; }
-        // public virtual ICollection<Course> CompletedCourses { get; set; }
-        // public virtual ICollection<File> Files { get; set; }
     }
 }

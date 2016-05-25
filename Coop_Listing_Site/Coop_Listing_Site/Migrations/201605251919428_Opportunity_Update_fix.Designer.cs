@@ -7,13 +7,13 @@ namespace Coop_Listing_Site.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Opportunity_Update2 : IMigrationMetadata
+    public sealed partial class Opportunity_Update_fix : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Opportunity_Update2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Opportunity_Update_fix));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605240142154_Opportunity_Update2"; }
+            get { return "201605251919428_Opportunity_Update_fix"; }
         }
         
         string IMigrationMetadata.Source
