@@ -284,6 +284,75 @@ namespace Coop_Listing_Site.Controllers
             return View();
 
         }
+        public ActionResult Applications()
+        {
+            string userId = User.Identity.GetUserId();
+            List<Application> appList = null;
+            db.Applications.Load();
+            //db.Majors.Load();
+            //db.Departments.Load();
+
+            /*if (User.IsInRole("Coordinator"))
+            {
+                //var cInfo = db.Students.SingleOrDefault(si => si.User.Id == userId);
+
+                if (sInfo != null)
+                {
+                    appList = db.Opportunities.Where(
+                        o => o.DepartmentID == sInfo.Major.Department.DepartmentID
+                        ).ToList();
+                }
+            }*/
+            /*else if (User.IsInRole("Admin"))
+            {
+                appList = db.Opportunities.ToList();
+            }*/
+            if (User.IsInRole("Coordinator"))
+            {
+                var cInfo = db.Coordinators.Include(c => c.User).SingleOrDefault(ci => ci.User.Id == CurrentUser.Id);
+                if (cInfo != null)
+                {
+                    //var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
+                    var apps = from app in db.Applications
+                                   //where depts.Contains(app.DepartmentID)
+                               select app;
+                    appList = apps.ToList();
+                }
+            }
+
+            return View(appList);
+        }
+        public ActionResult AppDetails(int id)
+        {
+            return View(db.Applications.Find(id));
+        }
+
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AppDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Application application = db.Applications.Find(id);
+            if (application == null)
+            {
+                return HttpNotFound();
+            }
+            return View(application);
+        }
+
+        //POST: CoopController/DeleteOpportunity
+        [HttpPost, ActionName("AppDelete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Coordinator")]
+        public ActionResult AppDeleteConfirmed(int id)
+        {
+            Application application = db.Applications.Find(id);
+            db.Applications.Remove(application);
+            db.SaveChanges();
+            return RedirectToAction("Applications");
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
