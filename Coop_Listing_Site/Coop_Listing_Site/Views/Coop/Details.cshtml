@@ -1,4 +1,4 @@
-﻿@model Coop_Listing_Site.Models.Opportunity
+﻿@model Coop_Listing_Site.Models.ViewModels.OpportunityModel
 
 @{
     ViewBag.Title = "Details";
@@ -6,11 +6,13 @@
                                        Distribution of any private information is not allowed. As a courtesy please do not use any of the
                                        supplied contact information until your advisor grants you privileges.";
 }
-
-<h2>Details</h2>
+@*one set of these buttons needs to be taken out, but lets show Gerry with both and let him decide*@
+<h2>Opportunity Details
+    @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
+    @Html.ActionLink("Apply", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
+</h2>
 
 <div>
-    <h4>Opportunity</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -29,21 +31,24 @@
             @Html.DisplayFor(model => model.ContactName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactNumber)
-        </dt>
+        @if (User.IsInRole("Coordinator") || User.IsInRole("Admin"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ContactNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ContactNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ContactEmail)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.ContactEmail)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ContactEmail)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ContactEmail)
+            </dd>
+        }
 
         <dt>
             @Html.DisplayNameFor(model => model.Location)
@@ -101,20 +106,30 @@
             @Html.DisplayFor(model => model.Qualifications)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.GPA)
-        </dt>
+        @if (Model.GPA > 0)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.GPA)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.GPA)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.GPA)
+            </dd>
+        }
 
         <dt>
             @Html.DisplayNameFor(model => model.Paid)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Paid)
+            @if (Model.Paid)
+            {
+                @:Yes
+            }
+            else
+            {
+                @:No
+            }
         </dd>
 
         <dt>
@@ -143,6 +158,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index") ||
-    @Html.ActionLink("Apply", "Upload", new { id = Model.OpportunityID })
+    @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" }) 
+    @Html.ActionLink("Apply", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" })
 </p>
+

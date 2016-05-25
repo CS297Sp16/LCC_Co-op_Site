@@ -153,7 +153,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "three to four terms",
                 OpeningsAvailable = 1,
                 TermAvailable = "Fall",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp2 = new Opportunity
@@ -176,7 +176,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "11 weeks maximum",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp3 = new Opportunity
@@ -196,7 +196,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "One term",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp4 = new Opportunity
@@ -214,7 +214,7 @@ namespace Coop_Listing_Site.Models
                 Qualifications = @"Must be available to work the following days: Monday, Tuesday, and Thursday",
                 Paid = true,
                 Wage = "$12 per hour",
-                DepartmentID = dept1.DepartmentID
+                Department = dept1
             };
 
             Opportunity opp5 = new Opportunity
@@ -236,7 +236,7 @@ namespace Coop_Listing_Site.Models
                                     Ability to work cooperatively and strategically in a team environment with all levels of professionals. Excellent oral and written communication skills and ability to communicate and work effectively with individuals from diverse backgrounds and cultures
                                     Commitment to and experience promoting and enhancing diversity and equity",
                 Paid = false,
-                DepartmentID = dept1.DepartmentID
+                Department = dept1
             };
 
             // invites

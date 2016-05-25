@@ -17,9 +17,7 @@ namespace Coop_Listing_Site.DAL
         {
             //CoopContext Constructor Will eventually plug the Database Initializer here
         }
-
-
-        public DbSet<Course> Courses { get; set; }
+        
         public DbSet<Department> Departments { get; set; }
         public DbSet<Major> Majors { get; set; }
         public DbSet<Opportunity> Opportunities { get; set; }
@@ -29,13 +27,7 @@ namespace Coop_Listing_Site.DAL
         public DbSet<EmailInfo> Emails { get; set; }
         public DbSet<PasswordReset> ResetTokens { get; set; }
         public DbSet<Application> Applications { get; set; }
-
-        /*
-         * Potential issues with User inheritance
-         * Comment out for now
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Coordinator> Coordinators { get; set; }
-        */
+        public DbSet<UserFile> UserFiles { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -53,7 +45,6 @@ namespace Coop_Listing_Site.DAL
             modelBuilder.Configurations.Add(new ETC.UserConfiguration());*/
 
             // testing a fix for scaffolding problem from stackoverflow
-            modelBuilder.Entity<Course>();
             modelBuilder.Entity<Department>();
             modelBuilder.Entity<Major>();
             modelBuilder.Entity<Opportunity>();

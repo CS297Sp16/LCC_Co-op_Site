@@ -92,11 +92,15 @@
         <div class="form-group" id="buttons">
 
             <div class="col-md-offset-2 col-md-5">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
 
             <div class="col-md-offset-2 col-md-5">
-                <input type="button" onclick="document.location.href='@Url.Action("Index","ControlPanel")';" value="Cancel" class="btn btn-default" />
+                <input type="button" name="cancelPage" onclick="document.location.href='@Url.Action("Index","ControlPanel")';" value="Cancel Update" class="btn btn-primary" />
+            </div>
+
+            <div class="col-md-offset-2 col-md-5">
+                <input type="button" name="cancelPass" value="Cancel Password" class="btn btn-primary" />
             </div>
 
         </div>
@@ -115,12 +119,21 @@
         $('#passRequested').show();
         $('#currentPass').hide();
         $('#changePass').hide();
-        $("input:radio[name='UpdatePass']").click(function () {
+        $('input[name="cancelPass"]').hide();
+        $('input[name="cancelPage"]').show();
+
+        $("input:radio[name='UpdatePass']").click(recurse);
+        
+        $('input[name="cancelPass"]').click(recurse);
+
+        function recurse(){
             $('#currentPass').toggle();
             $('#changePass').toggle();
             $('#allOther').toggle();
             $('#passRequested').toggle();
+            $('input[name="cancelPass"]').toggle();
+            $('input[name="cancelPage"]').toggle();
+        }
 
-        });
     </script>
 }
