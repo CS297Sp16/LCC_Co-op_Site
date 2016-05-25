@@ -34,7 +34,20 @@ textarea {
     color:#f5f5f5;
 }
 
+.btn-primary:hover {
+    background-color:#003893;
+    color:#E1CC33;
+}
+
 .navbar-inverse {
     background-color:#003893;
-    color: #f5f5f5;
+    color: #E1CC33;
+}
+
+.navbar-inverse .navbar-brand {
+    color:#f5f5f5;
+}
+
+.navbar-inverse .navbar-brand:hover {
+    color:#E1CC33;
 }

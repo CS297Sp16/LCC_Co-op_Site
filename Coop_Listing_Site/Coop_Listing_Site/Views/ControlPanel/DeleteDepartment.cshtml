@@ -19,16 +19,13 @@
         <dd>
             @Html.DisplayFor(model => model.DepartmentName)
         </dd>
-
-        @*not sure if I need something here for the majors property, I'm still a little confused on how this works in the department class*@
-
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-primary" /> |
+            <input type="submit" value="Delete" class="btn btn-primary" /> 
             @Html.ActionLink("Back to List", "Index", new { id = Model.DepartmentID }, new { @class = "btn btn-primary" })
         </div>
     }
