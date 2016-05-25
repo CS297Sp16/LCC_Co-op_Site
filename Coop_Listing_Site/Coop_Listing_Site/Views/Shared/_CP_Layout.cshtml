@@ -1,8 +1,9 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    <div class="col-md-2 sidebar">
+
+<div class="row ">
+    <div class="col-md-2 sidebar col-sytle-override">
         @if (User.IsInRole("Student"))
         {
         <h4>Student</h4>
@@ -34,7 +35,21 @@
         </ul>
         }
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 col-style-override static-background-image" id="static-background-image">
+
         @RenderBody()
     </div>
+   
 </div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        setTimeout(
+        function(){
+            $("#static-background-image").addClass("fadeout");
+        }, 1000);
+    </script>
+
+} 
