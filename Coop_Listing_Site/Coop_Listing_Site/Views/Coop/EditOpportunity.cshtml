@@ -1,4 +1,4 @@
-﻿@model Coop_Listing_Site.Models.Opportunity
+﻿@model Coop_Listing_Site.Models.ViewModels.OpportunityModel
 @{
     ViewBag.Title = "Edit a Opportunity";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -165,7 +165,9 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-primary" />
-                @Html.ActionLink("Back to the opportunity list", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" })
+            </div>
+            <div>
+                @Html.ActionLink("Back to the opportunity list", "Index")
             </div>
         </div>
     </div>

@@ -53,6 +53,8 @@ namespace Coop_Listing_Site.Controllers
 
                 if (sInfo != null)
                 {
+                    var deptid = sInfo.Major.Department.DepartmentID;
+
                     var dept = repo.GetOne<Department>(o => o.Majors.Contains(sInfo.Major));
                     oppList = repo.GetWhere<Opportunity>(
                         o => o.Department.DepartmentID == dept.DepartmentID
