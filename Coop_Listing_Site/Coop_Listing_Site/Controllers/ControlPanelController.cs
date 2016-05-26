@@ -222,22 +222,6 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult InviteList()
-        {
-            var inviteList = new List<RegisterInvite>();
-            if (User.IsInRole("Admin"))
-            {
-                inviteList = db.Invites.ToList();
-            }
-            else
-            {
-                inviteList = db.Invites.Where(i => i.UserType == RegisterInvite.AccountType.Student).ToList();
-            }
-
-            return View(inviteList);
-        }
-
-        [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Rescind(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -276,8 +260,6 @@ namespace Coop_Listing_Site.Controllers
         {
             var studInfo = db.Students
                 .Where(si => si.User.Id == CurrentUser.Id)
-                .Include(si => si.User)
-                .Include(si => si.Major)
                 .FirstOrDefault();
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
@@ -416,68 +398,6 @@ namespace Coop_Listing_Site.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        /* remove later
-         * 
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult DisableStudents()
-        {
-            var students = GetEnabledStudents();
-            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
-            return View();
-        }
-
-        [Authorize(Roles = "Coordinator")]
-        [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult DisableStudents(string[] Students)
-        {
-            foreach (var id in Students)
-            {
-                var user = db.Users.Find(id);
-
-                user.Enabled = false;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            ViewBag.Message = "Student(s) Successfully Disabled";
-
-            var students = GetEnabledStudents();
-            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
-            return View();
-        }
-
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult EnableStudents()
-        {
-            var students = GetDisabledStudents();
-            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
-            return View();
-        }
-
-        [Authorize(Roles = "Coordinator")]
-        [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult EnableStudents(string[] Students)
-        {
-            foreach (var id in Students)
-            {
-                var user = db.Users.Find(id);
-
-                user.Enabled = true;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            ViewBag.Message = "Student(s) Successfully Enabled";
-
-            var students = GetDisabledStudents();
-            ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
-            return View();
-        }*/
 
         [Authorize(Roles = "Admin")]
         public ActionResult DisableCoordinators()
