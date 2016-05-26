@@ -601,9 +601,8 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult DepartmentList()
         {
-            var depts = db.Departments.ToList();
-            var vmDepts = depts.Select(d => new DepartmentModel(d));
-            return View(vmDepts);
+            var depts = db.Departments.ToList().Select(d => new DepartmentModel(d));
+            return View(depts);
         }
 
         //GET: ControlPanelController/AddDepartment
@@ -733,7 +732,9 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return View(department);
+
+            var deptvm = new DepartmentModel(department);
+            return View(deptvm);
         }
 
         //POST: ControlPanelController/DeleteDepartment
@@ -758,9 +759,20 @@ namespace Coop_Listing_Site.Controllers
         }
 
         //GET: ControlPanelController/Details
-        public ActionResult DepartmentDetails(int id)
+        public ActionResult DepartmentDetails(int? id)
         {
-            return View(db.Departments.Find(id));
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+
+            var deptvm = new DepartmentModel(department);
+            return View(deptvm);
         }
 
         private User CurrentUser
