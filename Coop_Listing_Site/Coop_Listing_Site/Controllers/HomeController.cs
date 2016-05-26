@@ -10,15 +10,6 @@ namespace Coop_Listing_Site.Controllers
 {
     public class HomeController : Controller
     {
-        private CoopContext db;
-        //private UserManager<User> userManager;
-
-        public HomeController()
-        {
-            db = new CoopContext();
-            //userManager = new UserManager<User>(new UserStore<User>(db));
-        }
-
         // GET: Home
         public ActionResult Index()
         {
@@ -28,18 +19,6 @@ namespace Coop_Listing_Site.Controllers
                 return RedirectToAction("Index", "ControlPanel");
 
             return View();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-
-                //if (userManager != null)
-                //    userManager.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

@@ -100,12 +100,21 @@ namespace Coop_Listing_Site.Models
                 Major = major
             };
 
-            StudentInfo sInfo2 = new StudentInfo
+            /*StudentInfo sInfo2 = new StudentInfo
             {
                 LNumber = "L00000002",
                 User = user2,
                 Major = major
+            };*/
+
+            CoordinatorInfo cInfo0 = new CoordinatorInfo
+            {
+                User = user2
             };
+
+            cInfo0.Majors.Add(major4);
+            cInfo0.Majors.Add(major5);
+            cInfo0.Majors.Add(major6);
 
             CoordinatorInfo cInfo1 = new CoordinatorInfo
             {
@@ -118,7 +127,7 @@ namespace Coop_Listing_Site.Models
 
             // Add the student role to them
             userManager.AddToRole(user1.Id, "Student");
-            userManager.AddToRole(user2.Id, "Student");
+            userManager.AddToRole(user2.Id, "Coordinator");
             userManager.AddToRoles(user3.Id, "Coordinator", "Admin");
 
 
@@ -144,7 +153,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "three to four terms",
                 OpeningsAvailable = 1,
                 TermAvailable = "Fall",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp2 = new Opportunity
@@ -167,7 +176,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "11 weeks maximum",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp3 = new Opportunity
@@ -187,7 +196,7 @@ namespace Coop_Listing_Site.Models
                 Duration = "One term",
                 OpeningsAvailable = 1,
                 TermAvailable = "Spring",
-                DepartmentID = dept.DepartmentID
+                Department = dept
             };
 
             Opportunity opp4 = new Opportunity
@@ -205,7 +214,7 @@ namespace Coop_Listing_Site.Models
                 Qualifications = @"Must be available to work the following days: Monday, Tuesday, and Thursday",
                 Paid = true,
                 Wage = "$12 per hour",
-                DepartmentID = dept1.DepartmentID
+                Department = dept1
             };
 
             Opportunity opp5 = new Opportunity
@@ -227,7 +236,7 @@ namespace Coop_Listing_Site.Models
                                     Ability to work cooperatively and strategically in a team environment with all levels of professionals. Excellent oral and written communication skills and ability to communicate and work effectively with individuals from diverse backgrounds and cultures
                                     Commitment to and experience promoting and enhancing diversity and equity",
                 Paid = false,
-                DepartmentID = dept1.DepartmentID
+                Department = dept1
             };
 
             // invites
@@ -257,7 +266,8 @@ namespace Coop_Listing_Site.Models
             context.Invites.Add(inv3);
 
             context.Students.Add(sInfo1);
-            context.Students.Add(sInfo2);
+            //context.Students.Add(sInfo2);
+            context.Coordinators.Add(cInfo0);
             context.Coordinators.Add(cInfo1);
 
             context.Opportunities.Add(opp1);

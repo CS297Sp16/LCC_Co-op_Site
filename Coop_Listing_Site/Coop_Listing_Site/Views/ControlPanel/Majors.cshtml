@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Coop_Listing_Site.Models.Major>
+@model IEnumerable<Coop_Listing_Site.Models.Major>
 
 @{
     ViewBag.Title = "Majors";
@@ -34,8 +34,8 @@
                     @Html.DisplayFor(modelItem => item.MajorName)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "EditMajor", new { id = item.MajorID }) |
-                    @Html.ActionLink("Delete", "DeleteMajor", new { id = item.MajorID })
+                    @Html.ActionLink("Edit", "EditMajor") |
+                    @Html.ActionLink("Delete", "DeleteMajor")
                 </td>
             </tr>
         }

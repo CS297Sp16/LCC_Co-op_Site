@@ -1,0 +1,74 @@
+﻿@model Coop_Listing_Site.Models.Application
+@{
+    ViewBag.Title = "Delete Applicaton";
+}
+
+<h2>Delete Applicaton</h2>
+
+<h3>Are you sure you want to permanently remove this application?</h3>
+
+
+<div>
+    <h4>Cooperative Opportunity to be deleted</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.User.LastName)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.User.FirstName)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.Opportunity.CoopPositionTitle)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.Message)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.Resume)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Resume)  @*Need to add code for making sure byte array for user is deleted*@
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.CoverLetter)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoverLetter)   @*Need to add code for making sure byte array for user is deleted*@
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.DriverLicense)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DriverLicense)  @*Need to add code for making sure byte array for user is deleted*@
+        </dd>
+        <dt>
+            <strong>@Html.DisplayNameFor(model => model.Other)</strong>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Other)  @*Need to add code for making sure byte array for user is deleted*@
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to the opportunity list", "Index")
+        </div>
+    }
+</div>

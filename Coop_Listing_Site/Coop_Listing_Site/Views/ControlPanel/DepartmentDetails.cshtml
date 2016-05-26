@@ -26,12 +26,9 @@
         <dd>
             @Html.DisplayFor(model => model.DepartmentName)
         </dd>
-
-        @*not sure if I need something here for the majors property, I'm still a little confused on how this works in the department class*@
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "EditDepartment", new { id = Model.DepartmentID }) |
+    @Html.ActionLink("Edit", "EditDepartment", new { id = Model.DepartmentID }, new { @class = "btn btn-primary" }) |
     @Html.ActionLink("Back to List", "DepartmentList")
 </p>

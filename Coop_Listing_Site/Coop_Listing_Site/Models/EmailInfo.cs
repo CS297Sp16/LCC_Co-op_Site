@@ -59,7 +59,7 @@ namespace Coop_Listing_Site.Models
 
                         using (var mail = new MailMessage(fromEmail, invitation.Email))
                         {
-                            string message = "You have been invited to use the Lane Community College Co-op Listing website.{0}{0}" +
+                            string message = "You have been invited to use the Lane Community College Co-op Listing website as a {1}.{0}" +
                                                 "To register, please click the link below. You will be taken to the registration page, with your e-mail already filled out for you.{0}" +
                                                 "https://{3}/Register/{1}/{2} {0}{0}" +
                                                 "This is an automatic message. Any replies sent to this e-mail will not be viewed.";
@@ -139,7 +139,7 @@ namespace Coop_Listing_Site.Models
                     db.Majors.Load();
                     db.Users.Load();
 
-                    student = db.Students.FirstOrDefault(s => s.User.Id == app.User.Id);
+                    student = db.Students.FirstOrDefault(s => s.User.Id == app.Student.User.Id);
                     foreach (var cInfo in db.Coordinators.ToList())
                     {
                         if(cInfo.Majors.Contains(student.Major))
@@ -163,12 +163,12 @@ namespace Coop_Listing_Site.Models
 
                         using (var mail = new MailMessage(fromEmail, coord.User.Email))
                         {
-                            string message = "{1} {2} has applied for the co-op opportunity {3} at {4}.{0}{0}" +
+                            string message = "{1} {2} has applied for the co-op opportunity {3} at {4}.{0}" +
                                                 "Visit your control panel at the co-op listing site to review this application.{0}{0}" +
                                                 "This is an automatic message. Any replies sent to this e-mail will not be viewed.";
 
                             mail.Subject = "New Co-op Application";
-                            mail.Body = string.Format(message, "\r\n", app.User.FirstName, app.User.LastName, app.Opportunity.CoopPositionTitle, app.Opportunity.CompanyName);
+                            mail.Body = string.Format(message, "\r\n", app.Student.User.FirstName, app.Student.User.LastName, app.Opportunity.CoopPositionTitle, app.Opportunity.CompanyName);
 
                             client.Send(mail);
                         }

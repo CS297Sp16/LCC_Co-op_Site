@@ -1,21 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coop_Listing_Site.DAL
 {
-    public interface IRepository<T> : IDisposable
+    public interface IRepository : IDisposable
     {
-        IEnumerable<T> GetAll();
-
-        T GetByID(object id);
-
-        T Add(T dbObj);
-
-        T Update(T dbObj);
-
-        T Delete(T dbObj);
+        T Add<T>(T dbObj) where T : class;
+        T Delete<T>(T dbObj) where T : class;
+        IEnumerable<T> GetAll<T>() where T : class;
+        T GetByID<T>(object id) where T : class;
+        T GetOne<T>() where T : class;
+        T GetOne<T>(Func<T, bool> check) where T : class;
+        IEnumerable<T> GetWhere<T>(Func<T, bool> check) where T : class;
+        T Update<T>(T dbObj) where T : class;
     }
 }

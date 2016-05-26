@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Coop_Listing_Site.Models;
 using Coop_Listing_Site.DAL;
@@ -9,10 +8,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text.RegularExpressions;
 using Coop_Listing_Site.Models.ViewModels;
-using System.Diagnostics;
 using System.Data.Entity;
 using System.Net;
-using Coop_Listing_Site.Repositories;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -156,7 +153,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [Authorize(Roles = "Admin"), HttpPost]
-        public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string InviteEmail, string Domain)
+        public ActionResult SMTP(string SMTPAddress, string SMTPUser, string SMTPPassword, string Domain)
         {
             var email = db.Emails.FirstOrDefault();
 
@@ -201,7 +198,7 @@ namespace Coop_Listing_Site.Controllers
 
         [HttpPost, ValidateAntiForgeryToken]
         [Authorize(Roles = "Coordinator")]
-        public ActionResult InviteStudent([Bind(Include = "Email")] RegisterInvite invitation)
+        public ActionResult InviteStudent(string Emails)
         {
             var emailInfo = db.Emails.FirstOrDefault();
 
@@ -209,35 +206,78 @@ namespace Coop_Listing_Site.Controllers
 
             if (!ModelState.IsValid) return View();
 
-            var email = db.Invites.FirstOrDefault(i => i.Email.ToLower() == invitation.Email.ToLower());
-            if (email != null)
-            {
-                ModelState.AddModelError("Email", "An invitation has already been sent to that e-mail!");
-                return View();
-            }
+            var emailArray = Emails.Split('\n');
 
-            var user = userManager.FindByEmail(invitation.Email);
-            if (user != null)
-            {
-                ModelState.AddModelError("Email", "User with that e-mail already exists!");
-                return View();
-            }
+            var messages = new List<string>();
+            int line = 0;
+            int failures = 0; // Just like you <3
 
-            invitation.UserType = RegisterInvite.AccountType.Student;
-            invitation.RegisterInviteID = Guid.NewGuid().ToString("N");
-            db.Invites.Add(invitation);
-            db.SaveChanges();
+            foreach (var email in emailArray)
+            {
+                line++;
+                var trimEmail = email.Trim();
+
+                if (string.IsNullOrWhiteSpace(trimEmail))
+                    continue;
 
             var response = invitation.SendInvite(emailInfo);
             var success = response.Keys.First();
+                var isValidEmail = Regex.IsMatch(trimEmail,
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase);
 
-            if (!success)
-            {
-                db.Invites.Remove(invitation);
+                if (!isValidEmail)
+                {
+                    messages.Add(string.Format("The email {0} on line {1} is not a valid email.", trimEmail, line));
+                    failures++;
+                    continue;
+                }
+
+                var emailCheck = db.Invites.FirstOrDefault(i => i.Email.ToLower() == trimEmail.ToLower());
+
+                if (emailCheck != null)
+                {
+                    messages.Add(string.Format("An invitation has already been sent to {0}.", trimEmail));
+                    failures++;
+                    continue;
+                }
+
+                var user = userManager.FindByEmail(trimEmail);
+
+                if (user != null)
+                {
+                    messages.Add(string.Format("A user with the e-mail {0} already exists.", trimEmail));
+                    failures++;
+                    continue;
+                }
+
+                var invitation = new RegisterInvite();
+                invitation.Email = trimEmail;
+                invitation.UserType = RegisterInvite.AccountType.Student;
+                invitation.RegisterInviteID = Guid.NewGuid().ToString("N");
+
+                db.Invites.Add(invitation);
                 db.SaveChanges();
+                
+                var success = emailInfo.SendInviteEmail(invitation).Keys.First();
+
+                if (!success)
+                {
+                    db.Invites.Remove(invitation);
+                    db.SaveChanges();
+                    messages.Add(string.Format("Failed to send invite to {0}", trimEmail));
+                    failures++;
+                }
             }
 
-            ViewBag.ReturnMessage = response[success];
+            if (failures < emailArray.Length)
+                messages.Add("All other invites successfully sent.");
+            else
+                messages.Add("It appears none of the invites were sent successfully.");
+            
+
+            ViewBag.ReturnMessages = messages;
 
             return View();
         }
@@ -602,6 +642,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 var user = db.Users.Find(coord.UserId);
                 if (!user.Enabled)
+                if (!coord.User.Enabled)
                 {
                     coordinators[coord.UserId] = string.Format("{0} - {1} {2}", user.Email, user.FirstName, user.LastName);
                 }
@@ -640,7 +681,7 @@ namespace Coop_Listing_Site.Controllers
             return View(departmentVM);
         }
 
-        //GET: ControlPAnelController/EditDepartment
+        //GET: ControlPanelController/EditDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditDepartment(int? id)
         {
@@ -656,7 +697,7 @@ namespace Coop_Listing_Site.Controllers
             return View(department);
         }
 
-        //POST: ControlPAnelController/EditDepartment
+        //POST: ControlPanelController/EditDepartment
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
@@ -672,7 +713,7 @@ namespace Coop_Listing_Site.Controllers
             return View(dept);
         }
 
-        //GET: ControlPAnelController/DeleteDepartment
+        //GET: ControlPanelController/DeleteDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult DeleteDepartment(int? id)
         {
