@@ -6,11 +6,7 @@
                                        Distribution of any private information is not allowed. As a courtesy please do not use any of the
                                        supplied contact information until your advisor grants you privileges.";
 }
-@*one set of these buttons needs to be taken out, but lets show Gerry with both and let him decide*@
-<h2>Opportunity Details
-    @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
-    @Html.ActionLink("Apply For Opportunity", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary"})
-</h2>
+<h2>Opportunity Details</h2>
 
 <div>
     <hr />
@@ -157,8 +153,11 @@
         </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" }) 
+<div>
     @Html.ActionLink("Apply For Opportunity", "Upload", new { id = Model.OpportunityID }, new { @class = "btn btn-primary" })
-</p>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+    
+</div>
 
