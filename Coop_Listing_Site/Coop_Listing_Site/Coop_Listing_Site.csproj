@@ -165,16 +165,13 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
-    <Compile Include="DAL\DepartmentRepo.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
-    <Compile Include="DAL\InvitationRepo.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\MajorRepo.cs" />
-    <Compile Include="DAL\StudentRepo.cs" />
+    <Compile Include="DAL\Repository.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.Designer.cs">
       <DependentUpon>201605150301215_Initial_Migration.cs</DependentUpon>
@@ -281,10 +278,6 @@
     <Content Include="Views\Register\Invalid.cshtml" />
     <Content Include="Views\ControlPanel\SMTP.cshtml" />
     <Content Include="Views\Coop\Details.cshtml" />
-    <Content Include="Views\ControlPanel\Majors.cshtml" />
-    <Content Include="Views\ControlPanel\AddMajor.cshtml" />
-    <Content Include="Views\ControlPanel\EditMajor.cshtml" />
-    <Content Include="Views\ControlPanel\DeleteMajor.cshtml" />
     <Content Include="Views\ControlPanel\InviteList.cshtml" />
     <Content Include="Views\ControlPanel\Rescind.cshtml" />
     <Content Include="Views\ControlPanel\UpdateStudent.cshtml" />

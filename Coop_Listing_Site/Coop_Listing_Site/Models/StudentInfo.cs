@@ -10,8 +10,8 @@ namespace Coop_Listing_Site.Models
     {
         [Key]
         public string LNumber { get; set; }
-        public User User { get; set; }
-        public Major Major { get; set; }
+        public virtual User User { get; set; }
+        public virtual Major Major { get; set; }
         public double GPA { get; set; }
     }
 }
