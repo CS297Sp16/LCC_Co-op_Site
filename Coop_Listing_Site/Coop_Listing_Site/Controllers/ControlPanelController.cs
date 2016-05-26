@@ -616,7 +616,7 @@ namespace Coop_Listing_Site.Controllers
         //POST: ControlPanelController/AddDepartment
         [Authorize(Roles = "Coordinator")]
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult AddDepartment([Bind(Include = "DepartmentName")] DepartmentModel departmentVM)
+        public ActionResult AddDepartment([Bind(Include = "DepartmentName")] DepartmentModel departmentVM, int[] MajorIDs)
         {
             if (ModelState.IsValid)
             {
