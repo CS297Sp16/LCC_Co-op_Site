@@ -569,11 +569,6 @@ namespace Coop_Listing_Site.Controllers
             return students;
         }
 
-        public ActionResult DepartmentList()
-        {
-            return View(db.Departments.ToList());
-        }
-
         private Dictionary<string, string> GetEnabledCoordinators()
         {
             var coordinators = new Dictionary<string, string>();
@@ -602,6 +597,13 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return coordinators;
+        }
+
+        public ActionResult DepartmentList()
+        {
+            var depts = db.Departments.ToList();
+            var vmDepts = depts.Select(d => new DepartmentModel(d));
+            return View(vmDepts);
         }
 
         //GET: ControlPanelController/AddDepartment
