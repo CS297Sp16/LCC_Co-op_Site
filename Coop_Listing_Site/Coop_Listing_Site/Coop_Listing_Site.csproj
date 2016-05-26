@@ -309,10 +309,14 @@
     <Content Include="Views\Coop\Applications.cshtml" />
     <Content Include="Views\Coop\AppDetails.cshtml" />
     <Content Include="Views\Coop\AppDelete.cshtml" />
+    <Content Include="Views\Coordinator\Details.cshtml" />
+    <Content Include="Views\Coordinator\Disable.cshtml" />
+    <Content Include="Views\Coordinator\Enable.cshtml" />
+    <Content Include="Views\Coordinator\Index.cshtml" />
+    <Content Include="Views\Coordinator\Invitations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Coordinator\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

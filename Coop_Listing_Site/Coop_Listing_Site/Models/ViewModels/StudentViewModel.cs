@@ -4,7 +4,6 @@ namespace Coop_Listing_Site.Models.ViewModels
 {
     public class StudentViewModel
     {
-        [Key]
         [Display(Name = "L-Number")]
         public string LNumber { get; set; }
 
