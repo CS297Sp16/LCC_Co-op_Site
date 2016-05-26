@@ -159,6 +159,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\CoopController.cs" />
+    <Compile Include="Controllers\CoordinatorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MajorController.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\Opportunity.cs" />
     <Compile Include="Models\UserFile.cs" />
+    <Compile Include="Models\ViewModels\CoordinatorViewModel.cs" />
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
     <Compile Include="Models\ViewModels\DepartmentModel.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
@@ -310,6 +312,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Coordinator\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

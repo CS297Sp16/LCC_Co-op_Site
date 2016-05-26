@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Coop_Listing_Site.Models.ViewModels
 {
-    public class StudentViewModel
+    public class CoordinatorViewModel
     {
-        [Key]
-        [Display(Name = "L-Number")]
-        public string LNumber { get; set; }
-
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
@@ -24,15 +21,11 @@ namespace Coop_Listing_Site.Models.ViewModels
         [Display(Name = "Status")]
         public bool Enabled { get; set; }
 
-        public StudentViewModel(StudentInfo sInfo)
+        public ICollection<Major> Majors { get; set; }
+
+        public CoordinatorViewModel()
         {
-            LNumber = sInfo.LNumber;
-            FirstName = sInfo.User.FirstName;
-            LastName = sInfo.User.LastName;
-            Email = sInfo.User.Email;
-            Major = sInfo.Major.MajorName;
-            GPA = sInfo.GPA;
-            Enabled = sInfo.User.Enabled;
+
         }
     }
 }
