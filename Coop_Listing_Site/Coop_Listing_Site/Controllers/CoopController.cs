@@ -77,7 +77,9 @@ namespace Coop_Listing_Site.Controllers
                 }
             }
 
-            return View(oppList.Select(o => new OpportunityModel(o)));
+            //return View(oppList.Select(o => new OpportunityModel(o)));                        //By: LONNIE,This throws an error if null
+            return View(oppList.Select(o => new OpportunityModel(o)).OfType<Opportunity>());  //this another alternative, although the one below is easier to read.
+            //return View(oppList.Where(o => o != null).Select(o => new OpportunityModel(o)));
         }
 
         public ActionResult Details(int? id)

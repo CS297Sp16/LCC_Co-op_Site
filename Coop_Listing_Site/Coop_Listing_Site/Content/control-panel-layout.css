@@ -1,0 +1,29 @@
+﻿#lcc-main-image {
+    background-image: url('../Images/evening-sky-3.jpg');
+    background-repeat: no-repeat;
+    background-attachment:local;
+    height:720px;
+    width:960px;
+    color: white;
+    opacity: 1;
+}
+
+.col-sytle-override {
+    height:620px;
+    
+}
+.fadeout{
+    color: black;
+    opacity: 0.2;
+    -webkit-transition: opacity 0.35s ease, color 0.2s ease; 
+    -moz-transition: opacity 0.35s ease, color 0.2s ease; 
+    transition: opacity 0.35s ease, color 0.2s ease; 
+}
+
+#lcc-main-image.fadeout {
+    color: black;
+    opacity: 0.2;
+    -webkit-transition: opacity 0.35s ease, color 0.2s ease; 
+    -moz-transition: opacity 0.35s ease, color 0.2s ease; 
+    transition: opacity 0.35s ease, color 0.2s ease; 
+}

@@ -34,7 +34,19 @@
         </ul>
         }
     </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="lcc-main-image">
         @RenderBody()
     </div>
 </div>
+
+@section Scripts {
+
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+            setTimeout(
+            function(){
+                $("#lcc-main-image").addClass("fadeout");
+            }, 1000);
+        </script>
+
+    }
