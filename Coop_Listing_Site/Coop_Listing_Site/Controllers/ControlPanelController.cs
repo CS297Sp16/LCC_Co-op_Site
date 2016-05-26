@@ -610,6 +610,7 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddDepartment()
         {
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).Where(m => m.Department == null).ToList(), "MajorID", "MajorName");
             return View();
         }
 
@@ -618,6 +619,20 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult AddDepartment([Bind(Include = "DepartmentName")] DepartmentModel departmentVM, int[] MajorIDs)
         {
+            var majorList = new List<Major>();
+
+            if (MajorIDs != null)
+            {
+                foreach (var id in MajorIDs)
+                {
+                    var major = db.Majors.Find(id);
+                    if (major != null)
+                        majorList.Add(major);
+                }
+            }
+
+            departmentVM.Majors = majorList;
+
             if (ModelState.IsValid)
             {
                 var department = departmentVM.ToDepartment();
@@ -628,6 +643,7 @@ namespace Coop_Listing_Site.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList().Where(m => m.Department == null && !departmentVM.Majors.Contains(m)), "MajorID", "MajorName");
             return View(departmentVM);
         }
 
@@ -659,9 +675,13 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName")] DepartmentModel department, int[] MajorIDs)
         {
             var majors = new List<Major>();
-            foreach(int id in MajorIDs)
+
+            if (MajorIDs != null)
             {
-                majors.Add(db.Majors.Find(id));
+                foreach (int id in MajorIDs)
+                {
+                    majors.Add(db.Majors.Find(id));
+                }
             }
 
             department.Majors = majors;
