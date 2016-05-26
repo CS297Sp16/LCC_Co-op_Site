@@ -34,18 +34,19 @@
         </ul>
         }
     </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="lcc-main-image">
-        @RenderBody()
+   
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"  id="main-wrapper">
+        <img src="~/Images/evening-sky-3.jpg" id="lcc-logo" />
+            @RenderBody()      
     </div>
-</div>
 
 @section Scripts {
 
         @Scripts.Render("~/bundles/jqueryval")
         <script>
             setTimeout(
-            function(){
-                $("#lcc-main-image").addClass("fadeout");
+            function(event){
+                $('#lcc-logo').addClass('fadeout');
             }, 1000);
         </script>
 

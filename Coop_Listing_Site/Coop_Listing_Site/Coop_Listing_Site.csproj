@@ -169,17 +169,13 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="DAL\CoopContext.cs" />
-    <Compile Include="DAL\DepartmentRepo.cs" />
     <Compile Include="DAL\ETC\DepartmentConfiguration.cs" />
     <Compile Include="DAL\ETC\MajorConfiguration.cs" />
     <Compile Include="DAL\ETC\OpportunityConfiguration.cs" />
     <Compile Include="DAL\ETC\StudentConfiguration.cs" />
     <Compile Include="DAL\ETC\UserConfiguration.cs" />
-    <Compile Include="DAL\InvitationRepo.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\MajorRepo.cs" />
     <Compile Include="DAL\Repository.cs" />
-    <Compile Include="DAL\StudentRepo.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.cs" />
     <Compile Include="Migrations\201605150301215_Initial_Migration.Designer.cs">
       <DependentUpon>201605150301215_Initial_Migration.cs</DependentUpon>
