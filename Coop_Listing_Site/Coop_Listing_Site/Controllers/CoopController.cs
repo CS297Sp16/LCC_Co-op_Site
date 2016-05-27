@@ -45,9 +45,6 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Listings()
         {
             string userId = User.Identity.GetUserId();
-            List<OpportunityModel> oppList = null;
-            db.Majors.Load();
-            db.Departments.Load();
             IEnumerable<Opportunity> oppList = null;
 
             if (User.IsInRole("Student"))
@@ -57,9 +54,7 @@ namespace Coop_Listing_Site.Controllers
                 if (sInfo != null)
                 {
                     var deptid = sInfo.Major.Department.DepartmentID;
-                    oppList = db.Opportunities.Where(
-                        o => o.Department.DepartmentID == deptid
-                        ).Select(o => new OpportunityModel(o)).ToList();
+
                     var dept = repo.GetOne<Department>(o => o.Majors.Contains(sInfo.Major));
                     oppList = repo.GetWhere<Opportunity>(
                         o => o.Department.DepartmentID == dept.DepartmentID
@@ -68,8 +63,6 @@ namespace Coop_Listing_Site.Controllers
             }
             else if (User.IsInRole("Admin"))
             {
-                var x = db.Opportunities.ToList();
-                oppList = x.Select(o => new OpportunityModel(o)).ToList();
                 oppList = repo.GetAll<Opportunity>();
             }
             else if (User.IsInRole("Coordinator"))
@@ -79,10 +72,6 @@ namespace Coop_Listing_Site.Controllers
                 if (cInfo != null)
                 {
                     var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
-                    var opps = from opp in db.Opportunities
-                               where depts.Contains(opp.Department.DepartmentID)
-                               select opp;
-                    oppList = opps.Select(o => new OpportunityModel(o)).ToList();
 
                     oppList = repo.GetWhere<Opportunity>(o => depts.Contains(o.Department.DepartmentID));
                 }
