@@ -154,15 +154,17 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
-        public ActionResult ConfirmDeleteMajor(int id)
+        public ActionResult ConfirmDeleteDepartment(int id)
         {
             Department dept = repo.GetByID<Department>(id);
 
             foreach (var major in dept.Majors)
                 major.Department = null;
 
-            foreach (var opp in repo.GetWhere<Opportunity>(o => o.Department.DepartmentID == dept.DepartmentID))
+            foreach (var opp in dept.Opportunities)
                 opp.Department = null;
+
+            dept.Opportunities.Clear();
 
             dept.Majors.Clear();
             repo.Delete(dept);

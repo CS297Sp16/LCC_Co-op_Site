@@ -148,6 +148,9 @@ namespace Coop_Listing_Site.Controllers
                 Opportunity opportunity = opportunityVM.ToOpportunity();
                 opportunity.Approved = true;
 
+                foreach (var major in opportunity.Majors)
+                    major.Opportunities.Add(opportunity);
+
                 if (opportunity.Wage != null || opportunity.Amount != null)
                     opportunity.Paid = true; // Implement in JS using a Hidden field that to True/False depending on the pay type
 
@@ -216,10 +219,25 @@ namespace Coop_Listing_Site.Controllers
 
             if (ModelState.IsValid)
             {
+                var opportunity = repo.GetByID<Opportunity>(opportunityvm.OpportunityID);
 
-                var opportunity = opportunityvm.ToOpportunity();
+                foreach(var major in opportunity.Majors)
+                {
+                    if (!opportunityvm.Majors.Contains(major))
+                    {
+                        if(major.Opportunities.Contains(opportunity)) //It SHOULD be there, but check just in case
+                            major.Opportunities.Remove(opportunity);
+                    }
+                }
 
-                /*
+                foreach(var major in opportunityvm.Majors)
+                {
+                    if (!major.Opportunities.Contains(opportunity))
+                        major.Opportunities.Add(opportunity);
+                }
+
+                opportunity.Majors = opportunityvm.Majors;
+                
                 // This should be changed but I needed to get something working
                 opportunity.AboutCompany = opportunityvm.AboutCompany;
                 opportunity.AboutDepartment = opportunityvm.AboutDepartment;
@@ -239,12 +257,8 @@ namespace Coop_Listing_Site.Controllers
                 opportunity.Paid = opportunityvm.Paid;
                 opportunity.Qualifications = opportunityvm.Qualifications;
                 opportunity.TermAvailable = opportunityvm.TermAvailable;
-                opportunity.Wage = opportunityvm.Wage;
-
-                if(major != null)
-                    opportunity.Majors.Add(major); // Needs more logic for adding/removing majors
-                */
-
+                opportunity.Wage = opportunityvm.Wage;                
+                
                 repo.Update(opportunity);
                 return RedirectToAction("Index");
             }
@@ -279,7 +293,21 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Opportunity opportunity = repo.GetByID<Opportunity>(id);
+            var depts = repo.GetWhere<Department>(d => d.Opportunities.Contains(opportunity));
+
+            foreach(var major in opportunity.Majors)
+            {
+                major.Opportunities.Remove(opportunity);
+            }
+
+            foreach(var dept in depts)
+            {
+                dept.Opportunities.Remove(opportunity);
+            }
+
             opportunity.Majors.Clear();
+            opportunity.Department = null;
+
             repo.Delete(opportunity);
 
             return RedirectToAction("Index");
