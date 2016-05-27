@@ -123,6 +123,80 @@ namespace Coop_Listing_Site.Controllers
             return RedirectToAction("index", "home");
         }
 
-        
+        [HttpGet, Authorize(Roles = "Admin, Coordinator, Student")]
+        public ActionResult ChangePassword()
+        {
+
+            var vm = new ChangePasswordViewModel()
+            {
+                Email = CurrentUser.Email
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost, Authorize(Roles = "Admin, Coordinator, Student")]
+        public ActionResult ChangePassword([Bind(Include = "CurrentPassword,ConfirmNewPassword,NewPassword")] ChangePasswordViewModel changePassVM)
+        {
+            bool newPasswordMatches = false;
+            bool passwordValidated = false;
+            bool passwordChangeRequested = false;
+
+            if (changePassVM.CurrentPassword != null)
+            {
+                var user = userManager.Find(CurrentUser.Email, changePassVM.CurrentPassword);
+                if (user != null)
+                {
+                    passwordValidated = true;
+                }
+                else
+                {
+                    if(User.IsInRole("Student"))
+                    {
+                        ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
+                        return RedirectToAction("ChangePassword","Auth");
+                    }
+                    else if(User.IsInRole("Coordinator"))
+                    {
+                        ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's admin. ";
+                        return RedirectToAction("ChangePassword", "Auth");
+                    }
+                    else
+                    {
+                        ViewBag.NoMatch = "Your an Admin";
+                    }
+
+                }
+            }
+
+            if (changePassVM.NewPassword == changePassVM.ConfirmNewPassword)
+            {
+                newPasswordMatches = true;
+            }
+
+            if (changePassVM.NewPassword != null && userManager.Find(CurrentUser.Email, changePassVM.NewPassword) == null)
+            {
+                passwordChangeRequested = true;
+            }
+
+            if (passwordValidated && newPasswordMatches && passwordChangeRequested)
+            {
+                ViewBag.NoMatch = "";
+                userManager.ChangePassword(CurrentUser.Id, changePassVM.CurrentPassword, changePassVM.NewPassword);
+                ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
+                
+                return RedirectToAction("Index","ControlPanel");
+            }
+
+            return RedirectToAction("Index","ControlPanel");
+        }
+        private User CurrentUser
+        {
+            get
+            {
+                return db.Users.Find(User.Identity.GetUserId());
+            }
+        }
+
     }
 }

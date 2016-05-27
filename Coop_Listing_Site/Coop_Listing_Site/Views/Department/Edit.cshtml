@@ -1,0 +1,46 @@
+﻿@model Coop_Listing_Site.Models.Department
+
+@{
+    ViewBag.Title = "Edit Department";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Edit Department</h4>
+        <hr />
+        @if (ViewBag.Updated != null)
+        {
+            <h4 class="text-success">Updated</h4>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DepartmentID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DepartmentName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DepartmentName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DepartmentName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Majors, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ListBox("MajorIDs", (MultiSelectList)ViewBag.Majors)
+                @Html.ValidationMessageFor(model => model.Majors, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Back to List", "", "Department", new { id = Model.DepartmentID }, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}
+
