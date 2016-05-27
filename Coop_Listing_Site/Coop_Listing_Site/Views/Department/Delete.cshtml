@@ -23,13 +23,14 @@
         </dt>
 
         @foreach (var m in Model.Majors)
-	   {
-		<dd>@m.MajorName</dd>
-	   }
+        {
+            <dd>@m.MajorName</dd>
+        }
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">

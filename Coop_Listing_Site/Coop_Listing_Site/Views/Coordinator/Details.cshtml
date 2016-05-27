@@ -9,59 +9,56 @@
 <h2>Coordinator Details</h2>
 
 <div>
-	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.FirstName)
-		</dt>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
 
-		<dd>
-			@Html.DisplayFor(model => model.FirstName)
-		</dd>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.LastName)
-		</dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
 
-		<dd>
-			@Html.DisplayFor(model => model.LastName)
-		</dd>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Email)
-		</dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
 
-		<dd>
-			@Html.DisplayFor(model => model.Email)
-		</dd>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Enabled)
-		</dt>
-		@if (Model.Enabled)
-		{
-		<dd>
-			Enabled
-		</dd>
-		}
-		else
-		{
-		<dd>
-			Disabled
-		</dd>
-		}
+        <dt>
+            @Html.DisplayNameFor(model => model.Enabled)
+        </dt>
+        @if (Model.Enabled)
+        {
+            <dd>
+                Enabled
+            </dd>}
+        else
+        {
+            <dd>
+                Disabled
+            </dd>}
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Majors)
-		</dt>
-		@foreach (Major m in Model.Majors)
-		{
-		<dd>
-			@Html.DisplayFor(modelItem => m.MajorName)
-		</dd>
-		}
-	</dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Majors)
+        </dt>
+        @foreach (Major m in Model.Majors)
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => m.MajorName)
+            </dd>}
+    </dl>
 </div>
 <p>
-	@*Html.ActionLink("Edit", "Edit", new { id = Model.LNumber }) |*@
-	@Html.ActionLink("Back to List", "Index")
+    @*Html.ActionLink("Edit", "Edit", new { id = Model.LNumber }) |*@
+    @Html.ActionLink("Back to List", "Index")
 </p>

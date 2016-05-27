@@ -10,41 +10,40 @@
 
 <h3>Are you sure you want to enable this coordinator?</h3>
 <div>
-	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.FirstName)
-		</dt>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
 
-		<dd>
-			@Html.DisplayFor(model => model.FirstName)
-		</dd>
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.LastName)
-		</dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
 
-		<dd>
-			@Html.DisplayFor(model => model.LastName)
-		</dd>
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Majors)
-		</dt>
-		@foreach (Major m in Model.Majors)
-		{
-		<dd>
-			@Html.DisplayFor(modelItem => m.MajorName)
-		</dd>
-		}
-	</dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Majors)
+        </dt>
+        @foreach (Major m in Model.Majors)
+        {
+            <dd>
+                @Html.DisplayFor(modelItem => m.MajorName)
+            </dd>}
+    </dl>
 
-	@using (Html.BeginForm())
-	{
-	@Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-	<div class="form-actions no-color">
-		<input type="submit" value="Enable" class="btn btn-primary" /> |
-		@Html.ActionLink("Back to List", "Index")
-	</div>
-	}
+        <div class="form-actions no-color">
+            <input type="submit" value="Enable" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
 </div>

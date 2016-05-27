@@ -31,13 +31,13 @@
                     @Html.DisplayFor(modelItem => item.DepartmentName)
                 </td>
                 <td>
-				 <ul>
-					 @foreach (var m in item.Majors)
-					 {
-						<li>@Html.DisplayFor(modelItem => m.MajorName)</li>
-					 }
-				 </ul>
-                    
+                    <ul>
+                        @foreach (var m in item.Majors)
+                        {
+                            <li>@Html.DisplayFor(modelItem => m.MajorName)</li>
+                        }
+                    </ul>
+
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.DepartmentID }) |
