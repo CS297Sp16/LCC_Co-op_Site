@@ -197,9 +197,9 @@
     <Compile Include="Migrations\201605251919428_Opportunity_Update_fix.Designer.cs">
       <DependentUpon>201605251919428_Opportunity_Update_fix.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605270114293_AgreementForm.cs" />
-    <Compile Include="Migrations\201605270114293_AgreementForm.Designer.cs">
-      <DependentUpon>201605270114293_AgreementForm.cs</DependentUpon>
+    <Compile Include="Migrations\201605270505570_AgreementForm.cs" />
+    <Compile Include="Migrations\201605270505570_AgreementForm.Designer.cs">
+      <DependentUpon>201605270505570_AgreementForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AgreementForm.cs" />
     <Compile Include="Models\EmailInfo.cs" />
@@ -331,10 +331,10 @@
     <Content Include="Views\Coop\AppDetails.cshtml" />
     <Content Include="Views\Coop\AppDelete.cshtml" />
     <Content Include="Views\Auth\ChangePassword.cshtml" />
+    <Content Include="Views\Form\Agreement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Form\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -356,8 +356,8 @@
     <EmbeddedResource Include="Migrations\201605251919428_Opportunity_Update_fix.resx">
       <DependentUpon>201605251919428_Opportunity_Update_fix.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605270114293_AgreementForm.resx">
-      <DependentUpon>201605270114293_AgreementForm.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605270505570_AgreementForm.resx">
+      <DependentUpon>201605270505570_AgreementForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

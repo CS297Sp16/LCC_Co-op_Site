@@ -13,7 +13,7 @@ namespace Coop_Listing_Site.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201605270114293_AgreementForm"; }
+            get { return "201605270505570_AgreementForm"; }
         }
         
         string IMigrationMetadata.Source

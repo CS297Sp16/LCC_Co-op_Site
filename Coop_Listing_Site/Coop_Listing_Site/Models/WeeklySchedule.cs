@@ -12,6 +12,8 @@ namespace Coop_Listing_Site.Models
         {
             WorkDays = new HashSet<WorkDay>();
         }
+
+        public int WeeklyScheduleID { get; set; }
         public ICollection<WorkDay> WorkDays { get; set; }
     }
 }
