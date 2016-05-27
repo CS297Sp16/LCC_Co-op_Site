@@ -1,4 +1,4 @@
-﻿@model Coop_Listing_Site.Models.Department
+﻿@model Coop_Listing_Site.Models.ViewModels.DepartmentModel
 
 @{
     ViewBag.Title = "Department Details";
@@ -8,17 +8,9 @@
 <h2>Department Details</h2>
 
 <div>
-    <h4>Department Model</h4>
+    <h4>Department</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DepartmentID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DepartmentID)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.DepartmentName)
         </dt>
@@ -26,6 +18,27 @@
         <dd>
             @Html.DisplayFor(model => model.DepartmentName)
         </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Majors)
+        </dt>
+
+        @if (Model.Majors.Count > 0)
+        {
+            foreach (var major in Model.Majors)
+            {
+                <dd>
+                    @major.MajorName
+                </dd>
+            }
+        }
+        else
+        {
+            <dd>
+                None
+            </dd>
+        }
+
     </dl>
 </div>
 <p>

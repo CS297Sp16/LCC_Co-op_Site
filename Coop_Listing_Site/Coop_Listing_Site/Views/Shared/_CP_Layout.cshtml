@@ -15,11 +15,9 @@
             <h4>Coordinator</h4>
             <ul class="nav nav-sidebar">
                 <li>@Html.ActionLink("Invite Student", "InviteStudent", "ControlPanel")</li>
-                @*<li>@Html.ActionLink("Disable Students", "DisableStudents")</li>
-                    <li>@Html.ActionLink("Enable Students", "EnableStudents")</li>*@
                 <li>@Html.ActionLink("Active Student Invitations", "Invitations", "Student")</li>
                 <li>@Html.ActionLink("View Majors", "", "Major")</li>
-                <li>@Html.ActionLink("View Departments", "DepartmentList", "ControlPanel")</li>
+                <li>@Html.ActionLink("View Departments", "", "Department")</li>
                 <li>@Html.ActionLink("View Students", "", "Student")</li>
             </ul>
         }
@@ -28,6 +26,8 @@
             <h4>Administrator</h4>
             <ul class="nav nav-sidebar">
                 <li>@Html.ActionLink("Invite Coordinator", "InviteCoordinator", "ControlPanel")</li>
+                <li>@Html.ActionLink("Active Coordinator Invitations", "Invitations", "Coordinator")</li>
+                <li>@Html.ActionLink("View Coordinators", "", "Coordinator")</li>
                 <li>@Html.ActionLink("Disable Coordinators", "DisableCoordinators", "ControlPanel")</li>
                 <li>@Html.ActionLink("Enable Coordinators", "EnableCoordinators", "ControlPanel")</li>
                 <li>@Html.ActionLink("Set SMTP Information", "SMTP", "ControlPanel")</li>
@@ -38,10 +38,10 @@
         </ul>
     </div>
 </div>
-   
+
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"  id="main-wrapper">
         <img src="~/Images/evening-sky-3.jpg" id="lcc-logo" />
-            @RenderBody()      
+            @RenderBody()
     </div>
 
 @section Scripts {

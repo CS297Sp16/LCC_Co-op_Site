@@ -556,11 +556,6 @@ namespace Coop_Listing_Site.Controllers
             return students;
         }
 
-        public ActionResult DepartmentList()
-        {
-            return View(db.Departments.ToList());
-        }
-
         private Dictionary<string, string> GetEnabledCoordinators()
         {
             var coordinators = new Dictionary<string, string>();
@@ -591,33 +586,50 @@ namespace Coop_Listing_Site.Controllers
             return coordinators;
         }
 
+        public ActionResult DepartmentList()
+        {
+            var depts = db.Departments.ToList().Select(d => new DepartmentModel(d));
+            return View(depts);
+        }
+
         //GET: ControlPanelController/AddDepartment
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddDepartment()
         {
-            //not sure if we need the viewBag or not, delete if not needed
-            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).Where(m => m.Department == null).ToList(), "MajorID", "MajorName");
             return View();
         }
 
         //POST: ControlPanelController/AddDepartment
         [Authorize(Roles = "Coordinator")]
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult AddDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] DepartmentModel departmentVM)
+        public ActionResult AddDepartment([Bind(Include = "DepartmentName")] DepartmentModel departmentVM, int[] MajorIDs)
         {
+            var majorList = new List<Major>();
+
+            if (MajorIDs != null)
+            {
+                foreach (var id in MajorIDs)
+                {
+                    var major = db.Majors.Find(id);
+                    if (major != null)
+                        majorList.Add(major);
+                }
+            }
+
+            departmentVM.Majors = majorList;
+
             if (ModelState.IsValid)
             {
-                Department department = new Department()
-                {
-                    DepartmentName = departmentVM.DepartmentName,
-                    Majors = departmentVM.Majors
-                };
+                var department = departmentVM.ToDepartment();
+
                 db.Departments.Add(department);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            //not sure if we need the viewBag or not, delete if not needed
-            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
+
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList().Where(m => m.Department == null && !departmentVM.Majors.Contains(m)), "MajorID", "MajorName");
             return View(departmentVM);
         }
 
@@ -629,28 +641,69 @@ namespace Coop_Listing_Site.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Department department = db.Departments.Find(id);
+
             if (department == null)
             {
                 return HttpNotFound();
             }
-            return View(department);
+            var majors = department.Majors.Select(m => m.MajorID).ToList();
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).Where(m => !majors.Contains(m.MajorID)).ToList(), "MajorID", "MajorName");
+
+            var deptvm = new DepartmentModel(department);
+            return View(deptvm);
         }
 
         //POST: ControlPanelController/EditDepartment
         [HttpPost]
         [Authorize(Roles = "Coordinator")]
-        public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName, Majors")] Department dept)
+        public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName")] DepartmentModel department, int[] MajorIDs)
         {
+            var majors = new List<Major>();
+
+            if (MajorIDs != null)
+            {
+                foreach (int id in MajorIDs)
+                {
+                    majors.Add(db.Majors.Find(id));
+                }
+            }
+
+            department.Majors = majors;
+
             if (ModelState.IsValid)
             {
+                var dept = db.Departments.Find(department.DepartmentID);
+                dept.DepartmentName = department.DepartmentName;
+
+                foreach(var major in db.Majors.Where(m => m.Department.DepartmentID == dept.DepartmentID))
+                {
+                    if (!majors.Contains(major))
+                    {
+                        major.Department = null;
+                        dept.Majors.Remove(major);
+                        db.Entry(major).State = EntityState.Modified;
+                    }
+                }
+
+                foreach(var major in majors)
+                {
+                    if (!dept.Majors.Contains(major))
+                    {
+                        major.Department = dept;
+                        dept.Majors.Add(major);
+                    }
+                }
+
                 db.Entry(dept).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("DepartmentList");
             }
-            //not sure if we need the viewBag or not, delete if not needed
-            ViewBag.Departments = new SelectList(db.Departments.OrderBy(d => d.DepartmentName), "DepartmentID", "DepartmentName");
-            return View(dept);
+
+            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
+
+            return View(department);
         }
 
         //GET: ControlPanelController/DeleteDepartment
@@ -666,7 +719,9 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            return View(department);
+
+            var deptvm = new DepartmentModel(department);
+            return View(deptvm);
         }
 
         //POST: ControlPanelController/DeleteDepartment
@@ -675,15 +730,36 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Department department = db.Departments.Find(id);
+
+            foreach (var major in department.Majors)
+                major.Department = null;
+
+            foreach(var opp in db.Opportunities.Where(o => o.Department.DepartmentID == department.DepartmentID))
+                opp.Department = null;
+
+            department.Majors.Clear();
+            db.SaveChanges();
+
             db.Departments.Remove(department);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
         //GET: ControlPanelController/Details
-        public ActionResult DepartmentDetails(int id)
+        public ActionResult DepartmentDetails(int? id)
         {
-            return View(db.Departments.Find(id));
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Department department = db.Departments.Find(id);
+            if (department == null)
+            {
+                return HttpNotFound();
+            }
+
+            var deptvm = new DepartmentModel(department);
+            return View(deptvm);
         }
 
         private User CurrentUser

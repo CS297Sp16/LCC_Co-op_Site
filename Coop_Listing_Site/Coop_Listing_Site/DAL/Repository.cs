@@ -82,16 +82,26 @@ namespace Coop_Listing_Site.DAL
             return db.Set<T>().FirstOrDefault();
         }
 
+        /// <summary>
+        /// Returns the only element matched by the provided function, or null if none match.
+        /// Throws an error if more than one matches
+        /// </summary>
         public T GetOne<T>(Func<T, bool> check) where T : class
         {
             return db.Set<T>().SingleOrDefault(check);
         }
 
+        /// <summary>
+        /// Returns an object based on its ID
+        /// </summary>
         public T GetByID<T>(object id) where T : class
         {
             return db.Set<T>().Find(id);
         }
 
+        /// <summary>
+        /// Saves changes to the passed object
+        /// </summary>
         public T Update<T>(T dbObj) where T : class
         {
             db.Entry(dbObj).State = EntityState.Modified;
