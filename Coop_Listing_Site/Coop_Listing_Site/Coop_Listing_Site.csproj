@@ -160,6 +160,7 @@
     <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\CoopController.cs" />
     <Compile Include="Controllers\CoordinatorController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MajorController.cs" />
@@ -314,6 +315,10 @@
     <Content Include="Views\Coordinator\Enable.cshtml" />
     <Content Include="Views\Coordinator\Index.cshtml" />
     <Content Include="Views\Coordinator\Invitations.cshtml" />
+    <Content Include="Views\Department\Add.cshtml" />
+    <Content Include="Views\Department\Delete.cshtml" />
+    <Content Include="Views\Department\Edit.cshtml" />
+    <Content Include="Views\Department\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
