@@ -1,5 +1,6 @@
 ﻿using Coop_Listing_Site.DAL;
 using Coop_Listing_Site.Models;
+using Coop_Listing_Site.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Coop_Listing_Site.Controllers
 
         public ActionResult Add()
         {
-            var majors = repo.GetAll<Department>();
+            var majors = repo.GetWhere<Major>(m => m.Department == null).OrderBy(m => m.MajorName);
 
             ViewBag.Majors = new SelectList(majors, "MajorID", "MajorName");
 
@@ -45,14 +46,33 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "DepartmentName")] Department dept)
+        public ActionResult Add([Bind(Include = "DepartmentName")] DepartmentModel dept, int[] MajorIDs)
         {
+            var majorList = new List<Major>();
+
+            if (MajorIDs != null)
+            {
+                foreach (var id in MajorIDs)
+                {
+                    var major = repo.GetByID<Major>(id);
+                    if (major != null)
+                        majorList.Add(major);
+                }
+            }
+
+            dept.Majors = majorList;
+
             if (ModelState.IsValid)
             {
-                var newDept = repo.Add(dept);
+                var department = dept.ToDepartment();
+
+                var newDept = repo.Add(department);
 
                 return RedirectToAction("Edit", new { id = newDept.DepartmentID });
             }
+            var majors = repo.GetWhere<Major>(m => m.Department == null).OrderBy(m => m.MajorName);
+
+            ViewBag.Majors = new SelectList(majors, "MajorID", "MajorName");
 
             return View();
         }
@@ -63,38 +83,57 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var dept = repo.GetByID<Department>(id);
-            var majors = repo.GetWhere<Major>(m => m.Department == dept || m.Department == null).OrderBy(m => m.MajorName);
 
-            ViewBag.Majors = new MultiSelectList(majors, "MajorID", "MajorName", dept.Majors.Select(m => m.MajorID));
+            if (dept == null)
+                return HttpNotFound();
 
-            return View(dept);
+            var majors = repo.GetWhere<Major>(m => m.Department == null && !dept.Majors.Contains(m)).OrderBy(m => m.MajorName);
+            ViewBag.Majors = new SelectList(majors, "MajorID", "MajorName");
+
+            var deptvm = new DepartmentModel(dept);
+            return View(deptvm);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "DepartmentID, DepartmentName")] Department dept, int[] majorIDs)
+        public ActionResult Edit([Bind(Include = "DepartmentID, DepartmentName")] DepartmentModel dept, int[] MajorIDs)
         {
-            List<Major> deptMajors = null;
-            // handle if they haven't selected any majors
-            if (majorIDs != null)
-                deptMajors = repo.GetWhere<Major>(m => majorIDs.Contains(m.MajorID)).ToList();
+            List<Major> deptMajors = new List<Major>();
+
+            if (MajorIDs != null)
+                deptMajors = repo.GetWhere<Major>(m => MajorIDs.Contains(m.MajorID)).ToList();
 
             var dbDept = repo.GetByID<Department>(dept.DepartmentID);
 
-            if (dept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
+            if (dbDept == null) ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
 
             if (ModelState.IsValid)
             {
-                if (majorIDs != null)
-                    dbDept.Majors = deptMajors;
-                else
-                    dbDept.Majors.Clear();
+                foreach (var major in repo.GetWhere<Major>(m => m.Department == dbDept))
+                {
+                    if (!deptMajors.Contains(major))
+                    {
+                        major.Department = null;
+                        dept.Majors.Remove(major);
+                        //db.Entry(major).State = EntityState.Modified;
+                    }
+                }
+
+                foreach (var major in deptMajors)
+                {
+                    if (!dbDept.Majors.Contains(major))
+                    {
+                        major.Department = dbDept;
+                        dbDept.Majors.Add(major);
+                    }
+                }
+
                 dbDept.DepartmentName = dept.DepartmentName;
 
                 repo.Update(dbDept);
             }
-
-            var majors = repo.GetWhere<Major>(m => m.Department == dbDept || m.Department == null).OrderBy(m => m.MajorName);
-            ViewBag.Majors = new MultiSelectList(majors, "MajorID", "MajorName", dbDept.Majors.Select(m => m.MajorID));
+            dept = new DepartmentModel(dbDept);
+            var majors = repo.GetWhere<Major>(m => m.Department == null && !dept.Majors.Contains(m)).OrderBy(m => m.MajorName);
+            ViewBag.Majors = new SelectList(majors, "MajorID", "MajorName");
             ViewBag.Updated = true;
 
             return View(dept);
@@ -106,17 +145,25 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var dept = repo.GetByID<Department>(id);
+
             if (dept == null)
-            {
                 return HttpNotFound();
-            }
-            return View(dept);
+
+            var deptvm = new DepartmentModel(dept);
+            return View(deptvm);
         }
 
         [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
         public ActionResult ConfirmDeleteMajor(int id)
         {
             Department dept = repo.GetByID<Department>(id);
+
+            foreach (var major in dept.Majors)
+                major.Department = null;
+
+            foreach (var opp in repo.GetWhere<Opportunity>(o => o.Department.DepartmentID == dept.DepartmentID))
+                opp.Department = null;
+
             dept.Majors.Clear();
             repo.Delete(dept);
 
