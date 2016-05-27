@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Coop_Listing_Site
                 name: "ControlPanel",
                 url: "ControlPanel/{controller}/{action}/{id}",
                 defaults: new { action = "Index", id = UrlParameter.Optional },
-                constraints: new { controller = "Test|Major|Student" }
+                constraints: new { controller = "Major|Student|Coordinator|Department" }
             );
             routes.MapRoute(
                 name: "Default",

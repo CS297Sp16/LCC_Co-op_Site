@@ -23,7 +23,7 @@ namespace Coop_Listing_Site.Models.ViewModels
 
         public int DepartmentID { get; set; }
 
-        [Required(ErrorMessage = "Please enter a department name"), Display(Name = "Department name")]
+        [Required(ErrorMessage = "Please enter a department name"), Display(Name = "Department Name")]
         public string DepartmentName { get; set; }
 
         public virtual ICollection<Major> Majors { get; set; }

@@ -145,7 +145,7 @@ namespace Coop_Listing_Site.Controllers
 
                 db.Invites.Add(invitation);
                 db.SaveChanges();
-                
+
                 var success = emailInfo.SendInviteEmail(invitation).Keys.First();
 
                 if (!success)
@@ -161,7 +161,7 @@ namespace Coop_Listing_Site.Controllers
                 messages.Add("All other invites successfully sent.");
             else
                 messages.Add("It appears none of the invites were sent successfully.");
-            
+
 
             ViewBag.ReturnMessages = messages;
 
@@ -424,10 +424,8 @@ namespace Coop_Listing_Site.Controllers
         {
             var students = GetEnabledStudents();
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
             return View();
         }
-
         [Authorize(Roles = "Coordinator")]
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult DisableStudents(string[] Students)
@@ -435,29 +433,22 @@ namespace Coop_Listing_Site.Controllers
             foreach (var id in Students)
             {
                 var user = db.Users.Find(id);
-
                 user.Enabled = false;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
             ViewBag.Message = "Student(s) Successfully Disabled";
-
             var students = GetEnabledStudents();
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
             return View();
         }
-
         [Authorize(Roles = "Coordinator")]
         public ActionResult EnableStudents()
         {
             var students = GetDisabledStudents();
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
             return View();
         }
-
         [Authorize(Roles = "Coordinator")]
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult EnableStudents(string[] Students)
@@ -465,17 +456,13 @@ namespace Coop_Listing_Site.Controllers
             foreach (var id in Students)
             {
                 var user = db.Users.Find(id);
-
                 user.Enabled = true;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
             ViewBag.Message = "Student(s) Successfully Enabled";
-
             var students = GetDisabledStudents();
             ViewBag.Students = new MultiSelectList(students, "Key", "Value");
-
             return View();
         }*/
 

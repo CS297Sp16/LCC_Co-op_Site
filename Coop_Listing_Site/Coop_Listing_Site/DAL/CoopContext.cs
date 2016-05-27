@@ -28,6 +28,9 @@ namespace Coop_Listing_Site.DAL
         public DbSet<PasswordReset> ResetTokens { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<UserFile> UserFiles { get; set; }
+        public DbSet<AgreementForm> AgreementForms { get; set; }
+        public DbSet<WeeklySchedule> WeeklySchedules { get; set; }
+        public DbSet<WorkDay> WorkDays { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

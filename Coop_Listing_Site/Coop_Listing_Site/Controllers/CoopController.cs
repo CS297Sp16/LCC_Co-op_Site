@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,7 +19,7 @@ namespace Coop_Listing_Site.Controllers
 
         public CoopController()
         {
-            var db = new CoopContext();
+            var db = new CoopContext();           
             repo = new Repository(db);
         }
 
@@ -53,6 +53,8 @@ namespace Coop_Listing_Site.Controllers
 
                 if (sInfo != null)
                 {
+                    var deptid = sInfo.Major.Department.DepartmentID;
+
                     var dept = repo.GetOne<Department>(o => o.Majors.Contains(sInfo.Major));
                     oppList = repo.GetWhere<Opportunity>(
                         o => o.Department.DepartmentID == dept.DepartmentID
@@ -75,7 +77,8 @@ namespace Coop_Listing_Site.Controllers
                 }
             }
 
-            return View(oppList.Select(o => new OpportunityModel(o)));
+            return View(oppList.Select(o => new OpportunityModel(o)));   //By: LONNIE, this throws an error if null on initial load of browser occasionally
+            
         }
 
         public ActionResult Details(int? id)
