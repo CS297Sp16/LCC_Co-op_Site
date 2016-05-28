@@ -33,7 +33,9 @@ namespace Coop_Listing_Site.Controllers
         {
             var depts = repo.GetAll<Department>();
 
-            return View(depts);
+            var deptVMs = depts.Select(d => new DepartmentModel(d));
+
+            return View(deptVMs);
         }
 
         public ActionResult Add()

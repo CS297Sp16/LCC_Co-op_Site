@@ -233,6 +233,7 @@
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
     <Compile Include="Models\ViewModels\DepartmentModel.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
+    <Compile Include="Models\ViewModels\MajorViewModel.cs" />
     <Compile Include="Models\ViewModels\OpportunityModel.cs" />
     <Compile Include="Models\ViewModels\PassResetModel.cs" />
     <Compile Include="Models\ViewModels\StudentRegistrationModel.cs" />
