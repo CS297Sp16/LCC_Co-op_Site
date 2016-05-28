@@ -309,15 +309,10 @@
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Auth\Invalid.cshtml" />
     <Content Include="Views\Auth\ResetSuccess.cshtml" />
-    <Content Include="Views\ControlPanel\AddDepartment.cshtml" />
-    <Content Include="Views\ControlPanel\EditDepartment.cshtml" />
-    <Content Include="Views\ControlPanel\DeleteDepartment.cshtml" />
-    <Content Include="Views\ControlPanel\DepartmentDetails.cshtml" />
     <Content Include="Views\Coop\Upload.cshtml" />
     <Content Include="Views\Coop\Submitted.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Shared\_CP_Layout.cshtml" />
-    <Content Include="Views\ControlPanel\DepartmentList.cshtml" />
     <Content Include="Views\ControlPanel\InviteCoordinator.cshtml" />
     <Content Include="Views\ControlPanel\DisableCoordinators.cshtml" />
     <Content Include="Views\ControlPanel\EnableCoordinators.cshtml" />

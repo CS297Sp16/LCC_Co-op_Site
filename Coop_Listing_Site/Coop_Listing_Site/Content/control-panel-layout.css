@@ -1,9 +1,10 @@
 ﻿.fadeout {
     color: black;
     opacity: .5;
-    -webkit-transition: opacity 0.35s ease, color 0.2s ease; 
-    -moz-transition: opacity 0.35s ease, color 0.2s ease; 
-    transition: opacity 0.35s ease, color 0.2s ease; 
+    /*-webkit-transition: opacity 0.35s ease, color 0.2s ease;
+    -moz-transition: opacity 0.35s ease, color 0.2s ease;
+    transition: opacity 0.35s ease, color 0.2s ease;*/
+    display: none;
 }
 
 #main-wrapper{
