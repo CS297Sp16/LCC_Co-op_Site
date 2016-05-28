@@ -76,6 +76,10 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var major = repo.GetByID<Major>(id);
+
+            if (major == null)
+                return HttpNotFound();
+
             var majorVM = new MajorViewModel(major);
 
             var depts = repo.GetAll<Department>().OrderBy(d => d.DepartmentName);
@@ -118,14 +122,13 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             var major = repo.GetByID<Major>(id);
+
             if (major == null)
-            {
                 return HttpNotFound();
-            }
+
             var majorVM = new MajorViewModel(major);
             return View(majorVM);
         }
@@ -135,6 +138,10 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmDeleteMajor(int id)
         {
             Major major = repo.GetByID<Major>(id);
+
+            if (major == null)
+                return HttpNotFound();
+
             repo.Delete(major);
 
             return RedirectToAction("Index");

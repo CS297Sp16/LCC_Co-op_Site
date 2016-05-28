@@ -41,6 +41,9 @@ namespace Coop_Listing_Site.Controllers
 
             var student = repo.GetByID<StudentInfo>(id);
 
+            if (student == null)
+                return HttpNotFound();
+
             return View(new StudentViewModel(student));
         }
 
@@ -52,6 +55,9 @@ namespace Coop_Listing_Site.Controllers
 
             var student = repo.GetByID<StudentInfo>(id);
 
+            if (student == null)
+                return HttpNotFound();
+
             return View(new StudentViewModel(student));
         }
 
@@ -62,6 +68,9 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var student = repo.GetByID<StudentInfo>(id);
+
+            if (student == null)
+                return HttpNotFound();
 
             student.User.Enabled = true;
             repo.Update(student);
@@ -78,6 +87,9 @@ namespace Coop_Listing_Site.Controllers
 
             var student = repo.GetByID<StudentInfo>(id);
 
+            if (student == null)
+                return HttpNotFound();
+
             return View(new StudentViewModel(student));
         }
 
@@ -88,6 +100,9 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var student = repo.GetByID<StudentInfo>(id);
+
+            if (student == null)
+                return HttpNotFound();
 
             student.User.Enabled = false;
             repo.Update(student);

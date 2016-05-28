@@ -160,6 +160,9 @@ namespace Coop_Listing_Site.Controllers
         {
             Department dept = repo.GetByID<Department>(id);
 
+            if (dept == null)
+                return HttpNotFound();
+
             foreach (var major in dept.Majors)
                 major.Department = null;
 
