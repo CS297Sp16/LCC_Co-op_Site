@@ -1,5 +1,4 @@
 ﻿@model Coop_Listing_Site.Models.ViewModels.CoordinatorViewModel
-@using Coop_Listing_Site.Models
 
 @{
     ViewBag.Title = "Disable Coordinator";
@@ -30,11 +29,12 @@
         <dt>
             @Html.DisplayNameFor(model => model.Majors)
         </dt>
-        @foreach (Major m in Model.Majors)
+        @foreach (var m in Model.Majors)
         {
             <dd>
                 @Html.DisplayFor(modelItem => m.MajorName)
-            </dd>}
+            </dd>
+        }
     </dl>
 
     @using (Html.BeginForm())
