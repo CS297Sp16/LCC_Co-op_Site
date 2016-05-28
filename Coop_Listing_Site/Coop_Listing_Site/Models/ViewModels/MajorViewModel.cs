@@ -22,7 +22,7 @@ namespace Coop_Listing_Site.Models.ViewModels
 
         public Department Department { get; set; }
 
-        [Display(Name = "Major Name")]
+        [Required, Display(Name = "Major Name")]
         public string MajorName { get; set; }
 
         public ICollection<Opportunity> Opportunities { get; set; }
