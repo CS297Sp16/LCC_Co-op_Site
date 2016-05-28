@@ -156,6 +156,10 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp1);
+            opp1.Majors.Add(major2);
+            major2.Opportunities.Add(opp1);
+
             Opportunity opp2 = new Opportunity
             {
                 CompanyName = "Get Found",
@@ -179,6 +183,10 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp2);
+            opp2.Majors.Add(major2);
+            major2.Opportunities.Add(opp2);
+
             Opportunity opp3 = new Opportunity
             {
                 CompanyName = "A Family For Every Child",
@@ -199,6 +207,12 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp3);
+            major.Opportunities.Add(opp3);
+            major1.Opportunities.Add(opp3);
+            opp3.Majors.Add(major);
+            opp3.Majors.Add(major1);
+
             Opportunity opp4 = new Opportunity
             {
                 CompanyName = "Lane County Finacial Division",
@@ -216,6 +230,13 @@ namespace Coop_Listing_Site.Models
                 Wage = "$12 per hour",
                 Department = dept1
             };
+
+            dept1.Opportunities.Add(opp4);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp4);
+                opp4.Majors.Add(m);
+            }
 
             Opportunity opp5 = new Opportunity
             {
@@ -238,6 +259,13 @@ namespace Coop_Listing_Site.Models
                 Paid = false,
                 Department = dept1
             };
+
+            dept1.Opportunities.Add(opp5);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp5);
+                opp4.Majors.Add(m);
+            }
 
             // invites
             var inv1 = new RegisterInvite

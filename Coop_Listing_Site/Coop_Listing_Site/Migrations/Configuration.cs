@@ -18,6 +18,7 @@ namespace Coop_Listing_Site.Migrations
 
         protected override void Seed(DAL.CoopContext context)
         {
+
             UserManager<User> userManager = new UserManager<User>(new UserStore<User>(context));
 
             //Create roles
@@ -27,6 +28,8 @@ namespace Coop_Listing_Site.Migrations
                 superAdminRole = new IdentityRole() { Name = "SuperAdmin" };
 
             context.Roles.AddOrUpdate(r => r.Name, studentrole, coordrole, adminrole, superAdminRole);
+
+            context.SaveChanges();
 
             //Create LaneCC majors
             Major major = new Major { MajorName = "Computer Simulation and Game Development" };
@@ -110,84 +113,210 @@ namespace Coop_Listing_Site.Migrations
             Department dept8 = new Department { DepartmentName = "Culinary/Foood Services" };
 
             dept.Majors.Add(major);
+            major.Department = dept;
+
             dept.Majors.Add(major1);
+            major1.Department = dept;
+
             dept.Majors.Add(major2);
+            major2.Department = dept;
+
             dept.Majors.Add(major3);
+            major3.Department = dept;
+
             dept1.Majors.Add(major4);
+            major4.Department = dept1;
+
             dept1.Majors.Add(major5);
+            major5.Department = dept1;
+
             dept1.Majors.Add(major6);
+            major6.Department = dept1;
+
             dept2.Majors.Add(major7);
+            major7.Department = dept2;
+
             dept2.Majors.Add(major8);
+            major8.Department = dept2;
+
             dept2.Majors.Add(major9);
+            major9.Department = dept2;
+
             dept2.Majors.Add(major10);
+            major10.Department = dept2;
+
             dept2.Majors.Add(major11);
+            major11.Department = dept2;
+
             dept2.Majors.Add(major12);
+            major12.Department = dept2;
+
             dept2.Majors.Add(major13);
+            major13.Department = dept2;
+
             dept2.Majors.Add(major14);
+            major14.Department = dept2;
+
             dept3.Majors.Add(major15);
+            major15.Department = dept3;
+
             dept3.Majors.Add(major16);
+            major16.Department = dept3;
+
             dept3.Majors.Add(major17);
+            major17.Department = dept3;
+
             dept3.Majors.Add(major18);
+            major18.Department = dept3;
+
             dept3.Majors.Add(major19);
+            major19.Department = dept3;
+
             dept3.Majors.Add(major20);
+            major20.Department = dept3;
+
             dept3.Majors.Add(major21);
+            major21.Department = dept3;
+
             dept3.Majors.Add(major22);
+            major22.Department = dept3;
+
             dept3.Majors.Add(major23);
+            major23.Department = dept3;
+
             dept3.Majors.Add(major24);
+            major24.Department = dept3;
+
             dept3.Majors.Add(major25);
+            major25.Department = dept3;
+
             dept3.Majors.Add(major26);
+            major26.Department = dept3;
+
             dept3.Majors.Add(major27);
+            major27.Department = dept3;
+
             dept3.Majors.Add(major28);
+            major28.Department = dept3;
+
             dept3.Majors.Add(major29);
+            major29.Department = dept3;
+
             dept3.Majors.Add(major30);
+            major30.Department = dept3;
+
             dept3.Majors.Add(major31);
+            major31.Department = dept3;
+
             dept3.Majors.Add(major32);
+            major32.Department = dept3;
+
             dept3.Majors.Add(major33);
+            major33.Department = dept3;
+
             dept4.Majors.Add(major34);
+            major34.Department = dept4;
+
             dept4.Majors.Add(major35);
+            major35.Department = dept4;
+
             dept4.Majors.Add(major36);
+            major36.Department = dept4;
+
             dept4.Majors.Add(major37);
+            major37.Department = dept4;
+
             dept4.Majors.Add(major38);
+            major38.Department = dept4;
+
             dept4.Majors.Add(major39);
+            major39.Department = dept4;
+
             dept4.Majors.Add(major40);
+            major40.Department = dept4;
+
             dept4.Majors.Add(major41);
+            major41.Department = dept4;
+
             dept5.Majors.Add(major42);
+            major42.Department = dept5;
+
             dept5.Majors.Add(major43);
+            major43.Department = dept5;
+
             dept5.Majors.Add(major44);
+            major44.Department = dept5;
+
             dept5.Majors.Add(major45);
+            major45.Department = dept5;
+
             dept5.Majors.Add(major46);
+            major46.Department = dept5;
+
             dept5.Majors.Add(major47);
+            major47.Department = dept5;
+
             dept5.Majors.Add(major48);
+            major48.Department = dept5;
+
             dept5.Majors.Add(major49);
+            major49.Department = dept5;
+
             dept5.Majors.Add(major50);
+            major50.Department = dept5;
+
             dept5.Majors.Add(major51);
+            major51.Department = dept5;
+
             dept5.Majors.Add(major52);
+            major52.Department = dept5;
+
             dept5.Majors.Add(major53);
+            major53.Department = dept5;
+
             dept5.Majors.Add(major54);
+            major54.Department = dept5;
+
             dept5.Majors.Add(major55);
+            major55.Department = dept5;
+
             dept6.Majors.Add(major56);
+            major56.Department = dept6;
+
             dept6.Majors.Add(major57);
+            major57.Department = dept6;
+
             dept6.Majors.Add(major58);
+            major58.Department = dept6;
+
             dept6.Majors.Add(major59);
+            major59.Department = dept6;
+
             dept6.Majors.Add(major60);
+            major60.Department = dept6;
+
             dept6.Majors.Add(major61);
+            major61.Department = dept6;
+
             dept2.Majors.Add(major62);
+            major62.Department = dept2;
+
             dept2.Majors.Add(major63);
+            major63.Department = dept2;
+
             dept2.Majors.Add(major64);
+            major64.Department = dept2;
+
             dept7.Majors.Add(major65);
+            major65.Department = dept7;
+
             dept8.Majors.Add(major66);
+            major66.Department = dept8;
+
             dept8.Majors.Add(major67);
+            major67.Department = dept8;
 
-            context.Majors.AddOrUpdate(m => m.MajorName, major, major1, major2, major3, major4, major5, major6, major7, major8, major9, major10,
-                                        major11, major12, major13, major14, major15, major16, major17, major18, major19, major20, major21, major22,
-                                        major23, major24, major25, major26, major27, major28, major29, major30, major31, major32, major33, major34,
-                                        major35, major36, major37, major38, major39, major40, major41, major42, major43, major44, major45, major46,
-                                        major47, major48, major49, major50, major51, major52, major53, major54, major55, major56, major57, major58,
-                                        major59, major60, major61, major62, major63, major64, major65, major66, major67);
-
-            context.Departments.AddOrUpdate(d => d.DepartmentName, dept, dept1, dept2, dept3, dept4, dept5, dept6, dept7, dept8);
-
-            context.SaveChanges();
+            //context.SaveChanges();
 
             // add Users
 #if DEBUG
@@ -309,6 +438,15 @@ namespace Coop_Listing_Site.Migrations
 
                 userManager.AddToRoles(admin.Id, "SuperAdmin", "Admin");
             }
+            else
+            {
+                var admin = userManager.FindByEmail("admin@admin.com");
+                if (!admin.Enabled)
+                {
+                    admin.Enabled = true;
+                    userManager.Update(admin);
+                }
+            }
 #endif
 
 
@@ -337,6 +475,10 @@ namespace Coop_Listing_Site.Migrations
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp1);
+            opp1.Majors.Add(major2);
+            major2.Opportunities.Add(opp1);
+
             Opportunity opp2 = new Opportunity
             {
                 CompanyName = "Get Found",
@@ -360,6 +502,10 @@ namespace Coop_Listing_Site.Migrations
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp2);
+            opp2.Majors.Add(major2);
+            major2.Opportunities.Add(opp2);
+
             Opportunity opp3 = new Opportunity
             {
                 CompanyName = "A Family For Every Child",
@@ -380,6 +526,12 @@ namespace Coop_Listing_Site.Migrations
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp3);
+            major.Opportunities.Add(opp3);
+            major1.Opportunities.Add(opp3);
+            opp3.Majors.Add(major);
+            opp3.Majors.Add(major1);
+
             Opportunity opp4 = new Opportunity
             {
                 CompanyName = "Lane County Finacial Division",
@@ -397,6 +549,13 @@ namespace Coop_Listing_Site.Migrations
                 Wage = "$12 per hour",
                 Department = dept1
             };
+
+            dept1.Opportunities.Add(opp4);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp4);
+                opp4.Majors.Add(m);
+            }
 
             Opportunity opp5 = new Opportunity
             {
@@ -420,10 +579,25 @@ namespace Coop_Listing_Site.Migrations
                 Department = dept1
             };
 
+            dept1.Opportunities.Add(opp5);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp5);
+                opp4.Majors.Add(m);
+            }
+
             context.Opportunities.AddOrUpdate(o => new { o.CompanyName, o.CoopPositionTitle, o.CoopPositionDuties }, opp1, opp2, opp3, opp4, opp5);
 
-            context.SaveChanges();
+            context.Majors.AddOrUpdate(m => m.MajorName, major, major1, major2, major3, major4, major5, major6, major7, major8, major9, major10,
+                                        major11, major12, major13, major14, major15, major16, major17, major18, major19, major20, major21, major22,
+                                        major23, major24, major25, major26, major27, major28, major29, major30, major31, major32, major33, major34,
+                                        major35, major36, major37, major38, major39, major40, major41, major42, major43, major44, major45, major46,
+                                        major47, major48, major49, major50, major51, major52, major53, major54, major55, major56, major57, major58,
+                                        major59, major60, major61, major62, major63, major64, major65, major66, major67);
 
+            context.Departments.AddOrUpdate(d => d.DepartmentName, dept, dept1, dept2, dept3, dept4, dept5, dept6, dept7, dept8);
+
+            context.SaveChanges();
 
 #if false
             var courses = new List<Course>()
