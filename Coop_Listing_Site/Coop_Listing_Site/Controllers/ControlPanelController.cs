@@ -157,7 +157,9 @@ namespace Coop_Listing_Site.Controllers
                 }
             }
 
-            if (failures < emailArray.Length)
+            if (failures == 0)
+                messages.Add("Invite(s) successfully sent.");
+            else if (failures < emailArray.Length)
                 messages.Add("All other invites successfully sent.");
             else
                 messages.Add("It appears none of the invites were sent successfully.");
