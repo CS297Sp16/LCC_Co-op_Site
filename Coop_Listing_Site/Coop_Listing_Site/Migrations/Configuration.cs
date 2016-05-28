@@ -316,16 +316,6 @@ namespace Coop_Listing_Site.Migrations
             dept8.Majors.Add(major67);
             major67.Department = dept8;
 
-
-            context.Majors.AddOrUpdate(m => m.MajorName, major, major1, major2, major3, major4, major5, major6, major7, major8, major9, major10,
-                                        major11, major12, major13, major14, major15, major16, major17, major18, major19, major20, major21, major22,
-                                        major23, major24, major25, major26, major27, major28, major29, major30, major31, major32, major33, major34,
-                                        major35, major36, major37, major38, major39, major40, major41, major42, major43, major44, major45, major46,
-                                        major47, major48, major49, major50, major51, major52, major53, major54, major55, major56, major57, major58,
-                                        major59, major60, major61, major62, major63, major64, major65, major66, major67);
-
-            context.Departments.AddOrUpdate(d => d.DepartmentName, dept, dept1, dept2, dept3, dept4, dept5, dept6, dept7, dept8);
-
             //context.SaveChanges();
 
             // add Users
