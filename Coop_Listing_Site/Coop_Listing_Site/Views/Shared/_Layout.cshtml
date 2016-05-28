@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/css")  
+    @Styles.Render("~/Content/control-panel-layout.css")   
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
 </head>
@@ -25,7 +26,7 @@
                         <li>@Html.ActionLink("Control Panel", "Index", "ControlPanel")</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/Auth/LogOut">Log Out <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+                        <li>@Html.ActionLink("Logout", "LogOut", "Auth")</li>
                     </ul>
                 }
             </div>

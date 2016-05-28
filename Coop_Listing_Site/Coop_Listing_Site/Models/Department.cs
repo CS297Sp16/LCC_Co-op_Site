@@ -8,6 +8,7 @@ namespace Coop_Listing_Site.Models
         {
             // make sure Majors isn't null when we make a new Department
             Majors = new List<Major>();
+            Opportunities = new List<Opportunity>();
         }
 
         public int DepartmentID { get; set; }
@@ -15,5 +16,7 @@ namespace Coop_Listing_Site.Models
         public string DepartmentName { get; set; }
 
         public virtual ICollection<Major> Majors { get; set; }
+
+        public virtual ICollection<Opportunity> Opportunities { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,7 +19,7 @@ namespace Coop_Listing_Site.Controllers
 
         public CoopController()
         {
-            var db = new CoopContext();
+            var db = new CoopContext();           
             repo = new Repository(db);
         }
 
@@ -45,7 +45,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Listings()
         {
             string userId = User.Identity.GetUserId();
-            IEnumerable<Opportunity> oppList = null;
+            IEnumerable<Opportunity> oppList = new List<Opportunity>(); // Setting it to null causes problems on the off chance someone accesses the page without being in one of the following roles
 
             if (User.IsInRole("Student"))
             {
@@ -77,7 +77,8 @@ namespace Coop_Listing_Site.Controllers
                 }
             }
 
-            return View(oppList.Select(o => new OpportunityModel(o)));
+            return View(oppList.Select(o => new OpportunityModel(o)));   //By: LONNIE, this throws an error if null on initial load of browser occasionally
+            
         }
 
         public ActionResult Details(int? id)
@@ -103,7 +104,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult AddOpportunity()
         {
             ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>(), "DepartmentID", "DepartmentName");
-            ViewBag.MajorIDs = new SelectList(repo.GetAll<Major>(), "MajorID", "MajorName");
+            ViewBag.Majors = new SelectList(repo.GetAll<Major>(), "MajorID", "MajorName");
             return View();
         }
 
@@ -113,22 +114,33 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult AddOpportunity([Bind(Include = @"CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM, int? DepartmentIDs, int? MajorIDs)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityVM, int? DepartmentIDs, int[] MajorIDs)
 
         {
-            Major major = null;
             Department dept = null;
+            var majorList = new List<Major>();
 
             if (DepartmentIDs == null && MajorIDs == null)
             {
-                ModelState.AddModelError("", "You must select either a Department or at least on Major to list this opportunity under");
+                ModelState.AddModelError("", "You must select either a Department or at least one Major to list this opportunity under");
             }
             else
             {
-                if (MajorIDs != null)
-                    major = repo.GetByID<Major>(MajorIDs);
+                if (MajorIDs.Length > 0)
+                {
+                    foreach (var majorid in MajorIDs)
+                    {
+                        var major = repo.GetByID<Major>(majorid);
+                        if (!majorList.Contains(major))
+                            majorList.Add(major);
+                    }
+                    opportunityVM.Majors = majorList;
+                }
                 else
+                {
                     dept = repo.GetByID<Department>(DepartmentIDs);
+                    opportunityVM.Department = dept;
+                }
             }
 
             if (ModelState.IsValid)
@@ -136,10 +148,8 @@ namespace Coop_Listing_Site.Controllers
                 Opportunity opportunity = opportunityVM.ToOpportunity();
                 opportunity.Approved = true;
 
-                if (major != null)
-                    opportunity.Majors.Add(major);
-                else
-                    opportunity.Department = dept;
+                foreach (var major in opportunity.Majors)
+                    major.Opportunities.Add(opportunity);
 
                 if (opportunity.Wage != null || opportunity.Amount != null)
                     opportunity.Paid = true; // Implement in JS using a Hidden field that to True/False depending on the pay type
@@ -150,7 +160,6 @@ namespace Coop_Listing_Site.Controllers
             }
 
             ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>(), "DepartmentID", "DepartmentName");
-            ViewBag.MajorIDs = new SelectList(repo.GetAll<Major>(), "MajorID", "MajorName");
 
             return View(opportunityVM);
         }
@@ -168,12 +177,7 @@ namespace Coop_Listing_Site.Controllers
             {
                 return HttpNotFound();
             }
-            // list of major ids in the opportunity
-            var oppMajors = opportunity.Majors.Select(m => m.MajorID);
-            // all majors not in the opportunity
-            var majors = repo.GetWhere<Major>(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName);
-
-            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+            ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>(), "DepartmentID", "DepartmentName");
 
             var oppvm = new OpportunityModel(opportunity);
             return View(oppvm);
@@ -185,16 +189,55 @@ namespace Coop_Listing_Site.Controllers
         [Authorize(Roles = "Coordinator")]
         public ActionResult EditOpportunity([Bind(Include = @"OpportunityId, CompanyName,
             ContactName, ContactNumber, ContactEmail, Location, CompanyWebsite, AboutCompany, AboutDepartment,
-            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityvm, int? MajorIDs)
+            CoopPositionTitle, CoopPositionDuties, Qualifications, GPA, Paid, Wage, Amount, Duration, OpeningsAvailable, TermAvailable")] OpportunityModel opportunityvm, int? DepartmentIDs, int[] MajorIDs)
         {
+            Department dept = null;
+            var majorList = new List<Major>();
+
+            if (DepartmentIDs == null && MajorIDs == null)
+            {
+                ModelState.AddModelError("", "You must select either a Department or at least one Major to list this opportunity under");
+            }
+            else
+            {
+                if (MajorIDs.Length > 0)
+                {
+                    foreach (var majorid in MajorIDs)
+                    {
+                        var major = repo.GetByID<Major>(majorid);
+                        if (!majorList.Contains(major))
+                            majorList.Add(major);
+                    }
+                    opportunityvm.Majors = majorList;
+                }
+                else
+                {
+                    dept = repo.GetByID<Department>(DepartmentIDs);
+                    opportunityvm.Department = dept;
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                Major major = null;
-                if (MajorIDs != null)
-                    major = repo.GetByID<Major>(MajorIDs);
-
                 var opportunity = repo.GetByID<Opportunity>(opportunityvm.OpportunityID);
 
+                foreach(var major in opportunity.Majors)
+                {
+                    if (!opportunityvm.Majors.Contains(major))
+                    {
+                        if(major.Opportunities.Contains(opportunity)) //It SHOULD be there, but check just in case
+                            major.Opportunities.Remove(opportunity);
+                    }
+                }
+
+                foreach(var major in opportunityvm.Majors)
+                {
+                    if (!major.Opportunities.Contains(opportunity))
+                        major.Opportunities.Add(opportunity);
+                }
+
+                opportunity.Majors = opportunityvm.Majors;
+                
                 // This should be changed but I needed to get something working
                 opportunity.AboutCompany = opportunityvm.AboutCompany;
                 opportunity.AboutDepartment = opportunityvm.AboutDepartment;
@@ -214,25 +257,13 @@ namespace Coop_Listing_Site.Controllers
                 opportunity.Paid = opportunityvm.Paid;
                 opportunity.Qualifications = opportunityvm.Qualifications;
                 opportunity.TermAvailable = opportunityvm.TermAvailable;
-                opportunity.Wage = opportunityvm.Wage;
-
-                if(major != null)
-                    opportunity.Majors.Add(major); // Needs more logic for adding/removing majors
-
+                opportunity.Wage = opportunityvm.Wage;                
+                
                 repo.Update(opportunity);
                 return RedirectToAction("Index");
             }
-            var opp = repo.GetByID<Opportunity>(opportunityvm.OpportunityID);
 
-            opportunityvm.Department = opp.Department;
-            opportunityvm.Majors = opp.Majors;
-
-            // list of major ids in the opportunity
-            var oppMajors = opp.Majors.Select(m => m.MajorID);
-            // all majors not in the opportunity
-            var majors = repo.GetWhere<Major>(m => !oppMajors.Contains(m.MajorID)).OrderBy(m => m.MajorName);
-
-            ViewBag.MajorIDs = new SelectList(majors, "MajorID", "MajorName");
+            ViewBag.DepartmentIDs = new SelectList(repo.GetAll<Department>(), "DepartmentID", "DepartmentName");
 
             return View(opportunityvm);
         }
@@ -262,6 +293,21 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Opportunity opportunity = repo.GetByID<Opportunity>(id);
+            var depts = repo.GetWhere<Department>(d => d.Opportunities.Contains(opportunity));
+
+            foreach(var major in opportunity.Majors)
+            {
+                major.Opportunities.Remove(opportunity);
+            }
+
+            foreach(var dept in depts)
+            {
+                dept.Opportunities.Remove(opportunity);
+            }
+
+            opportunity.Majors.Clear();
+            opportunity.Department = null;
+
             repo.Delete(opportunity);
 
             return RedirectToAction("Index");
@@ -390,6 +436,35 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return File(file.FileData, file.ContentType);
+        }
+
+        [HttpPost]
+        public ActionResult GetMajorsForDepartment(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var dept = repo.GetByID<Department>(id);
+            if (dept == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Majors link to Departments, which have a list of Majors, which link to a Department, etc.
+            // This causes the Json serialization to fail, so make a list of dictionaries instead
+            var majors = repo.GetWhere<Major>(m => m.Department == dept);
+            var majordict = new List<Dictionary<string, string>>();
+
+            foreach(var major in majors)
+            {
+                var dict = new Dictionary<string, string>();
+                dict["MajorName"] = major.MajorName;
+                dict["MajorID"] = major.MajorID.ToString();
+                majordict.Add(dict);
+            }
+
+            return Json(majordict);
         }
 
         protected override void Dispose(bool disposing)

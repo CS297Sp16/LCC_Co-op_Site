@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -64,7 +64,7 @@ namespace Coop_Listing_Site.Controllers
             var student = repo.GetByID<StudentInfo>(id);
 
             student.User.Enabled = true;
-            repo.Update<StudentInfo>(student);
+            repo.Update(student);
 
             ViewBag.Updated = true;
 
@@ -90,14 +90,14 @@ namespace Coop_Listing_Site.Controllers
             var student = repo.GetByID<StudentInfo>(id);
 
             student.User.Enabled = false;
-            repo.Update<StudentInfo>(student);
+            repo.Update(student);
 
             return RedirectToAction("Details", new { id = id });
         }
 
         public ActionResult Invitations()
         {
-            return View(repo.GetAll<RegisterInvite>());
+            return View(repo.GetWhere<RegisterInvite>(i => i.UserType == RegisterInvite.AccountType.Student));
         }
 
         protected override void Dispose(bool disposing)
