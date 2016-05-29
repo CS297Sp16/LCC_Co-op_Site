@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Coop_Listing_Site.Models.Major>
+﻿@model IEnumerable<Coop_Listing_Site.Models.ViewModels.MajorViewModel>
 
 @{
     ViewBag.Title = "Majors";
@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Department.DepartmentName)
+                @Html.DisplayNameFor(model => model.Department)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MajorName)

@@ -33,7 +33,9 @@ namespace Coop_Listing_Site.Controllers
         {
             var depts = repo.GetAll<Department>();
 
-            return View(depts);
+            var deptVMs = depts.Select(d => new DepartmentModel(d));
+
+            return View(deptVMs);
         }
 
         public ActionResult Add()
@@ -157,6 +159,9 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmDeleteDepartment(int id)
         {
             Department dept = repo.GetByID<Department>(id);
+
+            if (dept == null)
+                return HttpNotFound();
 
             foreach (var major in dept.Majors)
                 major.Department = null;
