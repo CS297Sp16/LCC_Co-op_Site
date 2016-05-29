@@ -61,7 +61,7 @@ namespace Coop_Listing_Site.Models
 
             Major major = new Major { MajorName = "Computer Simulation and Game Development" };
             Major major1 = new Major { MajorName = "Computer Network Operations" };
-            Major major2 = new Major { MajorName = " Computer Programming" };
+            Major major2 = new Major { MajorName = "Computer Programming" };
             Major major3 = new Major { MajorName = "Health Informatics" };
             Major major4 = new Major { MajorName = "Retail Management" };
             Major major5 = new Major { MajorName = "Business Management" };
@@ -111,8 +111,7 @@ namespace Coop_Listing_Site.Models
             {
                 User = user2
             };
-
-            cInfo0.Majors.Add(major4);
+            
             cInfo0.Majors.Add(major5);
             cInfo0.Majors.Add(major6);
 
@@ -120,8 +119,7 @@ namespace Coop_Listing_Site.Models
             {
                 User = user3
             };
-
-            cInfo1.Majors.Add(major);
+            
             cInfo1.Majors.Add(major1);
             cInfo1.Majors.Add(major2);
 

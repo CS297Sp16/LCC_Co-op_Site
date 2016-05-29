@@ -114,9 +114,29 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int Majors)
+        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int[] MajorIDs)
         {
-            ViewBag.Majors = new SelectList(repo.GetWhere<Major>(m => m.Coordinator == null).ToList(), "MajorID", "MajorName");
+            var nocoordMajors = repo.GetWhere<Major>(m => m.Coordinator == null);
+
+            if(MajorIDs != null && MajorIDs.Length > 0)
+            {
+                nocoordMajors = nocoordMajors.Where(m => !MajorIDs.Contains(m.MajorID));
+
+                foreach(var id in MajorIDs)
+                {
+                    var major = repo.GetByID<Major>(id);
+
+                    if (major != null)
+                        coordinator.Majors.Add(major);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "You must select at least one Major that you coordinate.");
+            }
+
+            ViewBag.Majors = new SelectList(nocoordMajors, "MajorID", "MajorName");
+
             if (!ModelState.IsValid) return View(coordinator);
 
             User user = new User
@@ -132,15 +152,11 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
-                var major = repo.GetByID<Major>(Majors);
-
                 var coordinfo = new CoordinatorInfo
                 {
-                    User = user
+                    User = user,
+                    Majors = coordinator.Majors
                 };
-
-                if(major != null)
-                    coordinfo.Majors.Add(major);
 
                 repo.Add(coordinfo);
 
