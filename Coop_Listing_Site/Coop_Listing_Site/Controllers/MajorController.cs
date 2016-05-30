@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Coop_Listing_Site.Models;
 using System.Net;
+using Coop_Listing_Site.Models.ViewModels;
 
 namespace Coop_Listing_Site.Controllers
 {
@@ -32,7 +33,9 @@ namespace Coop_Listing_Site.Controllers
         {
             var majors = repo.GetAll<Major>();
 
-            return View(majors);
+            var majorVMs = majors.Select(m => new MajorViewModel(m));
+
+            return View(majorVMs);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
@@ -46,7 +49,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult Add([Bind(Include = "MajorName")] Major major, int? DepartmentID)
+        public ActionResult Add([Bind(Include = "MajorName")] MajorViewModel majorVM, int? DepartmentID)
         {
             var dept = repo.GetByID<Department>(DepartmentID);
 
@@ -55,13 +58,15 @@ namespace Coop_Listing_Site.Controllers
 
             if (ModelState.IsValid)
             {
-                major.Department = dept;
+                majorVM.Department = dept;
+                var major = majorVM.ToMajor();
+
                 repo.Add(major);
 
                 return RedirectToAction("Index");
             }
 
-            return View();
+            return View(majorVM);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
@@ -71,17 +76,23 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var major = repo.GetByID<Major>(id);
+
+            if (major == null)
+                return HttpNotFound();
+
+            var majorVM = new MajorViewModel(major);
+
             var depts = repo.GetAll<Department>().OrderBy(d => d.DepartmentName);
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", major.Department?.DepartmentID);
 
-            return View(major);
+            return View(majorVM);
         }
 
         [HttpPost, Authorize(Roles = "Admin, Coordinator"), ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MajorID, MajorName")] Major major, int? DepartmentID)
+        public ActionResult Edit([Bind(Include = "MajorID, MajorName")] MajorViewModel majorVM, int? DepartmentID)
         {
             var dept = repo.GetByID<Department>(DepartmentID);
-            var dbMajor = repo.GetByID<Major>(major.MajorID);
+            var dbMajor = repo.GetByID<Major>(majorVM.MajorID);
 
             if (dept == null && DepartmentID != null)
                 ModelState.AddModelError("", "Unable to find the selected department. Please contact the administrator if this problem persists");
@@ -93,31 +104,33 @@ namespace Coop_Listing_Site.Controllers
                 else
                     dbMajor.Department = dept;
 
-                dbMajor.MajorName = major.MajorName;
+                dbMajor.MajorName = majorVM.MajorName;
                 repo.Update(dbMajor);
+
+                majorVM = new MajorViewModel(dbMajor);
             }
 
             var depts = repo.GetAll<Department>().OrderBy(d => d.DepartmentName);
-            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", major.Department?.DepartmentID);
+            ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", majorVM.Department?.DepartmentID);
 
             ViewBag.Updated = true;
 
-            return View(major);
+            return View(majorVM);
         }
 
         [Authorize(Roles = "Admin, Coordinator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             var major = repo.GetByID<Major>(id);
+
             if (major == null)
-            {
                 return HttpNotFound();
-            }
-            return View(major);
+
+            var majorVM = new MajorViewModel(major);
+            return View(majorVM);
         }
 
         [HttpPost, ActionName("Delete"), Authorize(Roles = "Admin, Coordinator"),
@@ -125,6 +138,10 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult ConfirmDeleteMajor(int id)
         {
             Major major = repo.GetByID<Major>(id);
+
+            if (major == null)
+                return HttpNotFound();
+
             repo.Delete(major);
 
             return RedirectToAction("Index");

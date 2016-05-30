@@ -54,16 +54,110 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Major", new { @class = "control-label col-md-2" })
+            @Html.Label("Majors Without A Coordinator", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Majors", "Select a major")
+                @Html.DropDownList("Majors", "Select One To Add")
+                <button style="margin-left: 10px" type="button" class="btn" onclick="addSelectedMajor();">Add</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Majors In Department", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <ol style="list-style-type: none; padding-left: 0px;">
+                    @if (Model != null && Model.Majors.Count > 0)
+                    {
+                        foreach (var major in Model.Majors)
+                        {
+                            <div id="@major.MajorID">
+                                <button type="button" onclick="removeMajor(@major.MajorID);">X</button> <li style="display:inline-block;" value="@major.MajorID">@major.MajorName</li>
+                                <br />
+                            </div>
+                        }
+                    }
+                </ol>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit" class="btn btn-primary" />
+                <input type="submit" value="Register" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
+
+<script type="text/javascript">
+    function addSelectedMajor() {
+        var selectlist = document.getElementById("Majors");
+        var option = selectlist.options[selectlist.selectedIndex];
+
+        if (option.value) {
+            var majorlist = $("ol");
+            var li = document.createElement("li");
+            var newele = "";
+            var id = option.value;
+
+            li.value = id;
+            li.innerText = option.text;
+            li.style = "display: inline-block;";
+
+            newele = '<div id="' + id + '">\n';
+            newele += '<button type="button" onclick="removeMajor(' + id + ');">X</button> ';
+            newele += '<li style="display:inline-block;" value="' + id + '">' + option.text + '</li>\n';
+            newele += '<br />';
+            newele += '</div>';
+
+            majorlist.append(newele);
+
+            selectlist.remove(selectlist.selectedIndex);
+
+            addListValueToForm(li);
+        }
+    }
+
+    function removeMajor(id) {
+        var majorDivs = $("ol div");
+        var hiddenFields = document.getElementsByName("MajorIDs");
+
+        for (var i = 0; i < majorDivs.length; i++) {
+            if (majorDivs[i].id == id) {
+                var div = majorDivs[i];
+                var major = div.children[1];
+                var option = document.createElement("option");
+                option.value = id;
+                option.innerText = major.innerText;
+
+                var selectlist = document.getElementById("Majors");
+                selectlist.appendChild(option);
+
+                div.remove();
+                break;
+            }
+        }
+
+        for (var i = 0; i < hiddenFields.length; i++) {
+            if (hiddenFields[i].value == id) {
+                hiddenFields[i].remove();
+                break;
+            }
+        }
+    }
+
+    function addCurrentMajors() {
+        var majors = $("ol li");
+
+        for (var i = 0; i < majors.length; i++) {
+            addListValueToForm(majors[i]);
+        }
+    }
+
+    function addListValueToForm(item) {
+        var form = $("form"),
+            majorid = item.value;
+
+        form.append('<input type="hidden" name="MajorIDs" value="' + majorid + '" />')
+    }
+
+    window.onload = addCurrentMajors();
+</script>

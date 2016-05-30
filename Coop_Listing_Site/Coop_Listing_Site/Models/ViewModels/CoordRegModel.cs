@@ -8,6 +8,11 @@ namespace Coop_Listing_Site.Models.ViewModels
 {
     public class CoordRegModel
     {
+        public CoordRegModel()
+        {
+            Majors = new List<Major>();
+        }
+
         [Required, Display(Name = "First Name")]
         public string FirstName { get; set; }
 
@@ -25,7 +30,6 @@ namespace Coop_Listing_Site.Models.ViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        // Not required until a dummy DB is set up
-        public int DepartmentID { get; set; }
+        public ICollection<Major> Majors { get; set; }
     }
 }
