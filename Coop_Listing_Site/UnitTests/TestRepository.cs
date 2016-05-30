@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Coop_Listing_Site.DAL;
 using Coop_Listing_Site.Models;
 
@@ -60,22 +58,27 @@ namespace UnitTests
 
         public T GetOne<T>() where T : class
         {
-            throw new NotImplementedException();
+            return fakeDB[typeof(T)].Cast<T>().FirstOrDefault();
         }
 
         public T GetOne<T>(Func<T, bool> check) where T : class
         {
-            throw new NotImplementedException();
+            var table = fakeDB[typeof(T)].Cast<T>();
+
+            return table.SingleOrDefault(check);
         }
 
         public IEnumerable<T> GetWhere<T>(Func<T, bool> check) where T : class
         {
-            throw new NotImplementedException();
+            var table = fakeDB[typeof(T)].Cast<T>();
+
+            return table.Where(check);
         }
 
         public T Update<T>(T dbObj) where T : class
         {
-            throw new NotImplementedException();
+            //not sure if anything should be done here
+            return dbObj;
         }
 
         private bool isKeyMatch<T>(T o, object id) where T : class
