@@ -1,8 +1,3 @@
-
-
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
 namespace Coop_Listing_Site.Models
 {
     public class Major
@@ -12,6 +7,5 @@ namespace Coop_Listing_Site.Models
         public virtual Department Department { get; set; }
 
         public string MajorName { get; set; }
-
     }
 }
