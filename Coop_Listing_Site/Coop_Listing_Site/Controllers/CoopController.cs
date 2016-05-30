@@ -319,7 +319,7 @@ namespace Coop_Listing_Site.Controllers
 
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
-
+                application.Student = student;
                 db.Applications.Add(application);
                 db.SaveChanges();
 
@@ -374,7 +374,8 @@ namespace Coop_Listing_Site.Controllers
         }
         public ActionResult AppDetails(int id)
         {
-            return View(db.Applications.Find(id));
+            var appdet = db.Applications.Find(id);
+            return View(appdet);
         }
 
         [Authorize(Roles = "Coordinator")]
@@ -399,6 +400,11 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult AppDeleteConfirmed(int id)
         {
             Application application = db.Applications.Find(id);
+            var files = application.Files.ToList();
+            for (int i = 0; i < files.Count; i++)
+            {
+                db.UserFiles.Remove(files[i]);
+            }
             db.Applications.Remove(application);
             db.SaveChanges();
             return RedirectToAction("Applications");
