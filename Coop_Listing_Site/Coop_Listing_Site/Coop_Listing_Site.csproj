@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201605271452521_Opp_Major_Dept_ManyToMany_Update.Designer.cs">
       <DependentUpon>201605271452521_Opp_Major_Dept_ManyToMany_Update.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605292122190_Major_Update1.cs" />
+    <Compile Include="Migrations\201605292122190_Major_Update1.Designer.cs">
+      <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AgreementForm.cs" />
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
@@ -377,6 +381,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605271452521_Opp_Major_Dept_ManyToMany_Update.resx">
       <DependentUpon>201605271452521_Opp_Major_Dept_ManyToMany_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605292122190_Major_Update1.resx">
+      <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

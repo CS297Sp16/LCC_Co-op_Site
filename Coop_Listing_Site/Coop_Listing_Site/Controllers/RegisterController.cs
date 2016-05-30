@@ -13,15 +13,14 @@ namespace Coop_Listing_Site.Controllers
     [AllowAnonymous]
     public class RegisterController : Controller
     {
-        // TODO: Implement mass invite (likely goes under Co-op advisor's control panel)
-
-        private CoopContext db;
         private UserManager<User> userManager;
+        private IRepository repo;
 
         public RegisterController()
         {
-            db = new CoopContext();
+            var db = new CoopContext();
             userManager = new UserManager<User>(new UserStore<User>(db));
+            repo = new Repository(db);
         }
 
         // GET: Register
@@ -33,7 +32,7 @@ namespace Coop_Listing_Site.Controllers
         // GET: Register/Student/
         public ActionResult Student(string id)
         {
-            var invite = db.Invites.Find(id);
+            var invite = repo.GetByID<RegisterInvite>(id);
             if (invite == null || invite.UserType != RegisterInvite.AccountType.Student)
             {
                 return View("Invalid");
@@ -41,7 +40,7 @@ namespace Coop_Listing_Site.Controllers
 
             StudentRegistrationModel model = new StudentRegistrationModel { Email = invite.Email };
 
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+            ViewBag.Majors = new SelectList(repo.GetAll<Major>().ToList(), "MajorID", "MajorName");
 
             return View(model);
         }
@@ -49,8 +48,8 @@ namespace Coop_Listing_Site.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Student([Bind(Include = "FirstName,LastName,Email,LNumber,GPA,Password,ConfirmPassword")] StudentRegistrationModel student, int Majors)
         {
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
-            if (!ModelState.IsValid) return View();
+            ViewBag.Majors = new SelectList(repo.GetAll<Major>().ToList(), "MajorID", "MajorName");
+            if (!ModelState.IsValid) return View(student);
 
             User user = new User
             {
@@ -65,7 +64,7 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
-                var major = db.Majors.Find(Majors);
+                var major = repo.GetByID<Major>(Majors);
 
                 var studentInfo = new StudentInfo
                 {
@@ -77,17 +76,15 @@ namespace Coop_Listing_Site.Controllers
                 if (major != null)
                     studentInfo.Major = major;
 
-                db.Students.Add(studentInfo);
-                db.SaveChanges();
+                repo.Add(studentInfo);
 
                 userManager.AddToRole(user.Id, "Student");
                 SignIn(user);
 
-                var invite = db.Invites.FirstOrDefault(i => i.Email.ToLower() == student.Email.ToLower());
+                var invite = repo.GetOne<RegisterInvite>(i => i.Email.ToLower() == student.Email.ToLower());
                 if (invite != null) // Should never be null, but check anyway
                 {
-                    db.Invites.Remove(invite);
-                    db.SaveChanges();
+                    repo.Delete(invite);
                 }
 
                 return RedirectToAction("Index", "Home");
@@ -98,29 +95,49 @@ namespace Coop_Listing_Site.Controllers
                 ModelState.AddModelError("", error);
             }
 
-            return View();
+            return View(student);
         }
 
         // GET: Register/Coordinator/
         public ActionResult Coordinator(string id)
         {
-            var invite = db.Invites.Find(id);
+            var invite = repo.GetByID<RegisterInvite>(id);
             if (invite == null || invite.UserType != RegisterInvite.AccountType.Coordinator)
             {
                 return View("Invalid");
             }
 
             CoordRegModel model = new CoordRegModel { Email = invite.Email };
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
+            ViewBag.Majors = new SelectList(repo.GetWhere<Major>(m => m.Coordinator == null).ToList(), "MajorID", "MajorName");
 
             return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int Majors)
+        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int[] MajorIDs)
         {
-            ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName");
-            if (!ModelState.IsValid) return View();
+            var nocoordMajors = repo.GetWhere<Major>(m => m.Coordinator == null);
+
+            if(MajorIDs != null && MajorIDs.Length > 0)
+            {
+                nocoordMajors = nocoordMajors.Where(m => !MajorIDs.Contains(m.MajorID));
+
+                foreach(var id in MajorIDs)
+                {
+                    var major = repo.GetByID<Major>(id);
+
+                    if (major != null)
+                        coordinator.Majors.Add(major);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "You must select at least one Major that you coordinate.");
+            }
+
+            ViewBag.Majors = new SelectList(nocoordMajors, "MajorID", "MajorName");
+
+            if (!ModelState.IsValid) return View(coordinator);
 
             User user = new User
             {
@@ -135,28 +152,22 @@ namespace Coop_Listing_Site.Controllers
 
             if (result.Succeeded)
             {
-                var major = db.Majors.Find(Majors);
-
                 var coordinfo = new CoordinatorInfo
                 {
-                    User = user
+                    User = user,
+                    Majors = coordinator.Majors
                 };
 
-                if(major != null)
-                    coordinfo.Majors.Add(major);
-
-                db.Coordinators.Add(coordinfo);
-                db.SaveChanges();
+                repo.Add(coordinfo);
 
                 userManager.AddToRole(user.Id, "Coordinator");
 
                 SignIn(user);
 
-                var invite = db.Invites.FirstOrDefault(i => i.Email.ToLower() == coordinator.Email.ToLower());
+                var invite = repo.GetOne<RegisterInvite>(i => i.Email.ToLower() == coordinator.Email.ToLower());
                 if (invite != null) // Should never be null, but check anyway
                 {
-                    db.Invites.Remove(invite);
-                    db.SaveChanges();
+                    repo.Delete(invite);
                 }
 
                 return RedirectToAction("Index", "Home");
@@ -167,7 +178,7 @@ namespace Coop_Listing_Site.Controllers
                 ModelState.AddModelError("", error);
             }
 
-            return View();
+            return View(coordinator);
         }
 
 
@@ -184,14 +195,6 @@ namespace Coop_Listing_Site.Controllers
         {
             var ctx = Request.GetOwinContext();
             return ctx.Authentication;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-                db.Dispose();
-
-            base.Dispose(disposing);
         }
     }
 }

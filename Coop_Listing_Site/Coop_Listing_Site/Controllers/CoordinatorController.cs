@@ -105,6 +105,12 @@ namespace Coop_Listing_Site.Controllers
                 return HttpNotFound();
 
             coordinator.User.Enabled = false;
+
+            foreach (var major in coordinator.Majors)
+                major.Coordinator = null;
+
+            coordinator.Majors.Clear();
+
             repo.Update(coordinator);
 
             return RedirectToAction("Details", new { id = id });

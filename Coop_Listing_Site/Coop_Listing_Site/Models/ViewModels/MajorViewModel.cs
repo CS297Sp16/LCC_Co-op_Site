@@ -16,6 +16,7 @@ namespace Coop_Listing_Site.Models.ViewModels
             MajorName = major.MajorName;
             Department = major.Department;
             Opportunities = major.Opportunities;
+            Coordinator = major.Coordinator;
         }
 
         public int MajorID { get; set; }
@@ -27,6 +28,8 @@ namespace Coop_Listing_Site.Models.ViewModels
 
         public ICollection<Opportunity> Opportunities { get; set; }
 
+        public CoordinatorInfo Coordinator { get; set; }
+
         public Major ToMajor()
         {
             var major = new Major();
@@ -35,6 +38,7 @@ namespace Coop_Listing_Site.Models.ViewModels
             major.MajorName = MajorName;
             major.Department = Department;
             major.Opportunities = Opportunities;
+            major.Coordinator = Coordinator;
 
             return major;
         }
