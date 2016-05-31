@@ -88,23 +88,23 @@ namespace UnitTests
             object key = null;
 
             // loop over the objects properties
-            foreach (var i in o.GetType().GetProperties())
+            foreach (var prop in o.GetType().GetProperties())
             {
                 // if the property matches our guess, get its value and stop looking
-                if (string.Equals(i.Name, idFieldGuess, StringComparison.CurrentCultureIgnoreCase))
+                if (string.Equals(prop.Name, idFieldGuess, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    key = i.GetValue(o);
+                    key = prop.GetValue(o);
                     break;
                 }
                 // if it doesn't match our guess, see if it has any attributes
-                else if (i.CustomAttributes.Count() > 0)
+                else if (prop.CustomAttributes.Count() > 0)
                 {
-                    foreach (var att in i.CustomAttributes)
+                    foreach (var att in prop.CustomAttributes)
                     {
                         // if it has a Key attribute, get its value and stop looking
                         if (att.AttributeType.Name == "KeyAttribute")
                         {
-                            key = i.GetValue(o);
+                            key = prop.GetValue(o);
                             break;
                         }
                     }

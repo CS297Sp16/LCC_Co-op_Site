@@ -14,13 +14,35 @@ namespace UnitTests
         IRepository repo;
 
         [Test]
-        public void IndexModelNotEmpty()
+        public void Index_ModelNotEmpty()
         {
             var controller = new MajorController(repo);
 
             var index = (ViewResult)controller.Index();
 
             Assert.IsNotEmpty((IEnumerable<Major>)index.Model);
+        }
+
+        [Test]
+        public void Add_DeptList()
+        {
+            var controller = new MajorController(repo);
+
+            var add = (ViewResult)controller.Add();
+
+            Assert.IsNotEmpty(add.ViewBag.Departments);
+        }
+
+        [Test]
+        public void Add_AddMajor()
+        {
+            var controller = new MajorController(repo);
+
+            var newMajor = new Major() { MajorName = "Data Entry Grunt" };
+
+            controller.Add(newMajor, 1);
+
+            Assert.IsNotNull(repo.GetOne<Major>(m => m.MajorName == newMajor.MajorName));
         }
 
 
