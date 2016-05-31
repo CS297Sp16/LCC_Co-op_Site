@@ -40,6 +40,9 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var coordinator = repo.GetByID<CoordinatorInfo>(id);
+            
+            if (coordinator == null)
+                return HttpNotFound();
 
             return View(new CoordinatorViewModel(coordinator));
         }
@@ -52,6 +55,9 @@ namespace Coop_Listing_Site.Controllers
 
             var coordinator = repo.GetByID<CoordinatorInfo>(id);
 
+            if (coordinator == null)
+                return HttpNotFound();
+
             return View(new CoordinatorViewModel(coordinator));
         }
 
@@ -62,6 +68,9 @@ namespace Coop_Listing_Site.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var coordinator = repo.GetByID<CoordinatorInfo>(id);
+
+            if (coordinator == null)
+                return HttpNotFound();
 
             coordinator.User.Enabled = true;
             repo.Update(coordinator);
@@ -78,6 +87,9 @@ namespace Coop_Listing_Site.Controllers
 
             var coordinator = repo.GetByID<CoordinatorInfo>(id);
 
+            if (coordinator == null)
+                return HttpNotFound();
+
             return View(new CoordinatorViewModel(coordinator));
         }
 
@@ -89,7 +101,16 @@ namespace Coop_Listing_Site.Controllers
 
             var coordinator = repo.GetByID<CoordinatorInfo>(id);
 
+            if (coordinator == null)
+                return HttpNotFound();
+
             coordinator.User.Enabled = false;
+
+            foreach (var major in coordinator.Majors)
+                major.Coordinator = null;
+
+            coordinator.Majors.Clear();
+
             repo.Update(coordinator);
 
             return RedirectToAction("Details", new { id = id });

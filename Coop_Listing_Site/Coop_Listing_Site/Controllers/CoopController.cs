@@ -45,7 +45,7 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Listings()
         {
             string userId = User.Identity.GetUserId();
-            IEnumerable<Opportunity> oppList = new List<Opportunity>(); // Setting it to null causes problems on the off chance someone accesses the page without being in one of the following roles
+            var oppList = new List<Opportunity>();
 
             if (User.IsInRole("Student"))
             {
@@ -53,17 +53,14 @@ namespace Coop_Listing_Site.Controllers
 
                 if (sInfo != null)
                 {
-                    var deptid = sInfo.Major.Department.DepartmentID;
-
-                    var dept = repo.GetOne<Department>(o => o.Majors.Contains(sInfo.Major));
                     oppList = repo.GetWhere<Opportunity>(
-                        o => o.Department.DepartmentID == dept.DepartmentID
-                        );
+                        o => o.Majors.Contains(sInfo.Major)
+                        ).ToList();
                 }
             }
             else if (User.IsInRole("Admin"))
             {
-                oppList = repo.GetAll<Opportunity>();
+                oppList = repo.GetAll<Opportunity>().ToList();
             }
             else if (User.IsInRole("Coordinator"))
             {
@@ -71,14 +68,20 @@ namespace Coop_Listing_Site.Controllers
 
                 if (cInfo != null)
                 {
-                    var depts = cInfo.Majors.Select(m => m.Department.DepartmentID);
+                    foreach (var major in cInfo.Majors)
+                    {
+                        var majorOpps = repo.GetWhere<Opportunity>(o => o.Majors.Contains(major)).ToList();
 
-                    oppList = repo.GetWhere<Opportunity>(o => depts.Contains(o.Department.DepartmentID));
+                        foreach (var opp in majorOpps)
+                        {
+                            if (!oppList.Contains(opp))
+                                oppList.Add(opp);
+                        }
+                    }
                 }
             }
 
-            return View(oppList.Select(o => new OpportunityModel(o)));   //By: LONNIE, this throws an error if null on initial load of browser occasionally
-            
+            return View(oppList.Select(o => new OpportunityModel(o)));
         }
 
         public ActionResult Details(int? id)

@@ -99,7 +99,6 @@ namespace Coop_Listing_Site.Controllers
             if (!ModelState.IsValid) return View();
 
             var user = userManager.FindByEmail(model.Email);
-            //var token = userManager.GeneratePasswordResetToken(user.Id);
             var newPass = userManager.PasswordHasher.HashPassword(model.Password);
 
             user.PasswordHash = newPass;
