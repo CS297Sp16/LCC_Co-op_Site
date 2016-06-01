@@ -1,18 +1,3 @@
-﻿.fadeout {
-    color: black;
-    opacity: .5;
-    /*-webkit-transition: opacity 0.35s ease, color 0.2s ease;
-    -moz-transition: opacity 0.35s ease, color 0.2s ease;
-    transition: opacity 0.35s ease, color 0.2s ease;*/
-    display: none;
-}
-
-#main-wrapper{
-    position:relative;
-    z-index:1;
-}
-
-#lcc-logo{
-     position:absolute;
-     z-index:-1;
+﻿#main-wrapper{
+    background-color: rgba(255, 255, 255, 0.85);
 }

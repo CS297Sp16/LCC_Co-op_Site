@@ -5,6 +5,7 @@ using Coop_Listing_Site.DAL;
 using Coop_Listing_Site.Controllers;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using Coop_Listing_Site.Models.ViewModels;
 
 namespace UnitTests
 {
@@ -20,7 +21,7 @@ namespace UnitTests
 
             var index = (ViewResult)controller.Index();
 
-            Assert.IsNotEmpty((IEnumerable<Major>)index.Model);
+            Assert.IsNotEmpty((IEnumerable<MajorViewModel>)index.Model);
         }
 
         [Test]
@@ -38,7 +39,7 @@ namespace UnitTests
         {
             var controller = new MajorController(repo);
 
-            var newMajor = new Major() { MajorName = "Data Entry Grunt" };
+            var newMajor = new MajorViewModel() { MajorName = "Data Entry Grunt" };
 
             controller.Add(newMajor, 1);
 

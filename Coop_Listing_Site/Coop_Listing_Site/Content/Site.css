@@ -1,4 +1,8 @@
-
+body {
+    background-image: url('/Images/evening-sky-3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
