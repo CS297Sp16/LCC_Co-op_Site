@@ -32,6 +32,10 @@ textarea {
 	float: none;
 }*/
 
+.container-fluid {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
 .btn-primary {
     background-color:#003893;
     color:#f5f5f5;
