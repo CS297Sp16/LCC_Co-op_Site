@@ -70,8 +70,8 @@ namespace Coop_Listing_Site.DAL
         /// should be included in the returned list</param>
         public IEnumerable<T> GetWhere<T>(Func<T, bool> check) where T : class
         {
-            var results = db.Set<T>().Where(check);
-            return results.ToList();
+            var results = db.Set<T>().ToList().Where(check);
+            return results;
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Coop_Listing_Site.DAL
         /// </summary>
         public T GetOne<T>() where T : class
         {
-            return db.Set<T>().FirstOrDefault();
+            return db.Set<T>().ToList().FirstOrDefault();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Coop_Listing_Site.DAL
         /// </summary>
         public T GetOne<T>(Func<T, bool> check) where T : class
         {
-            return db.Set<T>().SingleOrDefault(check);
+            return db.Set<T>().ToList().SingleOrDefault(check);
         }
 
         /// <summary>

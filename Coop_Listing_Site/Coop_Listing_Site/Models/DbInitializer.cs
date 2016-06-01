@@ -61,7 +61,7 @@ namespace Coop_Listing_Site.Models
 
             Major major = new Major { MajorName = "Computer Simulation and Game Development" };
             Major major1 = new Major { MajorName = "Computer Network Operations" };
-            Major major2 = new Major { MajorName = " Computer Programming" };
+            Major major2 = new Major { MajorName = "Computer Programming" };
             Major major3 = new Major { MajorName = "Health Informatics" };
             Major major4 = new Major { MajorName = "Retail Management" };
             Major major5 = new Major { MajorName = "Business Management" };
@@ -111,8 +111,7 @@ namespace Coop_Listing_Site.Models
             {
                 User = user2
             };
-
-            cInfo0.Majors.Add(major4);
+            
             cInfo0.Majors.Add(major5);
             cInfo0.Majors.Add(major6);
 
@@ -120,8 +119,7 @@ namespace Coop_Listing_Site.Models
             {
                 User = user3
             };
-
-            cInfo1.Majors.Add(major);
+            
             cInfo1.Majors.Add(major1);
             cInfo1.Majors.Add(major2);
 
@@ -156,6 +154,10 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp1);
+            opp1.Majors.Add(major2);
+            major2.Opportunities.Add(opp1);
+
             Opportunity opp2 = new Opportunity
             {
                 CompanyName = "Get Found",
@@ -179,6 +181,10 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp2);
+            opp2.Majors.Add(major2);
+            major2.Opportunities.Add(opp2);
+
             Opportunity opp3 = new Opportunity
             {
                 CompanyName = "A Family For Every Child",
@@ -199,6 +205,12 @@ namespace Coop_Listing_Site.Models
                 Department = dept
             };
 
+            dept.Opportunities.Add(opp3);
+            major.Opportunities.Add(opp3);
+            major1.Opportunities.Add(opp3);
+            opp3.Majors.Add(major);
+            opp3.Majors.Add(major1);
+
             Opportunity opp4 = new Opportunity
             {
                 CompanyName = "Lane County Finacial Division",
@@ -216,6 +228,13 @@ namespace Coop_Listing_Site.Models
                 Wage = "$12 per hour",
                 Department = dept1
             };
+
+            dept1.Opportunities.Add(opp4);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp4);
+                opp4.Majors.Add(m);
+            }
 
             Opportunity opp5 = new Opportunity
             {
@@ -238,6 +257,13 @@ namespace Coop_Listing_Site.Models
                 Paid = false,
                 Department = dept1
             };
+
+            dept1.Opportunities.Add(opp5);
+            foreach (var m in dept1.Majors)
+            {
+                m.Opportunities.Add(opp5);
+                opp4.Majors.Add(m);
+            }
 
             // invites
             var inv1 = new RegisterInvite
