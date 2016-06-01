@@ -365,8 +365,9 @@ namespace Coop_Listing_Site.Controllers
 
                 //Attaches the opportunity that the student is applying for to the application
                 application.Opportunity = internship;
+                application.Student = student;
 
-                repo.Add<Application>(application);
+                repo.Add(application);
 
                 var email = repo.GetOne<EmailInfo>();
                 if(email != null)
@@ -422,7 +423,15 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult AppDeleteConfirmed(int id)
         {
             Application application = repo.GetByID<Application>(id);
+            var files = application.Files.ToList();
+			
+            for (int i = 0; i < files.Count; i++)
+            {
+                repo.Delete(files[i]);
+            }
+			
             repo.Delete(application);
+			
             return RedirectToAction("Applications");
         }
 
