@@ -13,16 +13,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            <strong>@Html.DisplayNameFor(model => model.User.LastName)</strong>
+            <strong>@Html.DisplayNameFor(model => model.Student.User.LastName)</strong>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.LastName)
+            @Html.DisplayFor(model => model.Student.User.LastName)
         </dd>
         <dt>
-            <strong>@Html.DisplayNameFor(model => model.User.FirstName)</strong>
+            <strong>@Html.DisplayNameFor(model => model.Student.User.FirstName)</strong>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.FirstName)
+            @Html.DisplayFor(model => model.Student.User.FirstName)
         </dd>
         <dt>
             <strong>@Html.DisplayNameFor(model => model.Opportunity.CoopPositionTitle)</strong>
@@ -37,29 +37,16 @@
             @Html.DisplayFor(model => model.Message)
         </dd>
         <dt>
-            <strong>@Html.DisplayNameFor(model => model.Resume)</strong>
+            <strong>@Html.DisplayNameFor(model => model.Files)</strong>
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Resume)  @*Need to add code for making sure byte array for user is deleted*@
+            @foreach (var file in Model.Files)
+            {
+                @Html.ActionLink(file.FileName, "GetFile", new { id = file.UserFileID })
+                <br />
+            }
         </dd>
-        <dt>
-            <strong>@Html.DisplayNameFor(model => model.CoverLetter)</strong>
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CoverLetter)   @*Need to add code for making sure byte array for user is deleted*@
-        </dd>
-        <dt>
-            <strong>@Html.DisplayNameFor(model => model.DriverLicense)</strong>
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DriverLicense)  @*Need to add code for making sure byte array for user is deleted*@
-        </dd>
-        <dt>
-            <strong>@Html.DisplayNameFor(model => model.Other)</strong>
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Other)  @*Need to add code for making sure byte array for user is deleted*@
-        </dd>
+        
     </dl>
 
     @using (Html.BeginForm())
