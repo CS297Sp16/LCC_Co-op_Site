@@ -32,7 +32,7 @@ namespace Coop_Listing_Site.Models.ViewModels
             this.MajorID = studInfo.Major.MajorID;
             this.GPA = gpaSelectedValue ?? studInfo.GPA; //Allows GET method to use studInfo.GPA and POST to use value returned by gpaSelectedValue
 
-            gpaSelectedValue = this.GPA;
+            gpaSelectedValue = gpaSelectedValue ?? this.GPA;
 
             gpaList.Add(0d, "N/A");  //first SelectListItem is the option "N/A"
 
