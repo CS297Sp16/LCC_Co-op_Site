@@ -272,7 +272,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID")] StudentUpdateModel studentUpdateModel)
         {
             var studInfo = db.Students
                 .Where(si => si.User.Id == studentUpdateModel.UserId)
