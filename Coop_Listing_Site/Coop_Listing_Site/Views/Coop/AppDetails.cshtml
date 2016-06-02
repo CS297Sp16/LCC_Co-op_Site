@@ -55,7 +55,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)
+            @*@Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)*@
+            @Html.ActionLink(Model.Opportunity.CoopPositionTitle, "Details", new { id = Model.Opportunity.OpportunityID })
         </dd>
 
         <dt>
