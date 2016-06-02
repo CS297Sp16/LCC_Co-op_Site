@@ -1,5 +1,5 @@
 body {
-    background-image: url('/Images/evening-sky-3.jpg');
+    background-image: url('/Images/evening-sky-4.jpg');
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -23,17 +23,10 @@ textarea {
 }
 
 
-/* Fresh CSS 
-.sidebar {
-	background-color: white;
-	border-right: 1px solid black;
-}
-.nav-pills > li {
-	float: none;
-}*/
+/* Fresh CSS */
 
-.container-fluid {
-    background-color: rgba(255, 255, 255, 0.85);
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #FFFFFF;
 }
 
 .btn-primary {

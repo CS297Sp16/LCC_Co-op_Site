@@ -15,6 +15,13 @@ namespace UnitTests
             fakeDB[typeof(Major)] = new List<object>();
             fakeDB[typeof(Department)] = new List<object>();
             fakeDB[typeof(StudentInfo)] = new List<object>();
+            fakeDB[typeof(Opportunity)] = new List<object>();
+            fakeDB[typeof(CoordinatorInfo)] = new List<object>();
+            fakeDB[typeof(RegisterInvite)] = new List<object>();
+            fakeDB[typeof(EmailInfo)] = new List<object>();
+            fakeDB[typeof(PasswordReset)] = new List<object>();
+            fakeDB[typeof(Application)] = new List<object>();
+            fakeDB[typeof(UserFile)] = new List<object>();
         }
 
         public T Add<T>(T dbObj) where T : class
