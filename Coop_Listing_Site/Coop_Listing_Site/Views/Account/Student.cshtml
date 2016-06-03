@@ -1,0 +1,45 @@
+﻿@model Coop_Listing_Site.Models.ViewModels.StudentUpdateModel
+
+@{
+    ViewBag.Title = "Update Your Student Record";
+    Layout = "~/Views/Shared/_CP_Layout.cshtml";
+    SelectList majorSelectList = ViewBag.Majors;
+}
+
+<h2>@Html.Raw(ViewBag.Title)</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @if (ViewBag.Updated != null)
+        {
+            <h4 class="text-success">Updated</h4>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UserId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MajorID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.MajorID, majorSelectList, new { htmlAttributes = new { @class = "form-control col-md-12" } })
+                @Html.ValidationMessageFor(model => model.MajorID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GPA, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.GPA, Model.GPASelectList, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.GPA, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Cancel", "Index", "ControlPanel", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
