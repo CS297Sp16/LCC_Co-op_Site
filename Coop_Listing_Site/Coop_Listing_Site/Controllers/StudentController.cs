@@ -115,6 +115,36 @@ namespace Coop_Listing_Site.Controllers
             return View(repo.GetWhere<RegisterInvite>(i => i.UserType == RegisterInvite.AccountType.Student));
         }
 
+        public ActionResult Rescind(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var inv = repo.GetOne<RegisterInvite>(i => i.RegisterInviteID == id &&
+                i.UserType == RegisterInvite.AccountType.Student);
+
+            if (inv == null) return HttpNotFound();
+
+            return View(inv);
+        }
+
+        [HttpPost, ActionName("Rescind"),
+            ValidateAntiForgeryToken]
+        public ActionResult ConfirmRescind(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var inv = repo.GetOne<RegisterInvite>(i => i.RegisterInviteID == id &&
+                i.UserType == RegisterInvite.AccountType.Student);
+
+            if (inv == null) return HttpNotFound();
+            
+            repo.Delete(inv);
+
+            return RedirectToAction("Invitations");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -1,4 +1,8 @@
-
+body {
+    background-image: url('/Images/evening-sky-4.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -19,14 +23,11 @@ textarea {
 }
 
 
-/* Fresh CSS 
-.sidebar {
-	background-color: white;
-	border-right: 1px solid black;
+/* Fresh CSS */
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #FFFFFF;
 }
-.nav-pills > li {
-	float: none;
-}*/
 
 .btn-primary {
     background-color:#003893;

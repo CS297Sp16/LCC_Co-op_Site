@@ -28,7 +28,7 @@
 				@Html.DisplayFor(modelItem => item.Email)
 			</td>
 			<td>
-				@Html.ActionLink("Rescind Invitation", "Rescind", new { controller = "ControlPanel", id = item.RegisterInviteID })
+				@Html.ActionLink("Rescind Invitation", "Rescind", new { id = item.RegisterInviteID })
 			</td>
 		</tr>
 
