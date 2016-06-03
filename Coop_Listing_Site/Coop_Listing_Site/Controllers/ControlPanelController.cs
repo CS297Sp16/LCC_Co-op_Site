@@ -223,40 +223,6 @@ namespace Coop_Listing_Site.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Admin, Coordinator")]
-        public ActionResult Rescind(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            RegisterInvite inv = db.Invites.Find(id);
-            if (inv == null)
-            {
-                return HttpNotFound();
-            }
-            return View(inv);
-        }
-
-        [HttpPost, ActionName("Rescind"), Authorize(Roles = "Admin, Coordinator"),
-            ValidateAntiForgeryToken]
-        public ActionResult ConfirmRescind(string id)
-        {
-            RegisterInvite inv = db.Invites.Find(id);
-            if (inv.UserType == RegisterInvite.AccountType.Coordinator && !User.IsInRole("Admin"))
-            {
-                ViewBag.Message = "You must be an administrator to rescind a coordinator's registration invite.";
-                return View(inv);
-            }
-            else
-            {
-                db.Invites.Remove(inv);
-                db.SaveChanges();
-            }
-
-            return RedirectToAction("InviteList");
-        }
-
 
         public ActionResult UpdateStudent()
         {
@@ -266,66 +232,14 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            var gpaList = new Dictionary<double, string>();
-            double gpaMin = 2.00d;
-            double inc = 0.01d;
-            double key;
-            string value;
-            double gpaSelectedValue;
-
-            while (gpaMin <= 4.5)
-            {
-                value = gpaMin.ToString("N2");  //used to format the displayed value
-                key = Convert.ToDouble(value);  //produces the values => key
-
-                gpaList.Add(key, value);
-                gpaMin += inc;
-            }
-
-            var studentVM = new StudentUpdateModel()
-            {
-                UserId = studInfo.User.Id,
-                MajorID = studInfo.Major.MajorID,
-                GPA = studInfo.GPA
-            };
-
-            if (studentVM.GPA > 2)
-            {
-                gpaSelectedValue = studentVM.GPA;
-            }
-            else
-            {
-                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
-            }
-
-            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
+            var studentVM = new StudentUpdateModel(studInfo);
 
             return View(studentVM);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID")] StudentUpdateModel studentUpdateModel)
         {
-            bool newPasswordMatches = false;
-            bool passwordValidated = false;
-            bool passwordChangeRequested = false;
-
-            var gpaList = new Dictionary<double, string>();
-            double gpaMin = 2.00d;
-            double inc = 0.01d;
-            double key;
-            string value;
-            double gpaSelectedValue;
-
-            while (gpaMin <= 4.5)
-            {
-                value = gpaMin.ToString("N2");  //used to format the displayed value
-                key = Convert.ToDouble(value);  //produces the values => key
-
-                gpaList.Add(key, value);
-                gpaMin += inc;
-            }
-
             var studInfo = db.Students
                 .Where(si => si.User.Id == studentUpdateModel.UserId)
                 .Include(si => si.User)
@@ -336,48 +250,13 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            if (studentUpdateModel.GPA > 2)
-            {
-                gpaSelectedValue = studentUpdateModel.GPA;
-            }
-            else
-            {
-                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
-            }
-
-            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
-
-            if (studentUpdateModel.CurrentPassword != null)
-            {
-                var user = userManager.Find(studInfo.User.Email, studentUpdateModel.CurrentPassword);  //userManager.checkPassword not working
-                if (user != null)
-                {
-                    passwordValidated = true;
-                }
-                else
-                {
-                    ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
-                    return View("UpdateStudent");
-                }
-            }
-
-            if (studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
-            {
-                newPasswordMatches = true;
-            }
-
-            if (studentUpdateModel.NewPassword != null && userManager.Find(studInfo.User.Email, studentUpdateModel.NewPassword) == null)
-            {
-                passwordChangeRequested = true;
-            }
-
             if (!ModelState.IsValid) return View();
 
             if (ModelState.IsValid)
             {
                 if (studInfo.GPA != studentUpdateModel.GPA)
                 {
-                    studInfo.GPA = studentUpdateModel.GPA;
+                    studInfo.GPA = (double)studentUpdateModel.GPA;
                     db.Entry(studInfo).State = EntityState.Modified;
                     db.SaveChanges();
                 }
@@ -388,19 +267,9 @@ namespace Coop_Listing_Site.Controllers
                     db.Entry(studInfo.Major).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
-                if (passwordValidated && newPasswordMatches && passwordChangeRequested)
-                {
-                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
-
-                    //TODO: redirect back to index with message confirming
-                    ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
-                    return View("Index");
-                }
             }
             return RedirectToAction("Index");
         }
-
 
         [Authorize(Roles = "Admin")]
         public ActionResult DisableCoordinators()
@@ -520,182 +389,6 @@ namespace Coop_Listing_Site.Controllers
             }
 
             return coordinators;
-        }
-
-        public ActionResult DepartmentList()
-        {
-            var depts = db.Departments.ToList().Select(d => new DepartmentModel(d));
-            return View(depts);
-        }
-
-        //GET: ControlPanelController/AddDepartment
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult AddDepartment()
-        {
-            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).Where(m => m.Department == null).ToList(), "MajorID", "MajorName");
-            return View();
-        }
-
-        //POST: ControlPanelController/AddDepartment
-        [Authorize(Roles = "Coordinator")]
-        [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult AddDepartment([Bind(Include = "DepartmentName")] DepartmentModel departmentVM, int[] MajorIDs)
-        {
-            var majorList = new List<Major>();
-
-            if (MajorIDs != null)
-            {
-                foreach (var id in MajorIDs)
-                {
-                    var major = db.Majors.Find(id);
-                    if (major != null)
-                        majorList.Add(major);
-                }
-            }
-
-            departmentVM.Majors = majorList;
-
-            if (ModelState.IsValid)
-            {
-                var department = departmentVM.ToDepartment();
-
-                db.Departments.Add(department);
-                db.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList().Where(m => m.Department == null && !departmentVM.Majors.Contains(m)), "MajorID", "MajorName");
-            return View(departmentVM);
-        }
-
-        //GET: ControlPanelController/EditDepartment
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult EditDepartment(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Department department = db.Departments.Find(id);
-
-            if (department == null)
-            {
-                return HttpNotFound();
-            }
-            var majors = department.Majors.Select(m => m.MajorID).ToList();
-            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).Where(m => !majors.Contains(m.MajorID)).ToList(), "MajorID", "MajorName");
-
-            var deptvm = new DepartmentModel(department);
-            return View(deptvm);
-        }
-
-        //POST: ControlPanelController/EditDepartment
-        [HttpPost]
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult EditDepartment([Bind(Include = "DepartmentID, DepartmentName")] DepartmentModel department, int[] MajorIDs)
-        {
-            var majors = new List<Major>();
-
-            if (MajorIDs != null)
-            {
-                foreach (int id in MajorIDs)
-                {
-                    majors.Add(db.Majors.Find(id));
-                }
-            }
-
-            department.Majors = majors;
-
-            if (ModelState.IsValid)
-            {
-                var dept = db.Departments.Find(department.DepartmentID);
-                dept.DepartmentName = department.DepartmentName;
-
-                foreach(var major in db.Majors.Where(m => m.Department.DepartmentID == dept.DepartmentID))
-                {
-                    if (!majors.Contains(major))
-                    {
-                        major.Department = null;
-                        dept.Majors.Remove(major);
-                        db.Entry(major).State = EntityState.Modified;
-                    }
-                }
-
-                foreach(var major in majors)
-                {
-                    if (!dept.Majors.Contains(major))
-                    {
-                        major.Department = dept;
-                        dept.Majors.Add(major);
-                    }
-                }
-
-                db.Entry(dept).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("DepartmentList");
-            }
-
-            ViewBag.Majors = new SelectList(db.Majors.OrderBy(m => m.MajorName).ToList(), "MajorID", "MajorName");
-
-            return View(department);
-        }
-
-        //GET: ControlPanelController/DeleteDepartment
-        [Authorize(Roles = "Coordinator")]
-        public ActionResult DeleteDepartment(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = db.Departments.Find(id);
-            if (department == null)
-            {
-                return HttpNotFound();
-            }
-
-            var deptvm = new DepartmentModel(department);
-            return View(deptvm);
-        }
-
-        //POST: ControlPanelController/DeleteDepartment
-        [HttpPost, ActionName("DeleteDepartment")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Department department = db.Departments.Find(id);
-
-            foreach (var major in department.Majors)
-                major.Department = null;
-
-            foreach(var opp in db.Opportunities.Where(o => o.Department.DepartmentID == department.DepartmentID))
-                opp.Department = null;
-
-            department.Majors.Clear();
-            db.SaveChanges();
-
-            db.Departments.Remove(department);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        //GET: ControlPanelController/Details
-        public ActionResult DepartmentDetails(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Department department = db.Departments.Find(id);
-            if (department == null)
-            {
-                return HttpNotFound();
-            }
-
-            var deptvm = new DepartmentModel(department);
-            return View(deptvm);
         }
 
         private User CurrentUser

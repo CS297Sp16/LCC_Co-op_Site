@@ -11,19 +11,35 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.User.LastName)
+            @Html.DisplayNameFor(model => model.Student.User.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.User.LastName)
+            @Html.DisplayFor(model => model.Student.User.LastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.User.FirstName)
+            @Html.DisplayNameFor(model => model.Student.User.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.User.FirstName)
+            @Html.DisplayFor(model => model.Student.User.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.LNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.LNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Message)
         </dd>
 
         <dt>
@@ -39,56 +55,24 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)
+            @Html.ActionLink(Model.Opportunity.CoopPositionTitle, "Details", new { id = Model.Opportunity.OpportunityID })
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Resume)
+            @Html.DisplayNameFor(model => model.Files)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Resume) @* This needs to be changed to point at 
-                                                        something to get it out of array*@
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CoverLetter)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CoverLetter)  @* This needs to be changed to point at
-                                                            something to get it out of array*@
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DriverLicense)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DriverLicense) @* This needs to be changed to point at
-                                                                something to get it out of array*@
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Other)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Other)  @* This needs to be changed to point at
-                                                        something to get it out of array*@
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Message)
-        </dd>       
+          @foreach(var file in Model.Files)
+          {
+              @Html.ActionLink(file.FileName, "GetFile", new { id = file.UserFileID})
+              <br />
+          }
+        </dd>                
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "AppDetails") ||
-    @Html.ActionLink("Delete Application", "AppDelete")
+    @Html.ActionLink("Back to List", "Applications") ||
+    @Html.ActionLink("Delete Application", "AppDelete", new { id = Model.ApplicationId }, new { @class = "btn btn-primary" })
    
 </p>

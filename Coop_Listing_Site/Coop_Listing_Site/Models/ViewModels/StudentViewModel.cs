@@ -18,7 +18,7 @@ namespace Coop_Listing_Site.Models.ViewModels
         public string Major { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:F2}")]
-        public double GPA { get; set; }
+        public double? GPA { get; set; }
 
         [Display(Name = "Status")]
         public bool Enabled { get; set; }

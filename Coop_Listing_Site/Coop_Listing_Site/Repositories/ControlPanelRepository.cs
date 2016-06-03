@@ -102,19 +102,13 @@ namespace Coop_Listing_Site.Repositories
 
             var major = db.Majors.FirstOrDefault(mj => mj.MajorID == studentUpdateModel.MajorID);
 
-            var passwordValidated = userManager.CheckPassword(user, studentUpdateModel.CurrentPassword);
-
-            studInfo.GPA = studentUpdateModel.GPA;
+            studInfo.GPA = (double)studentUpdateModel.GPA;
 
             if (studInfo.Major.MajorID != studentUpdateModel.MajorID)
             {
                 studInfo.Major = major;
             }
 
-            if (passwordValidated && studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
-            {
-                userManager.ChangePassword(user.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
-            }
             db.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
             db.Entry(studInfo).State = EntityState.Modified;

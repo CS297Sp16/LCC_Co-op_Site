@@ -10,14 +10,14 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.User.LastName)
+                    @Html.DisplayNameFor(model => model.Student.User.LastName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.User.FirstName)
+                    @Html.DisplayNameFor(model => model.Student.User.FirstName)
                 </th>
                 <th>
                     @* This is for adding the L# to the list of applications *@
-                    @*@Html.DisplayNameFor(model => model.User.L#)*@
+                    @Html.DisplayNameFor(model => model.Student.LNumber)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Opportunity.CompanyName)
@@ -35,20 +35,20 @@
 
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => app.User.LastName)
+                        @Html.DisplayFor(modelItem => app.Student.User.LastName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => app.User.FirstName)
+                        @Html.DisplayFor(modelItem => app.Student.User.FirstName)
                     </td>
                     <td>
                         @* This is for displaying the L# of the student that has applied for the position *@
-                        @*@Html.DisplayFor(modelItem => app.User.L#)*@
+                        @Html.DisplayFor(modelItem => app.Student.LNumber)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => app.Opportunity.CompanyName)
                     </td>
                     <td>
-                        @Html.ActionLink(app.Opportunity.CoopPositionTitle, "AppDetails", new { id = app.Opportunity.OpportunityID })
+                        @Html.ActionLink(app.Opportunity.CoopPositionTitle, "AppDetails", new { id = app.ApplicationId })
                     </td>
 
 
