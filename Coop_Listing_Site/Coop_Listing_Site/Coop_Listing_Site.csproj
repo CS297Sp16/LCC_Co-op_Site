@@ -187,10 +187,6 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605250516036_Initial.cs" />
-    <Compile Include="Migrations\201605250516036_Initial.Designer.cs">
-      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
@@ -210,10 +206,6 @@
     <Compile Include="Migrations\201605292122190_Major_Update1.cs" />
     <Compile Include="Migrations\201605292122190_Major_Update1.Designer.cs">
       <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606022037353_Nullable_Student_GPA.cs" />
-    <Compile Include="Migrations\201606022037353_Nullable_Student_GPA.Designer.cs">
-      <DependentUpon>201606022037353_Nullable_Student_GPA.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AgreementForm.cs" />
     <Compile Include="Models\EmailInfo.cs" />
@@ -366,9 +358,6 @@
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605250516036_Initial.resx">
-      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>
     </EmbeddedResource>
@@ -383,9 +372,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605292122190_Major_Update1.resx">
       <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606022037353_Nullable_Student_GPA.resx">
-      <DependentUpon>201606022037353_Nullable_Student_GPA.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
