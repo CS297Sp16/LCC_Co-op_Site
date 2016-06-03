@@ -19,9 +19,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44369</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201605292122190_Major_Update1.Designer.cs">
       <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606022037353_Nullable_Student_GPA.cs" />
+    <Compile Include="Migrations\201606022037353_Nullable_Student_GPA.Designer.cs">
+      <DependentUpon>201606022037353_Nullable_Student_GPA.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AgreementForm.cs" />
     <Compile Include="Models\EmailInfo.cs" />
     <Compile Include="Global.asax.cs">
@@ -256,7 +260,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dashboard.css" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -380,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605292122190_Major_Update1.resx">
       <DependentUpon>201605292122190_Major_Update1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606022037353_Nullable_Student_GPA.resx">
+      <DependentUpon>201606022037353_Nullable_Student_GPA.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

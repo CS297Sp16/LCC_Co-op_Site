@@ -232,66 +232,14 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            var gpaList = new Dictionary<double, string>();
-            double gpaMin = 2.00d;
-            double inc = 0.01d;
-            double key;
-            string value;
-            double gpaSelectedValue;
-
-            while (gpaMin <= 4.5)
-            {
-                value = gpaMin.ToString("N2");  //used to format the displayed value
-                key = Convert.ToDouble(value);  //produces the values => key
-
-                gpaList.Add(key, value);
-                gpaMin += inc;
-            }
-
-            var studentVM = new StudentUpdateModel()
-            {
-                UserId = studInfo.User.Id,
-                MajorID = studInfo.Major.MajorID,
-                GPA = studInfo.GPA
-            };
-
-            if (studentVM.GPA > 2)
-            {
-                gpaSelectedValue = studentVM.GPA;
-            }
-            else
-            {
-                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
-            }
-
-            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
+            var studentVM = new StudentUpdateModel(studInfo);
 
             return View(studentVM);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID,CurrentPassword,NewPassword,ConfirmNewPassword")] StudentUpdateModel studentUpdateModel)
+        public ActionResult UpdateStudent([Bind(Include = "UserId,GPA,MajorID")] StudentUpdateModel studentUpdateModel)
         {
-            bool newPasswordMatches = false;
-            bool passwordValidated = false;
-            bool passwordChangeRequested = false;
-
-            var gpaList = new Dictionary<double, string>();
-            double gpaMin = 2.00d;
-            double inc = 0.01d;
-            double key;
-            string value;
-            double gpaSelectedValue;
-
-            while (gpaMin <= 4.5)
-            {
-                value = gpaMin.ToString("N2");  //used to format the displayed value
-                key = Convert.ToDouble(value);  //produces the values => key
-
-                gpaList.Add(key, value);
-                gpaMin += inc;
-            }
-
             var studInfo = db.Students
                 .Where(si => si.User.Id == studentUpdateModel.UserId)
                 .Include(si => si.User)
@@ -302,48 +250,13 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(db.Majors.ToList(), "MajorID", "MajorName", studInfo.Major.MajorID);
 
-            if (studentUpdateModel.GPA > 2)
-            {
-                gpaSelectedValue = studentUpdateModel.GPA;
-            }
-            else
-            {
-                gpaSelectedValue = 2; //assumes all students must have at least a 2.0 gpa.  This is a minimum requirement at lane, I think??? -LONNIE
-            }
-
-            ViewBag.GPAs = new SelectList(gpaList, "key", "value", gpaSelectedValue);
-
-            if (studentUpdateModel.CurrentPassword != null)
-            {
-                var user = userManager.Find(studInfo.User.Email, studentUpdateModel.CurrentPassword);  //userManager.checkPassword not working
-                if (user != null)
-                {
-                    passwordValidated = true;
-                }
-                else
-                {
-                    ViewBag.NoMatch = "The Current Password You Provided Was Incorrect. Please retry or contact your department's coordinator. ";
-                    return View("UpdateStudent");
-                }
-            }
-
-            if (studentUpdateModel.NewPassword == studentUpdateModel.ConfirmNewPassword)
-            {
-                newPasswordMatches = true;
-            }
-
-            if (studentUpdateModel.NewPassword != null && userManager.Find(studInfo.User.Email, studentUpdateModel.NewPassword) == null)
-            {
-                passwordChangeRequested = true;
-            }
-
             if (!ModelState.IsValid) return View();
 
             if (ModelState.IsValid)
             {
                 if (studInfo.GPA != studentUpdateModel.GPA)
                 {
-                    studInfo.GPA = studentUpdateModel.GPA;
+                    studInfo.GPA = (double)studentUpdateModel.GPA;
                     db.Entry(studInfo).State = EntityState.Modified;
                     db.SaveChanges();
                 }
@@ -354,19 +267,9 @@ namespace Coop_Listing_Site.Controllers
                     db.Entry(studInfo.Major).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
-                if (passwordValidated && newPasswordMatches && passwordChangeRequested)
-                {
-                    userManager.ChangePassword(studInfo.User.Id, studentUpdateModel.CurrentPassword, studentUpdateModel.NewPassword);
-
-                    //TODO: redirect back to index with message confirming
-                    ViewBag.PassConfirm = "Your Password Has Successfully Been Updated";
-                    return View("Index");
-                }
             }
             return RedirectToAction("Index");
         }
-
 
         [Authorize(Roles = "Admin")]
         public ActionResult DisableCoordinators()
