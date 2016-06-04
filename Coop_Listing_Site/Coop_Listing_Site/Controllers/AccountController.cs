@@ -50,9 +50,9 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Student([Bind(Include = "UserId,GPA,MajorID")] StudentUpdateModel studentUpdateModel)
+        public ActionResult Student([Bind(Include = "LNumber,GPA,MajorID,Email")] StudentUpdateModel studentUpdateModel)
         {
-            var studInfo = repo.GetOne<StudentInfo>(s => s.User.Id == CurrentUser.Id);
+            var studInfo = repo.GetByID<StudentInfo>(studentUpdateModel.LNumber);
 
             var major = repo.GetByID<Major>(studentUpdateModel.MajorID);
 
@@ -60,6 +60,9 @@ namespace Coop_Listing_Site.Controllers
 
             if (ModelState.IsValid)
             {
+                if (studentUpdateModel.GPA == null)
+                    studentUpdateModel.GPA = 0;
+
                 if (studInfo.GPA != studentUpdateModel.GPA)
                 {
                     studInfo.GPA = (double)studentUpdateModel.GPA;
@@ -70,6 +73,12 @@ namespace Coop_Listing_Site.Controllers
                 {
                     studInfo.Major = major;
                     repo.Update(studInfo);
+                }
+
+                if(studentUpdateModel.Email != studInfo.User.Email)
+                {
+                    studInfo.User.Email = studentUpdateModel.Email;
+                    userManager.Update(studInfo.User);
                 }
 
                 studentUpdateModel = new StudentUpdateModel(studInfo);

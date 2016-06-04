@@ -1,7 +1,7 @@
 ﻿@model Coop_Listing_Site.Models.ViewModels.StudentUpdateModel
 
 @{
-    ViewBag.Title = "Update Your Student Record";
+    ViewBag.Title = "Update Your Information";
     Layout = "~/Views/Shared/_CP_Layout.cshtml";
     SelectList majorSelectList = ViewBag.Majors;
 }
@@ -19,12 +19,20 @@
             <h4 class="text-success">Updated</h4>
         }
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserId)
+        @Html.HiddenFor(model => model.LNumber)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.MajorID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.MajorID, majorSelectList, new { htmlAttributes = new { @class = "form-control col-md-12" } })
+                @Html.DropDownListFor(model => model.MajorID, majorSelectList, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.MajorID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.GPA, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.GPA, Model.GPASelectList, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.GPA, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.GPA, "", new { @class = "text-danger" })
             </div>
         </div>
