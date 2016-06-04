@@ -19,9 +19,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44369</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -186,10 +186,6 @@
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.cs" />
     <Compile Include="Migrations\201605160044292_Opportunity_Update1.Designer.cs">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605250516036_Initial.cs" />
-    <Compile Include="Migrations\201605250516036_Initial.Designer.cs">
-      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.cs" />
     <Compile Include="Migrations\201605250214546_Application_Update_UserFile_Add.Designer.cs">
@@ -365,9 +361,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605160044292_Opportunity_Update1.resx">
       <DependentUpon>201605160044292_Opportunity_Update1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605250516036_Initial.resx">
-      <DependentUpon>201605250516036_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605250214546_Application_Update_UserFile_Add.resx">
       <DependentUpon>201605250214546_Application_Update_UserFile_Add.cs</DependentUpon>

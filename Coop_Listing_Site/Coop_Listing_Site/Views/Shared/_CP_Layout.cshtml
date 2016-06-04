@@ -39,20 +39,8 @@
         </ul>
     </div>
 
-
     <div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas" id="cp-nav-btn">Menu</button>
         @RenderBody()
     </div>
 </div>
-@section Scripts {
-
-        @Scripts.Render("~/bundles/jqueryval")
-        <script>
-            setTimeout(
-            function(event){
-                $('#lcc-logo').addClass('fadeout');
-            }, 0000);
-        </script>
-
-    }

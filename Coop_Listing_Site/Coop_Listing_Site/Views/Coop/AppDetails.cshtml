@@ -55,7 +55,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Opportunity.CoopPositionTitle)
+            @Html.ActionLink(Model.Opportunity.CoopPositionTitle, "Details", new { id = Model.Opportunity.OpportunityID })
         </dd>
 
         <dt>
@@ -72,7 +72,7 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "AppDetails") ||
-    @Html.ActionLink("Delete Application", "AppDelete", new { id = Model.ApplicationId })
+    @Html.ActionLink("Back to List", "Applications") ||
+    @Html.ActionLink("Delete Application", "AppDelete", new { id = Model.ApplicationId }, new { @class = "btn btn-primary" })
    
 </p>
