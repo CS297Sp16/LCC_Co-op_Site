@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Coop_Listing_Site.Models.RegisterInvite>
 
 @{
-    ViewBag.Title = "Current Student Invitations";
+    ViewBag.Title = "Current Coordinator Invitations";
     Layout = "~/Views/Shared/_CP_Layout.cshtml";
 }
 
-<h2>Active Student Invitations</h2>
+<h2>Active Coordinator Invitations</h2>
 
 <p>
     @* TODO: move coordinator invitation to CoordinatorController *@
@@ -29,7 +29,7 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.ActionLink("Rescind Invitation", "Rescind", new { controller = "ControlPanel", id = item.RegisterInviteID })
+                    @Html.ActionLink("Rescind Invitation", "Rescind", new { id = item.RegisterInviteID })
                 </td>
             </tr>
 
