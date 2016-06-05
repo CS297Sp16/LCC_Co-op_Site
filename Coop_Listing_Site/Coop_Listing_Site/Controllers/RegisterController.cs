@@ -49,6 +49,10 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Student([Bind(Include = "FirstName,LastName,Email,LNumber,GPA,Password,ConfirmPassword")] StudentRegistrationModel student, int Majors)
         {
             ViewBag.Majors = new SelectList(repo.GetAll<Major>().ToList(), "MajorID", "MajorName");
+
+            if(student.GPA != null && (student.GPA > 0 || student.GPA <= 4.3))
+                ModelState.AddModelError("GPA", "Your GPA must be between 0 and 4.3 if you decide to submit it.");
+
             if (!ModelState.IsValid) return View(student);
 
             User user = new User
@@ -66,11 +70,14 @@ namespace Coop_Listing_Site.Controllers
             {
                 var major = repo.GetByID<Major>(Majors);
 
+                if (student.GPA == null)
+                    student.GPA = 0;
+
                 var studentInfo = new StudentInfo
                 {
                     User = user,
                     LNumber = student.LNumber,
-                    GPA = student.GPA
+                    GPA = (double)student.GPA
                 };
 
                 if (major != null)

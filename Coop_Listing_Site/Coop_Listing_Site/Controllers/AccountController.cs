@@ -58,6 +58,9 @@ namespace Coop_Listing_Site.Controllers
 
             ViewBag.Majors = new SelectList(repo.GetAll<Major>().OrderBy(m => m.MajorName), "MajorID", "MajorName", studInfo.Major.MajorID);
 
+            if (studentUpdateModel.GPA != null && (studentUpdateModel.GPA > 0 || studentUpdateModel.GPA <= 4.3))
+                ModelState.AddModelError("GPA", "Your GPA must be between 0 and 4.3 if you decide to submit it.");
+
             if (ModelState.IsValid)
             {
                 if (studentUpdateModel.GPA == null)
