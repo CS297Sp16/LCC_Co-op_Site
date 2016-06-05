@@ -5,7 +5,6 @@
 html,
 body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
-  min-height: 100%;
 }
 footer {
   padding: 30px 0;
@@ -31,6 +30,9 @@ footer {
   }
   .row-offcanvas.active #sidebar {
     display: block;
+  }
+  .row-offcanvas.active {
+    min-height: 690px;
   }
 
   .row-offcanvas {
