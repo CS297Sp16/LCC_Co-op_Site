@@ -108,13 +108,12 @@ namespace Coop_Listing_Site.Controllers
                 repo.Update(dbMajor);
 
                 majorVM = new MajorViewModel(dbMajor);
+                ViewBag.Updated = true;
             }
 
             var depts = repo.GetAll<Department>().OrderBy(d => d.DepartmentName);
             ViewBag.Departments = new SelectList(depts, "DepartmentID", "DepartmentName", majorVM.Department?.DepartmentID);
-
-            ViewBag.Updated = true;
-
+            
             return View(majorVM);
         }
 

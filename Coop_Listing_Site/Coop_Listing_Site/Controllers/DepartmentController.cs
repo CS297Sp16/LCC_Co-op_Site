@@ -116,7 +116,6 @@ namespace Coop_Listing_Site.Controllers
                     {
                         major.Department = null;
                         dept.Majors.Remove(major);
-                        //db.Entry(major).State = EntityState.Modified;
                     }
                 }
 
