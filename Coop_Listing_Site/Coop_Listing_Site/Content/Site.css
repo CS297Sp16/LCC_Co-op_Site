@@ -1,7 +1,11 @@
+html {
+	height: 100%;
+}
 body {
     background-image: url('/Images/evening-sky-4.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
