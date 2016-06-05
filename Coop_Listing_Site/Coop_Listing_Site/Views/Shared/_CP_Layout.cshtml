@@ -3,7 +3,7 @@
 }
 <div class="row row-offcanvas row-offcanvas-left">
     <div class="col-xs-6 col-sm-3 col-md-2 sidebar" id="sidebar">
-        <img src="~/Images/logo.png" class="img-responsive"/>
+        <img src="~/Images/logo.png" class="img-responsive" onclick="window.open('https://www.lanecc.edu/');" id="lanecc-edu-link"/>
         <ul class="nav nav-sidebar">
         @if (User.IsInRole("Student"))
         {

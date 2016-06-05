@@ -63,3 +63,11 @@ textarea {
 .navbar-inverse .navbar-nav > li > a:hover {
     color:#E1CC33;
 }
+
+#lanecc-edu-link:hover{
+    border:1px solid #;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 50px 0px rgba(20, 28, 178, 0.30);
+}
