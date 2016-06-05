@@ -46,6 +46,55 @@ namespace UnitTests
             Assert.IsNotNull(repo.GetOne<Major>(m => m.MajorName == newMajor.MajorName));
         }
 
+        [Test]
+        public void Edit_ModelNotEmpty()
+        {
+            var controller = new MajorController(repo);
+
+            var view = (ViewResult)controller.Edit(1);
+
+            Assert.IsNotNull((MajorViewModel)view.Model);
+        }
+
+        [Test]
+        public void Edit_CorrectModelInfo()
+        {
+            var controller = new MajorController(repo);
+
+            var view = (ViewResult)controller.Edit(1);
+
+            MajorViewModel model = (MajorViewModel)view.Model;
+
+            Major major = repo.GetByID<Major>(1);
+
+            Assert.AreEqual(model.MajorID, major.MajorID);
+            Assert.AreEqual(model.MajorName, major.MajorName);
+        }
+
+        [Test]
+        public void Edit_EditMajor()
+        {
+            var controller = new MajorController(repo);
+
+            var majorVM = new MajorViewModel(repo.GetByID<Major>(3));
+
+            majorVM.MajorName = "Unemployment Specialist";
+
+            controller.Edit(majorVM, 1);
+
+            Assert.AreEqual(repo.GetByID<Major>(3).MajorName, "Unemployment Specialist");
+        }
+
+        [Test]
+        public void Delete_NullIdBadRequest()
+        {
+            var controller = new MajorController(repo);
+
+            var test = (HttpStatusCodeResult)controller.Delete(null);
+
+            Assert.AreEqual(test.StatusCode, 400);
+        }
+
 
         [SetUp]
         public void Init()
