@@ -1,8 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row">
-    <div class="col-sm-3 col-md-2 sidebar">
+<div class="row row-offcanvas row-offcanvas-left">
+    <div class="col-xs-6 col-sm-3 col-md-2 sidebar" id="sidebar">
         @if (User.IsInRole("Student"))
         {
             <h4>Student</h4>
@@ -19,8 +19,8 @@
                 <li>@Html.ActionLink("View Majors", "", "Major")</li>
                 <li>@Html.ActionLink("View Departments", "", "Department")</li>
                 <li>@Html.ActionLink("View Students", "", "Student")</li>
-				<li>@Html.ActionLink("Applications", "Applications", "Coop")</li>
-			</ul>
+                <li>@Html.ActionLink("Applications", "Applications", "Coop")</li>
+            </ul>
         }
         @if (User.IsInRole("Admin"))
         {
@@ -38,10 +38,9 @@
             <li>@Html.ActionLink("Change Your Password", "ChangePassword", "Auth")</li>
         </ul>
     </div>
-</div>
 
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main"  id="main-wrapper">
-            @RenderBody()
+    <div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas" id="cp-nav-btn">Menu</button>
+        @RenderBody()
     </div>
-
-
+</div>
