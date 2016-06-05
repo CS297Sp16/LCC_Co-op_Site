@@ -49,6 +49,10 @@ namespace Coop_Listing_Site.Controllers
         public ActionResult Student([Bind(Include = "FirstName,LastName,Email,LNumber,GPA,Password,ConfirmPassword")] StudentRegistrationModel student, int Majors)
         {
             ViewBag.Majors = new SelectList(repo.GetAll<Major>().ToList(), "MajorID", "MajorName");
+
+            if(student.GPA != null && (student.GPA > 0 || student.GPA <= 4.3))
+                ModelState.AddModelError("GPA", "Your GPA must be between 0 and 4.3 if you decide to submit it.");
+
             if (!ModelState.IsValid) return View(student);
 
             User user = new User
@@ -66,11 +70,14 @@ namespace Coop_Listing_Site.Controllers
             {
                 var major = repo.GetByID<Major>(Majors);
 
+                if (student.GPA == null)
+                    student.GPA = 0;
+
                 var studentInfo = new StudentInfo
                 {
                     User = user,
                     LNumber = student.LNumber,
-                    GPA = student.GPA
+                    GPA = (double)student.GPA
                 };
 
                 if (major != null)
@@ -114,7 +121,7 @@ namespace Coop_Listing_Site.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int[] MajorIDs)
+        public ActionResult Coordinator([Bind(Include = "FirstName,LastName,Email,Password,ConfirmPassword")] CoordRegModel coordinator, int[] MajorIDs, int? Majors)
         {
             var nocoordMajors = repo.GetWhere<Major>(m => m.Coordinator == null);
 
@@ -130,9 +137,12 @@ namespace Coop_Listing_Site.Controllers
                         coordinator.Majors.Add(major);
                 }
             }
-            else
+            else if(Majors != null)
             {
-                ModelState.AddModelError("", "You must select at least one Major that you coordinate.");
+                nocoordMajors = nocoordMajors.Where(m => m.MajorID != Majors);
+
+                var major = repo.GetByID<Major>(Majors);
+                coordinator.Majors.Add(major);
             }
 
             ViewBag.Majors = new SelectList(nocoordMajors, "MajorID", "MajorName");

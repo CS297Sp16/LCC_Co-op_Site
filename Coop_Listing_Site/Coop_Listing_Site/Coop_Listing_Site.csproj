@@ -160,6 +160,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\ControlPanelController.cs" />
     <Compile Include="Controllers\CoopController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\CoordinatorViewModel.cs" />
     <Compile Include="Models\ViewModels\CoordRegModel.cs" />
+    <Compile Include="Models\ViewModels\CoordUpdateModel.cs" />
     <Compile Include="Models\ViewModels\DepartmentModel.cs" />
     <Compile Include="Models\ViewModels\LoginModel.cs" />
     <Compile Include="Models\ViewModels\MajorViewModel.cs" />
@@ -312,8 +314,6 @@
     <Content Include="Views\Coop\Details.cshtml" />
     <Content Include="Views\ControlPanel\Rescind.cshtml" />
     <Content Include="Views\ControlPanel\UpdateStudent.cshtml" />
-    <Content Include="Views\ControlPanel\DisableStudents.cshtml" />
-    <Content Include="Views\ControlPanel\EnableStudents.cshtml" />
     <Content Include="Views\Auth\ForgotPassword.cshtml" />
     <Content Include="Views\Auth\ResetPassword.cshtml" />
     <Content Include="Views\Auth\Invalid.cshtml" />
@@ -323,8 +323,6 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Shared\_CP_Layout.cshtml" />
     <Content Include="Views\ControlPanel\InviteCoordinator.cshtml" />
-    <Content Include="Views\ControlPanel\DisableCoordinators.cshtml" />
-    <Content Include="Views\ControlPanel\EnableCoordinators.cshtml" />
     <Content Include="Views\Major\Add.cshtml" />
     <Content Include="Views\Major\Edit.cshtml" />
     <Content Include="Views\Major\Delete.cshtml" />
@@ -350,6 +348,8 @@
     <Content Include="Views\Department\Index.cshtml" />
     <Content Include="Views\Student\Rescind.cshtml" />
     <Content Include="Views\Coordinator\Rescind.cshtml" />
+    <Content Include="Views\Account\Student.cshtml" />
+    <Content Include="Views\Account\Coordinator.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
