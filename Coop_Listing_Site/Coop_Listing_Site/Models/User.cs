@@ -14,11 +14,5 @@ namespace Coop_Listing_Site.Models
         public override string Email { get; set; }
         public bool Enabled { get; set; }
         public static object Identity { get; internal set; }
-
-        /*
-         * Ignoring for now
-        [Required, Phone, Display(Name = "Phone Number")]
-        public override string PhoneNumber { get; set; }
-        */
     }
 }
