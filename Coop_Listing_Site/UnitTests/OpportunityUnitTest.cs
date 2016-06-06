@@ -50,14 +50,6 @@ namespace UnitTests
         }
 
         [Test]
-        public void Index_ModelNotEmpty()
-        {
-            var controller = new CoopController(repo);
-            var index = (ViewResult)controller.Index();
-            Assert.IsNotEmpty((IEnumerable<OpportunityModel>)index.Model);
-        }
-
-        [Test]
         public void Add_DeptList()
         {
             var controller = new MajorController(repo);
@@ -104,10 +96,12 @@ namespace UnitTests
         public void Delete_DeleteOpportunity()
         {
             var controller = new CoopController(repo);
-            var get = (ViewResult)controller.AddOpportunity();
-            controller.DeleteOpportunity(2);
-            controller.DeleteOpportunity(1);
-            Assert.AreEqual(get.ViewBag.Opportunities, 0);
+            controller.DeleteConfirmed(2);
+            controller.DeleteConfirmed(1);
+            var opp1 = repo.GetByID<Opportunity>(1);
+            var opp2 = repo.GetByID<Opportunity>(2);
+            Assert.IsNull(opp1);
+            Assert.IsNull(opp2);
         }
     }
 }

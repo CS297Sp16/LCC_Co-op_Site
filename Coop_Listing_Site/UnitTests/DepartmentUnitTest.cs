@@ -46,10 +46,10 @@ namespace UnitTests
         public void Delete_DeleteDepartment()
         {
             var controller = new DepartmentController(repo);
-            var get = (ViewResult)controller.Add();
-            controller.Delete(1);
-            controller.Delete(2);
-            Assert.AreEqual(get.ViewBag.Departments, 0);
+            controller.ConfirmDeleteDepartment(1);
+            controller.ConfirmDeleteDepartment(2);
+            Assert.IsNull(repo.GetByID<Department>(1));
+            Assert.IsNull(repo.GetByID<Department>(2));
         }
     }
 }
