@@ -25,14 +25,38 @@
                         <li>@Html.ActionLink("Control Panel", "Index", "ControlPanel")</li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Logout", "LogOut", "Auth")</li>
+                        <li>
+                            <a class="embed-responsive-item" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                        </li>
                     </ul>
+
+
                 }
+
             </div>
         </div>
     </div>
     <div class="container-fluid">
         @RenderBody()
+
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" >
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content" style="background-color:#003893;color:white;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white"><span class="glyphicon glyphicon-remove"></span></button>
+                        <h4 class="modal-title" id="logoutModalLabel">Logout?</h4>
+                    </div>
+                    <div class="modal-body">
+                        Please confirm Logout
+                    </div>
+                    <div class="modal-footer">      
+                        <button type="button" class="btn btn-primary" onclick="document.location.href='@Url.Action("LogOut","auth")';">Logout</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     @Scripts.Render("~/bundles/bootstrap")
