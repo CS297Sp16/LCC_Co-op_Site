@@ -24,8 +24,7 @@ namespace Coop_Listing_Site.Models
         public enum AccountType
         {
             Student = 1,
-            Coordinator = 2,
-            Employer
+            Coordinator = 2
         };
 
         /*
