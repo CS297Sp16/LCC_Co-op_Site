@@ -70,4 +70,5 @@ textarea {
     -moz-border-radius: 5px;
     border-radius: 5px;
     box-shadow: inset 0px 0px 20px 0px rgba(20, 28, 178, 0.30);
+    cursor: pointer;
 }
