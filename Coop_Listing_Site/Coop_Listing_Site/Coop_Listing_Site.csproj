@@ -261,6 +261,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\evening-sky-3.jpg" />
     <Content Include="Images\evening-sky-4.jpg" />
+    <Content Include="Images\home_main_spring4.min_.jpg" />
+    <Content Include="Images\Lane-CC-Health.jpg" />
+    <Content Include="Images\logo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

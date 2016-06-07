@@ -3,37 +3,36 @@
 }
 <div class="row row-offcanvas row-offcanvas-left">
     <div class="col-xs-6 col-sm-3 col-md-2 sidebar" id="sidebar">
+        <img src="~/Images/logo.png" class="img-responsive" onclick="window.open('https://www.lanecc.edu/');" id="lanecc-edu-link"/>
+        <ul class="nav nav-sidebar">
         @if (User.IsInRole("Student"))
         {
-            <h4>Student</h4>
-            <ul class="nav nav-sidebar">
-                <li>@Html.ActionLink("Update Your Info", "Student", "Account")</li>
-            </ul>
+            <li class="col-xs-offset-2"><h4>Student</h4></li>
+
+                <li>@Html.ActionLink("Update your Info", "UpdateStudent")</li>
+
         }
         @if (User.IsInRole("Coordinator") || User.IsInRole("Admin"))
         {
-            <h4>Coordinator</h4>
-            <ul class="nav nav-sidebar">
-                <li>@Html.ActionLink("Update Your Info", "Coordinator", "Account")</li>
+            <li class="col-xs-offset-2"><h4>Coordinator</h4></li>
+
                 <li>@Html.ActionLink("Invite Student", "InviteStudent", "ControlPanel")</li>
                 <li>@Html.ActionLink("Active Student Invitations", "Invitations", "Student")</li>
                 <li>@Html.ActionLink("View Majors", "", "Major")</li>
                 <li>@Html.ActionLink("View Departments", "", "Department")</li>
                 <li>@Html.ActionLink("View Students", "", "Student")</li>
                 <li>@Html.ActionLink("Applications", "Applications", "Coop")</li>
-            </ul>
         }
         @if (User.IsInRole("Admin"))
         {
-            <h4>Administrator</h4>
-            <ul class="nav nav-sidebar">
+            <li class="col-xs-offset-2"><h4>Administrator</h4></li>
+
                 <li>@Html.ActionLink("Invite Coordinator", "InviteCoordinator", "ControlPanel")</li>
                 <li>@Html.ActionLink("Active Coordinator Invitations", "Invitations", "Coordinator")</li>
                 <li>@Html.ActionLink("View Coordinators", "", "Coordinator")</li>
                 <li>@Html.ActionLink("Set SMTP Information", "SMTP", "ControlPanel")</li>
-            </ul>
+
         }
-        <ul class="nav nav-sidebar">
             <li>@Html.ActionLink("Change Your Password", "ChangePassword", "Auth")</li>
         </ul>
     </div>
